@@ -28,4 +28,4 @@ test:
 	PYTHONPATH=. pytest-3 tests/
 
 reformat:
-	black --exclude promformat/parser promformat
+	black promformat

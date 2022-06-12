@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 from promformat.ast_nodes import (
     Number,
-    MultiplicationNode,
+    MultOpNode,
     String,
     FunctionNode,
     LabelNode,
@@ -14,6 +14,10 @@ from promformat.ast_nodes import (
     SubqueryNode,
     MetricNameNode,
     CompareOperationNode,
+    AndUnlessOperationNode,
+    OrOperationNode,
+    UnaryOpNode,
+    AddOpNode,
 )
 from promformat.parser.PromQLParser import PromQLParser
 from promformat.parser.PromQLParserVisitor import PromQLParserVisitor
@@ -28,11 +32,57 @@ class BuildAstVisitor(PromQLParserVisitor):
         return self.visit(ctx.vectorOperation())
 
     def visitVectorOperation(self, ctx: PromQLParser.VectorOperationContext):
-        if ctx.multOp():
-            left, right = ctx.vectorOperation()
-            left_node = self.visit(left.vector())
-            right_node = self.visit(right.vector())
-            return MultiplicationNode(ctx, left_node, right_node)
+        if ctx.addOp():
+            assert len(ctx.vectorOperation()) == 2
+            right_op, left_op = ctx.vectorOperation()
+            left = self.visit(left_op)
+            right = self.visit(right_op)
+            for op_code in ("ADD", "SUB"):
+                op = getattr(ctx.addOp(), op_code)()
+                if op is not None:
+                    break
+            else:
+                raise Exception("Expected to find mult op but didn't")
+            return AddOpNode(
+                ctx,
+                left=left,
+                right=right,
+                operator=op.getText(),
+            )
+        elif ctx.unaryOp():
+            vector = ctx.vectorOperation()
+            assert len(vector) == 1
+            operand = self.visit(vector[0])
+            for op_code in ("ADD", "SUB"):
+                op = getattr(ctx.unaryOp(), op_code)()
+                if op is not None:
+                    break
+            else:
+                raise Exception("Expected to find mult op but didn't")
+
+            return UnaryOpNode(
+                ctx,
+                operator=op.getText(),
+                operand=operand,
+            )
+
+        elif ctx.multOp():
+            assert len(ctx.vectorOperation()) == 2
+            right_op, left_op = ctx.vectorOperation()
+            left = self.visit(left_op)
+            right = self.visit(right_op)
+            for op_code in ("MOD", "DIV", "MULT"):
+                op = getattr(ctx.multOp(), op_code)()
+                if op is not None:
+                    break
+            else:
+                raise Exception("Expected to find mult op but didn't")
+            return MultOpNode(
+                ctx,
+                left=left,
+                right=right,
+                operator=op.getText(),
+            )
         elif ctx.subqueryOp():
             subquery = self.visit(ctx.subqueryOp())
             assert len(ctx.vectorOperation()) == 1
@@ -44,15 +94,35 @@ class BuildAstVisitor(PromQLParserVisitor):
             right_op, left_op = ctx.vectorOperation()
             left = self.visit(left_op)
             right = self.visit(right_op)
-            for op_code in ("GT", "LT", "GE", "LE", "BOOL"):
+            for op_code in ("DEQ", "GT", "LT", "GE", "LE", "NE", "BOOL"):
                 op = getattr(ctx.compareOp(), op_code)()
                 if op is not None:
                     break
             else:
-                raise Exception("Expected to find op but didn't")
+                raise Exception("Expected to find compare op but didn't")
             return CompareOperationNode(
                 ctx, left=left, right=right, operator=op.getText()
             )
+        elif ctx.andUnlessOp():
+            assert len(ctx.vectorOperation()) == 2
+            right_op, left_op = ctx.vectorOperation()
+            left = self.visit(left_op)
+            right = self.visit(right_op)
+            for op_code in ("AND", "UNLESS"):
+                op = getattr(ctx.andUnlessOp(), op_code)()
+                if op is not None:
+                    break
+            grouping = ctx.andUnlessOp().grouping()
+            assert grouping is None, "Need to implement this"
+            return AndUnlessOperationNode(
+                ctx, left=left, right=right, operator=op.getText()
+            )
+        elif ctx.orOp():
+            assert len(ctx.vectorOperation()) == 2
+            right_op, left_op = ctx.vectorOperation()
+            left = self.visit(left_op)
+            right = self.visit(right_op)
+            return OrOperationNode(ctx, left=left, right=right)
         else:
             object_methods = [
                 method_name
@@ -101,7 +171,8 @@ class BuildAstVisitor(PromQLParserVisitor):
             group_operator = ctx.without().WITHOUT.getText()
             group_label_list = self.visitLabelNameList(ctx.without().labelNameList())
         else:
-            raise Exception("BAD")
+            group_operator = None
+            group_label_list = []
         parameter_list = self.visit(ctx.parameterList())
         return AggregationNode(
             ctx=ctx,
@@ -125,19 +196,17 @@ class BuildAstVisitor(PromQLParserVisitor):
                 selector=selector,
                 time_range=ctx.TIME_RANGE().getText(),
             )
-        # print(ctx.instantSelector().getText())
-        # print(ctx.TIME_RANGE())
 
     def visitInstantSelector(self, ctx: PromQLParser.InstantSelectorContext):
+        labels = []
         if ctx.labelMatcherList():
             labels = self.visit(ctx.labelMatcherList())
-            metric_name = ctx.METRIC_NAME().getText()
-            return InstantSelectorNode(
-                ctx,
-                metric_name=metric_name,
-                labels=labels,
-            )
-        return MetricNameNode(ctx, ctx.METRIC_NAME().getText())
+        metric_name = ctx.METRIC_NAME().getText()
+        return InstantSelectorNode(
+            ctx,
+            metric_name=metric_name,
+            labels=labels,
+        )
 
     def visitLabelMatcherList(self, ctx: PromQLParser.LabelMatcherListContext):
         labels = []
@@ -153,7 +222,7 @@ class BuildAstVisitor(PromQLParserVisitor):
             elif label.LABEL_NAME():
                 name = label.LABEL_NAME().getText()
             else:
-                name = label.keyword()
+                name = label.keyword().getText()
             assert name is not None
             labels.append(LabelNameNode(ctx, name=name))
         return labels
@@ -180,17 +249,6 @@ class BuildAstVisitor(PromQLParserVisitor):
             return String(ctx=ctx, value=ctx.getText())
 
 
-class Block:
-    def __init__(self, open, close):
-        self.open = open
-        self.close = close
-
-
-class Parentheses(Block):
-    def __init__(self):
-        super(Parentheses, self).__init__(open="(", close=")")
-
-
 class AstFormatterVisitor:
     def __init__(self):
         self.indent = 0
@@ -205,16 +263,40 @@ class AstFormatterVisitor:
         yield
         self.indent -= 1
 
-    def visitMultiplicationNode(self, node: MultiplicationNode):
-        return f"{node.left.format()} * {node.right.format()}"
+    def visitAddOpNode(self, node: AddOpNode):
+        self.visit(node.right)
+        self.write(node.operator)
+        self.visit(node.left)
+
+    def visitUnaryOpNode(self, node: UnaryOpNode):
+        self.write(node.operator, end="")
+        self.visit(node.operand)
+
+    def visitMultOpNode(self, node: MultOpNode):
+        self.visit(node.right)
+        self.write(node.operator)
+        self.visit(node.left)
+
+    def visitOrOperationNode(self, node: OrOperationNode):
+        self.visit(node.right)
+        self.write(f"{node.operator} ")
+        self.visit(node.left)
 
     def visitCompareOperationNode(self, node: CompareOperationNode):
         self.visit(node.right)
         self.write(f"{node.operator} ", end="")
         self.visit(node.left)
 
+    def visitAndUnlessOperationNode(self, node: AndUnlessOperationNode):
+        self.visit(node.right)
+        self.write(node.operator)
+        self.visit(node.left)
+
     def visitNumber(self, node: Number):
-        self.write(str(node.value))
+        self.write(node.value)
+
+    def visitString(self, node: Number):
+        self.write(node.value)
 
     def visitFunctionNode(self, node: FunctionNode):
         self.write(node.name, "(")
@@ -227,31 +309,45 @@ class AstFormatterVisitor:
         self.write(")")
 
     def visitAggregationNode(self, node: AggregationNode):
-        self.write(node.operator, node.group_operator, "(")
-        with self.indent_block():
-            for label in node.label_list:
-                self.write(label.name, suffix=",")
-        self.write(")")
-        self.write("(")
-        for param in node.parameter_list:
+        if node.group_operator:
+            self.write(node.operator, node.group_operator, "(")
             with self.indent_block():
-                self.visit(param)
-        self.write(")")
+                for label in node.label_list:
+                    self.write(label.name, suffix=",")
+            self.write(")")
+        else:
+            self.write(node.operator)
+        if node.parameter_list:
+            self.write("(")
+            for param in node.parameter_list:
+                with self.indent_block():
+                    self.visit(param)
+            self.write(")")
 
     def visitSubqueryNode(self, node: SubqueryNode):
         with self.indent_block():
             self.write("(")
             self.visit(node.left)
             self.write(")")
-
             self.write(node.subquery_range.subquery_range)
 
     def visitMatrixSelectorNode(self, node: MatrixSelectorNode):
-        self.write(node.selector.metric_name, "{")
-        for label in node.selector.labels:
-            with self.indent_block():
-                self.write(f"{label.name}{label.operator}{label.value}", suffix=",")
-        self.write("}", node.time_range)
+        self.write(node.selector.metric_name)
+        if node.selector.labels:
+            self.write("{")
+            for label in node.selector.labels:
+                with self.indent_block():
+                    self.write(f"{label.name}{label.operator}{label.value}", suffix=",")
+            self.write("}", node.time_range)
+
+    def visitInstantSelectorNode(self, node: InstantSelectorNode):
+        self.write(node.metric_name)
+        if node.labels:
+            self.write("{")
+            for label in node.labels:
+                with self.indent_block():
+                    self.write(f"{label.name}{label.operator}{label.value}", suffix=",")
+            self.write("}")
 
     def visitMetricNameNode(self, node: MetricNameNode):
         self.write(node.metric_name)

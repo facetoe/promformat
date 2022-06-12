@@ -22,11 +22,27 @@ class String(Literal):
     pass
 
 
-class MultiplicationNode(Expr):
-    def __init__(self, ctx, left, right):
-        super(MultiplicationNode, self).__init__(ctx)
+class UnaryOpNode(Expr):
+    def __init__(self, ctx, operator, operand):
+        super(UnaryOpNode, self).__init__(ctx)
+        self.operator = operator
+        self.operand = operand
+
+
+class AddOpNode(Expr):
+    def __init__(self, ctx, left, right, operator):
+        super(AddOpNode, self).__init__(ctx)
         self.left = left
         self.right = right
+        self.operator = operator
+
+
+class MultOpNode(Expr):
+    def __init__(self, ctx, left, right, operator):
+        super(MultOpNode, self).__init__(ctx)
+        self.left = left
+        self.right = right
+        self.operator = operator
 
 
 class CompareOperationNode(Expr):
@@ -35,6 +51,22 @@ class CompareOperationNode(Expr):
         self.left = left
         self.right = right
         self.operator = operator
+
+
+class AndUnlessOperationNode(Expr):
+    def __init__(self, ctx, left, right, operator):
+        super(AndUnlessOperationNode, self).__init__(ctx)
+        self.left = left
+        self.right = right
+        self.operator = operator
+
+
+class OrOperationNode(Expr):
+    def __init__(self, ctx, left, right):
+        super(OrOperationNode, self).__init__(ctx)
+        self.left = left
+        self.right = right
+        self.operator = "or"
 
 
 class LabelNode(Expr):

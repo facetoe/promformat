@@ -22,6 +22,12 @@ class String(Literal):
     pass
 
 
+class ParensNode(Expr):
+    def __init__(self, ctx, vector_operation):
+        super(ParensNode, self).__init__(ctx)
+        self.vector_operation = vector_operation
+
+
 class UnaryOpNode(Expr):
     def __init__(self, ctx, operator, operand):
         super(UnaryOpNode, self).__init__(ctx)
@@ -29,44 +35,76 @@ class UnaryOpNode(Expr):
         self.operand = operand
 
 
+class PowOpNode(Expr):
+    def __init__(self, ctx, left, right, operator, grouping):
+        super(PowOpNode, self).__init__(ctx)
+        self.left = left
+        self.right = right
+        self.operator = operator
+        self.grouping = grouping
+
+
 class AddOpNode(Expr):
-    def __init__(self, ctx, left, right, operator):
+    def __init__(self, ctx, left, right, operator, grouping):
         super(AddOpNode, self).__init__(ctx)
         self.left = left
         self.right = right
         self.operator = operator
+        self.grouping = grouping
 
 
 class MultOpNode(Expr):
-    def __init__(self, ctx, left, right, operator):
+    def __init__(self, ctx, left, right, operator, grouping):
         super(MultOpNode, self).__init__(ctx)
         self.left = left
         self.right = right
         self.operator = operator
+        self.grouping = grouping
 
 
 class CompareOperationNode(Expr):
-    def __init__(self, ctx, left, right, operator):
+    def __init__(self, ctx, left, right, operator, grouping):
         super(CompareOperationNode, self).__init__(ctx)
         self.left = left
         self.right = right
         self.operator = operator
+        self.grouping = grouping
+
+
+class OnIgnoring:
+    def __init__(self, operator, labels):
+        self.operator = operator
+        self.labels = labels
+
+
+class GroupLeftRight:
+    def __init__(self, operator, labels):
+        self.operator = operator
+        self.labels = labels
+
+
+class Grouping:
+    def __init__(self, on_ignoring, group_left_right):
+        self.on_ignoring = on_ignoring
+        self.group_left_right = group_left_right
 
 
 class AndUnlessOperationNode(Expr):
-    def __init__(self, ctx, left, right, operator):
+    def __init__(self, ctx, left, right, operator, grouping):
         super(AndUnlessOperationNode, self).__init__(ctx)
         self.left = left
         self.right = right
         self.operator = operator
+        self.grouping = grouping
 
 
 class OrOperationNode(Expr):
-    def __init__(self, ctx, left, right):
+    def __init__(self, ctx, left, right, grouping):
         super(OrOperationNode, self).__init__(ctx)
         self.left = left
         self.right = right
         self.operator = "or"
+        self.grouping = grouping
 
 
 class LabelNode(Expr):

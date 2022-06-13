@@ -40,4 +40,5 @@ if __name__ == "__main__":
                 query = input("> ")
             except EOFError:
                 sys.exit()
-            format_query(query)
+            if query:
+                format_query(query)

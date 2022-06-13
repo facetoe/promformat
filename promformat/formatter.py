@@ -18,6 +18,11 @@ from promformat.ast_nodes import (
     OrOperationNode,
     UnaryOpNode,
     AddOpNode,
+    Grouping,
+    PowOpNode,
+    ParensNode,
+    OnIgnoring,
+    GroupLeftRight,
 )
 from promformat.parser.PromQLParser import PromQLParser
 from promformat.parser.PromQLParserVisitor import PromQLParserVisitor
@@ -32,56 +37,63 @@ class BuildAstVisitor(PromQLParserVisitor):
         return self.visit(ctx.vectorOperation())
 
     def visitVectorOperation(self, ctx: PromQLParser.VectorOperationContext):
-        if ctx.addOp():
+        if ctx.powOp():
             assert len(ctx.vectorOperation()) == 2
             right_op, left_op = ctx.vectorOperation()
             left = self.visit(left_op)
             right = self.visit(right_op)
-            for op_code in ("ADD", "SUB"):
-                op = getattr(ctx.addOp(), op_code)()
-                if op is not None:
-                    break
-            else:
-                raise Exception("Expected to find mult op but didn't")
+            op = ctx.powOp().POW().getText()
+            grouping = self._extract_grouping(grouping=ctx.powOp().grouping())
+            return PowOpNode(
+                ctx,
+                left=left,
+                right=right,
+                operator=op,
+                grouping=grouping,
+            )
+        elif ctx.addOp():
+            assert len(ctx.vectorOperation()) == 2
+            right_op, left_op = ctx.vectorOperation()
+            left = self.visit(left_op)
+            right = self.visit(right_op)
+            op_codes = ("ADD", "SUB")
+            context = ctx.addOp()
+            op = self._extract_op(context, op_codes)
+            grouping = self._extract_grouping(grouping=ctx.addOp().grouping())
             return AddOpNode(
                 ctx,
                 left=left,
                 right=right,
                 operator=op.getText(),
+                grouping=grouping,
             )
         elif ctx.unaryOp():
             vector = ctx.vectorOperation()
             assert len(vector) == 1
             operand = self.visit(vector[0])
-            for op_code in ("ADD", "SUB"):
-                op = getattr(ctx.unaryOp(), op_code)()
-                if op is not None:
-                    break
-            else:
-                raise Exception("Expected to find mult op but didn't")
-
+            context = ctx.unaryOp()
+            op_codes = ("ADD", "SUB")
+            op = self._extract_op(context, op_codes)
             return UnaryOpNode(
                 ctx,
                 operator=op.getText(),
                 operand=operand,
             )
-
         elif ctx.multOp():
             assert len(ctx.vectorOperation()) == 2
             right_op, left_op = ctx.vectorOperation()
             left = self.visit(left_op)
             right = self.visit(right_op)
-            for op_code in ("MOD", "DIV", "MULT"):
-                op = getattr(ctx.multOp(), op_code)()
-                if op is not None:
-                    break
-            else:
-                raise Exception("Expected to find mult op but didn't")
+            context = ctx.multOp()
+            op_codes = ("MOD", "DIV", "MULT")
+            op = self._extract_op(context, op_codes)
+            grouping = self._extract_grouping(grouping=ctx.multOp().grouping())
             return MultOpNode(
                 ctx,
                 left=left,
                 right=right,
                 operator=op.getText(),
+                grouping=grouping,
             )
         elif ctx.subqueryOp():
             subquery = self.visit(ctx.subqueryOp())
@@ -94,47 +106,93 @@ class BuildAstVisitor(PromQLParserVisitor):
             right_op, left_op = ctx.vectorOperation()
             left = self.visit(left_op)
             right = self.visit(right_op)
-            for op_code in ("DEQ", "GT", "LT", "GE", "LE", "NE", "BOOL"):
-                op = getattr(ctx.compareOp(), op_code)()
-                if op is not None:
-                    break
-            else:
-                raise Exception("Expected to find compare op but didn't")
+            context = ctx.compareOp()
+            op_codes = ("DEQ", "GT", "LT", "GE", "LE", "NE", "BOOL")
+            op = self._extract_op(context, op_codes)
+            grouping = self._extract_grouping(grouping=ctx.compareOp().grouping())
             return CompareOperationNode(
-                ctx, left=left, right=right, operator=op.getText()
+                ctx,
+                left=left,
+                right=right,
+                operator=op.getText(),
+                grouping=grouping,
             )
         elif ctx.andUnlessOp():
             assert len(ctx.vectorOperation()) == 2
             right_op, left_op = ctx.vectorOperation()
             left = self.visit(left_op)
             right = self.visit(right_op)
-            for op_code in ("AND", "UNLESS"):
-                op = getattr(ctx.andUnlessOp(), op_code)()
-                if op is not None:
-                    break
-            grouping = ctx.andUnlessOp().grouping()
-            assert grouping is None, "Need to implement this"
+            context = ctx.andUnlessOp()
+            op_codes = ("AND", "UNLESS")
+            op = self._extract_op(context, op_codes)
+            grouping = self._extract_grouping(grouping=ctx.andUnlessOp().grouping())
             return AndUnlessOperationNode(
-                ctx, left=left, right=right, operator=op.getText()
+                ctx,
+                left=left,
+                right=right,
+                operator=op.getText(),
+                grouping=grouping,
             )
         elif ctx.orOp():
             assert len(ctx.vectorOperation()) == 2
             right_op, left_op = ctx.vectorOperation()
             left = self.visit(left_op)
             right = self.visit(right_op)
-            return OrOperationNode(ctx, left=left, right=right)
+            grouping = self._extract_grouping(grouping=ctx.orOp().grouping())
+            return OrOperationNode(
+                ctx,
+                left=left,
+                right=right,
+                grouping=grouping,
+            )
         else:
-            object_methods = [
-                method_name
-                for method_name in dir(ctx)
-                if callable(getattr(ctx, method_name))
-            ]
-            for method_name in object_methods:
-                if method_name.endswith("Op"):
-                    res = getattr(ctx, method_name)()
-                    if res is not None:
-                        print(method_name, res)
             return self.visit(ctx.vector())
+
+    def _extract_grouping(self, grouping):
+        if grouping is None:
+            return None
+        assert grouping.on_() or grouping.ignoring()
+        # assert grouping.groupLeft() or grouping.groupRight()
+        if grouping.on_():
+            operator = "on"
+            label_name_list = self.visitLabelNameList(grouping.on_().labelNameList())
+        else:
+            operator = "ignoring"
+            label_name_list = self.visitLabelNameList(
+                grouping.ignoring().labelNameList()
+            )
+        on_ignoring = OnIgnoring(
+            operator=operator,
+            labels=label_name_list,
+        )
+
+        if grouping.groupLeft():
+            operator = "group_left"
+            label_name_list = self.visitLabelNameList(
+                grouping.groupLeft().labelNameList()
+            )
+        elif grouping.groupRight():
+            operator = "group_right"
+            label_name_list = self.visitLabelNameList(
+                grouping.groupRight().labelNameList()
+            )
+        group_left_right = GroupLeftRight(
+            operator=operator,
+            labels=label_name_list,
+        )
+        return Grouping(
+            on_ignoring=on_ignoring,
+            group_left_right=group_left_right,
+        )
+
+    def _extract_op(self, context, op_codes):
+        for op_code in op_codes:
+            op = getattr(context, op_code)()
+            if op is not None:
+                break
+        else:
+            raise Exception("Expected to find op but didn't")
+        return op
 
     def visitSubqueryOp(self, ctx: PromQLParser.SubqueryOpContext):
         return SubqueryRangeNode(ctx, ctx.SUBQUERY_RANGE().getText())
@@ -158,9 +216,11 @@ class BuildAstVisitor(PromQLParserVisitor):
 
     def visitOffset(self, ctx: PromQLParser.OffsetContext):
         print("OFFSET", ctx)
+        assert False
 
     def visitParens(self, ctx: PromQLParser.ParensContext):
-        return self.visit(ctx.vectorOperation())
+        vector_operation = self.visit(ctx.vectorOperation())
+        return ParensNode(ctx, vector_operation=vector_operation)
 
     def visitAggregation(self, ctx: PromQLParser.AggregationContext):
         operator = ctx.AGGREGATION_OPERATOR().getText()
@@ -263,40 +323,55 @@ class AstFormatterVisitor:
         yield
         self.indent -= 1
 
-    def visitAddOpNode(self, node: AddOpNode):
+    def visitPowOpNode(self, node: PowOpNode):
+        self._write_op_with_grouping(node)
+
+    def _write_op_with_grouping(self, node):
         self.visit(node.right)
         self.write(node.operator)
+        if node.grouping:
+            self.write(node.grouping.on_ignoring.operator, "(")
+            with self.indent_block():
+                for label in node.grouping.on_ignoring.labels:
+                    self.write(label.name, suffix=",")
+            self.write(")")
+            if node.grouping.group_left_right:
+                self.write(node.grouping.group_left_right.operator, "(")
+                with self.indent_block():
+                    for label in node.grouping.group_left_right.labels:
+                        self.write(label.name, suffix=",")
+                self.write(")")
         self.visit(node.left)
+
+    def visitAddOpNode(self, node: AddOpNode):
+        self._write_op_with_grouping(node)
 
     def visitUnaryOpNode(self, node: UnaryOpNode):
         self.write(node.operator, end="")
         self.visit(node.operand)
 
     def visitMultOpNode(self, node: MultOpNode):
-        self.visit(node.right)
-        self.write(node.operator)
-        self.visit(node.left)
+        self._write_op_with_grouping(node)
 
     def visitOrOperationNode(self, node: OrOperationNode):
-        self.visit(node.right)
-        self.write(f"{node.operator} ")
-        self.visit(node.left)
+        self._write_op_with_grouping(node)
 
     def visitCompareOperationNode(self, node: CompareOperationNode):
-        self.visit(node.right)
-        self.write(f"{node.operator} ", end="")
-        self.visit(node.left)
+        self._write_op_with_grouping(node)
 
     def visitAndUnlessOperationNode(self, node: AndUnlessOperationNode):
-        self.visit(node.right)
-        self.write(node.operator)
-        self.visit(node.left)
+        self._write_op_with_grouping(node)
 
     def visitNumber(self, node: Number):
         self.write(node.value)
 
     def visitString(self, node: Number):
         self.write(node.value)
+
+    def visitParensNode(self, node: ParensNode):
+        self.write("(")
+        self.visit(node.vector_operation)
+        self.write(")")
 
     def visitFunctionNode(self, node: FunctionNode):
         self.write(node.name, "(")
@@ -338,7 +413,8 @@ class AstFormatterVisitor:
             for label in node.selector.labels:
                 with self.indent_block():
                     self.write(f"{label.name}{label.operator}{label.value}", suffix=",")
-            self.write("}", node.time_range)
+            self.write("}")
+        self.write(node.time_range, end="")
 
     def visitInstantSelectorNode(self, node: InstantSelectorNode):
         self.write(node.metric_name)
@@ -356,5 +432,4 @@ class AstFormatterVisitor:
         method_name = f"visit{type(node).__name__}"
         method = self.__getattribute__(method_name)
         result = method(node)
-        # print(method_name, "->", self.indent)
         return result

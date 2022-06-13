@@ -115,6 +115,13 @@ class LabelNode(Expr):
         self.value = ctx.STRING().getText()
 
 
+class OffsetNode(Expr):
+    def __init__(self, ctx, instant_selector, duration):
+        super(OffsetNode, self).__init__(ctx)
+        self.instant_selector = instant_selector
+        self.duration = duration
+
+
 class LabelNameNode(Expr):
     def __init__(self, ctx, name: str):
         super(LabelNameNode, self).__init__(ctx)

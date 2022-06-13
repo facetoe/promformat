@@ -23,6 +23,7 @@ from promformat.ast_nodes import (
     ParensNode,
     OnIgnoring,
     GroupLeftRight,
+    OffsetNode,
 )
 from promformat.parser.PromQLParser import PromQLParser
 from promformat.parser.PromQLParserVisitor import PromQLParserVisitor
@@ -152,34 +153,29 @@ class BuildAstVisitor(PromQLParserVisitor):
         if grouping is None:
             return None
         assert grouping.on_() or grouping.ignoring()
-        # assert grouping.groupLeft() or grouping.groupRight()
         if grouping.on_():
-            operator = "on"
-            label_name_list = self.visitLabelNameList(grouping.on_().labelNameList())
-        else:
-            operator = "ignoring"
-            label_name_list = self.visitLabelNameList(
-                grouping.ignoring().labelNameList()
+            on_ignoring = OnIgnoring(
+                operator="on",
+                labels=self.visitLabelNameList(grouping.on_().labelNameList()),
             )
-        on_ignoring = OnIgnoring(
-            operator=operator,
-            labels=label_name_list,
-        )
+        else:
+            on_ignoring = OnIgnoring(
+                operator="ignoring",
+                labels=self.visitLabelNameList(grouping.ignoring().labelNameList()),
+            )
 
+        group_left_right = None
         if grouping.groupLeft():
-            operator = "group_left"
-            label_name_list = self.visitLabelNameList(
-                grouping.groupLeft().labelNameList()
+            group_left_right = GroupLeftRight(
+                operator="group_left",
+                labels=self.visitLabelNameList(grouping.groupLeft().labelNameList()),
             )
         elif grouping.groupRight():
-            operator = "group_right"
-            label_name_list = self.visitLabelNameList(
-                grouping.groupRight().labelNameList()
+            group_left_right = GroupLeftRight(
+                operator="group_right",
+                labels=self.visitLabelNameList(grouping.groupRight().labelNameList()),
             )
-        group_left_right = GroupLeftRight(
-            operator=operator,
-            labels=label_name_list,
-        )
+
         return Grouping(
             on_ignoring=on_ignoring,
             group_left_right=group_left_right,
@@ -215,8 +211,12 @@ class BuildAstVisitor(PromQLParserVisitor):
         print("visitVector")
 
     def visitOffset(self, ctx: PromQLParser.OffsetContext):
-        print("OFFSET", ctx)
-        assert False
+        selector = self.visit(ctx.instantSelector())
+        return OffsetNode(
+            ctx,
+            instant_selector=selector,
+            duration=ctx.DURATION().getText(),
+        )
 
     def visitParens(self, ctx: PromQLParser.ParensContext):
         vector_operation = self.visit(ctx.vectorOperation())
@@ -228,7 +228,7 @@ class BuildAstVisitor(PromQLParserVisitor):
             group_operator = ctx.by().BY().getText()
             group_label_list = self.visitLabelNameList(ctx.by().labelNameList())
         elif ctx.without():
-            group_operator = ctx.without().WITHOUT.getText()
+            group_operator = ctx.without().WITHOUT().getText()
             group_label_list = self.visitLabelNameList(ctx.without().labelNameList())
         else:
             group_operator = None
@@ -261,7 +261,9 @@ class BuildAstVisitor(PromQLParserVisitor):
         labels = []
         if ctx.labelMatcherList():
             labels = self.visit(ctx.labelMatcherList())
-        metric_name = ctx.METRIC_NAME().getText()
+        metric_name = ""
+        if ctx.METRIC_NAME():
+            metric_name = ctx.METRIC_NAME().getText()
         return InstantSelectorNode(
             ctx,
             metric_name=metric_name,
@@ -293,7 +295,9 @@ class BuildAstVisitor(PromQLParserVisitor):
     def visitFunction_(self, ctx: PromQLParser.Function_Context):
         parameters = []
         for parameter in ctx.parameter():
-            parameters.append(self.visit(parameter))
+            param = self.visit(parameter)
+            if param is not None:
+                parameters.append(param)
         return FunctionNode(ctx=ctx, parameters=parameters)
 
     def visitParameter(self, ctx: PromQLParser.ParameterContext):
@@ -372,6 +376,10 @@ class AstFormatterVisitor:
         self.write("(")
         self.visit(node.vector_operation)
         self.write(")")
+
+    def visitOffsetNode(self, node: OffsetNode):
+        self.visit(node.instant_selector)
+        self.write("offset", node.duration)
 
     def visitFunctionNode(self, node: FunctionNode):
         self.write(node.name, "(")

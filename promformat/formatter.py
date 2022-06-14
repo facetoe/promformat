@@ -1,4 +1,7 @@
 from contextlib import contextmanager
+from io import StringIO
+
+from antlr4 import ErrorNode, TerminalNode
 
 from promformat.ast_nodes import (
     Number,
@@ -25,8 +28,28 @@ from promformat.ast_nodes import (
     GroupLeftRight,
     OffsetNode,
 )
+from promformat.error import UnEqualParseTreeError
 from promformat.parser.PromQLParser import PromQLParser
 from promformat.parser.PromQLParserVisitor import PromQLParserVisitor
+
+
+class ParseTreeValidator:
+    def validate(self, left, right):
+        if type(left) != type(right):
+            raise UnEqualParseTreeError(
+                f"Expected: {type(left).__name__}, found: {type(right).__name__}"
+            )
+        if isinstance(left, (ErrorNode, TerminalNode)):
+            return
+        left_children, right_children = left.getChildren(), right.getChildren()
+        for left, right in zip(left_children, right_children):
+            if type(left) != type(right):
+                raise UnEqualParseTreeError(
+                    f"Expected: {type(left).__name__}, found: {type(right).__name__} on child"
+                )
+            self.validate(left, right)
+        sentinel = object
+        assert next(left_children, sentinel) == next(right_children, sentinel)
 
 
 class BuildAstVisitor(PromQLParserVisitor):
@@ -313,13 +336,26 @@ class BuildAstVisitor(PromQLParserVisitor):
             return String(ctx=ctx, value=ctx.getText())
 
 
-class AstFormatterVisitor:
+class PromQLFormatter:
     def __init__(self):
         self.indent = 0
+        self.buffer = None
+
+    def format(self, tree):
+        with StringIO() as buff:
+            self.buffer = buff
+            self.visit(tree)
+            return buff.getvalue()
+
+    def visit(self, node):
+        method_name = f"visit{type(node).__name__}"
+        method = self.__getattribute__(method_name)
+        result = method(node)
+        return result
 
     def write(self, *output, suffix="", end=None):
         indent = "  " * self.indent
-        print(indent + " ".join(output) + suffix, end=end)
+        print(indent + " ".join(output) + suffix, end=end, file=self.buffer)
 
     @contextmanager
     def indent_block(self):

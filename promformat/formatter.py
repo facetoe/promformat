@@ -372,14 +372,18 @@ class PromQLFormatter:
         if node.grouping:
             self.write(node.grouping.on_ignoring.operator, "(")
             with self.indent_block():
-                for label in node.grouping.on_ignoring.labels:
-                    self.write(label.name, suffix=",")
+                self._write_comma_seperated_list(
+                    items=node.grouping.on_ignoring.labels,
+                    format_func=lambda label: label.name,
+                )
             self.write(")")
             if node.grouping.group_left_right:
                 self.write(node.grouping.group_left_right.operator, "(")
                 with self.indent_block():
-                    for label in node.grouping.group_left_right.labels:
-                        self.write(label.name, suffix=",")
+                    self._write_comma_seperated_list(
+                        items=node.grouping.group_left_right.labels,
+                        format_func=lambda label: label.name,
+                    )
                 self.write(")")
         self.visit(node.left)
 
@@ -419,28 +423,23 @@ class PromQLFormatter:
 
     def visitFunctionNode(self, node: FunctionNode):
         self.write(node.name, "(")
-        param_len = len(node.parameters)
-        for index, param in enumerate(node.parameters):
-            with self.indent_block():
-                self.visit(param)
-                if index + 1 != param_len:
-                    self.write(",", end="")
+        self._write_parameter_list(node.parameters)
         self.write(")")
 
     def visitAggregationNode(self, node: AggregationNode):
         if node.group_operator:
             self.write(node.operator, node.group_operator, "(")
             with self.indent_block():
-                for label in node.label_list:
-                    self.write(label.name, suffix=",")
+                self._write_comma_seperated_list(
+                    node.label_list,
+                    format_func=lambda label: f"{label.name}",
+                )
             self.write(")")
         else:
             self.write(node.operator)
         if node.parameter_list:
             self.write("(")
-            for param in node.parameter_list:
-                with self.indent_block():
-                    self.visit(param)
+            self._write_parameter_list(node.parameter_list)
             self.write(")")
 
     def visitSubqueryNode(self, node: SubqueryNode):
@@ -454,9 +453,11 @@ class PromQLFormatter:
         self.write(node.selector.metric_name)
         if node.selector.labels:
             self.write("{")
-            for label in node.selector.labels:
-                with self.indent_block():
-                    self.write(f"{label.name}{label.operator}{label.value}", suffix=",")
+            with self.indent_block():
+                self._write_comma_seperated_list(
+                    node.selector.labels,
+                    format_func=lambda label: f"{label.name}{label.operator}{label.value}",
+                )
             self.write("}")
         self.write(node.time_range, end="")
 
@@ -464,16 +465,27 @@ class PromQLFormatter:
         self.write(node.metric_name)
         if node.labels:
             self.write("{")
-            for label in node.labels:
-                with self.indent_block():
-                    self.write(f"{label.name}{label.operator}{label.value}", suffix=",")
+            with self.indent_block():
+                self._write_comma_seperated_list(
+                    node.labels,
+                    format_func=lambda label: f"{label.name}{label.operator}{label.value}",
+                )
             self.write("}")
 
     def visitMetricNameNode(self, node: MetricNameNode):
         self.write(node.metric_name)
 
-    def visit(self, node):
-        method_name = f"visit{type(node).__name__}"
-        method = self.__getattribute__(method_name)
-        result = method(node)
-        return result
+    def _write_parameter_list(self, parameter_list):
+        param_len = len(parameter_list)
+        for index, param in enumerate(parameter_list):
+            with self.indent_block():
+                self.visit(param)
+                if index + 1 != param_len:
+                    self.write(",", end="")
+
+    def _write_comma_seperated_list(self, items, format_func):
+        items_len = len(items)
+        for index, item in enumerate(items, start=1):
+            suffix = "," if index != items_len else ""
+            output = format_func(item)
+            self.write(output, suffix=suffix)

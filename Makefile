@@ -28,4 +28,4 @@ test:
 	PYTHONPATH=. pytest-3 tests/
 
 reformat:
-	black promformat
+	black promformat tests

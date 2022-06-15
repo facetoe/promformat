@@ -1,4 +1,4 @@
-# Generated from PromQLParser.g4 by ANTLR 4.9.3
+# Generated from PromQLParser.g4 by ANTLR 4.10
 from antlr4 import *
 
 if __name__ is not None and "." in __name__:
@@ -113,6 +113,10 @@ class PromQLParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by PromQLParser#without.
     def visitWithout(self, ctx: PromQLParser.WithoutContext):
+        return self.visitChildren(ctx)
+
+    # Visit a parse tree produced by PromQLParser#byWithout.
+    def visitByWithout(self, ctx: PromQLParser.ByWithoutContext):
         return self.visitChildren(ctx)
 
     # Visit a parse tree produced by PromQLParser#grouping.

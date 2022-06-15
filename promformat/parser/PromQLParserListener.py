@@ -1,4 +1,4 @@
-# Generated from PromQLParser.g4 by ANTLR 4.9.3
+# Generated from PromQLParser.g4 by ANTLR 4.10
 from antlr4 import *
 
 if __name__ is not None and "." in __name__:
@@ -215,6 +215,14 @@ class PromQLParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by PromQLParser#without.
     def exitWithout(self, ctx: PromQLParser.WithoutContext):
+        pass
+
+    # Enter a parse tree produced by PromQLParser#byWithout.
+    def enterByWithout(self, ctx: PromQLParser.ByWithoutContext):
+        pass
+
+    # Exit a parse tree produced by PromQLParser#byWithout.
+    def exitByWithout(self, ctx: PromQLParser.ByWithoutContext):
         pass
 
     # Enter a parse tree produced by PromQLParser#grouping.

@@ -138,10 +138,14 @@ class LabelMatcherNode(Expr):
 
 
 class InstantSelectorNode(Expr):
-    def __init__(self, ctx, metric_name: str, labels: List[LabelNode]):
+    def __init__(
+        self, ctx, metric_name: str, labels: List[LabelNode], left_brace, right_brace
+    ):
         super(InstantSelectorNode, self).__init__(ctx)
         self.metric_name = metric_name
         self.labels = labels
+        self.left_brace = left_brace
+        self.right_brace = right_brace
 
 
 class SubqueryRangeNode(Expr):
@@ -166,13 +170,20 @@ class MatrixSelectorNode(Expr):
 
 class AggregationNode(Expr):
     def __init__(
-        self, ctx, operator: str, group_operator: str, label_list, parameter_list
+        self,
+        ctx,
+        operator: str,
+        group_operator: str,
+        label_list,
+        parameter_list,
+        is_prefix,
     ):
         super(AggregationNode, self).__init__(ctx)
         self.operator = operator
         self.group_operator = group_operator
         self.label_list = label_list
         self.parameter_list = parameter_list
+        self.is_prefix = is_prefix
 
 
 class MetricNameNode(Expr):

@@ -247,15 +247,20 @@ class BuildAstVisitor(PromQLParserVisitor):
 
     def visitAggregation(self, ctx: PromQLParser.AggregationContext):
         operator = ctx.AGGREGATION_OPERATOR().getText()
-        if ctx.by():
-            group_operator = ctx.by().BY().getText()
-            group_label_list = self.visitLabelNameList(ctx.by().labelNameList())
-        elif ctx.without():
-            group_operator = ctx.without().WITHOUT().getText()
-            group_label_list = self.visitLabelNameList(ctx.without().labelNameList())
-        else:
+        if ctx.byWithout() is None:
             group_operator = None
             group_label_list = []
+        elif ctx.byWithout().by():
+            group_operator = ctx.byWithout().by().BY().getText()
+            group_label_list = self.visitLabelNameList(
+                ctx.byWithout().by().labelNameList()
+            )
+        elif ctx.byWithout().without():
+            group_operator = ctx.byWithout().without().WITHOUT().getText()
+            group_label_list = self.visitLabelNameList(
+                ctx.byWithout().without().labelNameList()
+            )
+
         parameter_list = self.visit(ctx.parameterList())
         return AggregationNode(
             ctx=ctx,
@@ -263,6 +268,7 @@ class BuildAstVisitor(PromQLParserVisitor):
             group_operator=group_operator,
             label_list=group_label_list,
             parameter_list=parameter_list,
+            is_prefix=ctx.prefix is not None,
         )
 
     def visitParameterList(self, ctx: PromQLParser.ParameterListContext):
@@ -287,10 +293,18 @@ class BuildAstVisitor(PromQLParserVisitor):
         metric_name = ""
         if ctx.METRIC_NAME():
             metric_name = ctx.METRIC_NAME().getText()
+
+        left_brace, right_brace = None, None
+        if ctx.LEFT_BRACE() and ctx.RIGHT_BRACE():
+            left_brace = ctx.LEFT_BRACE().getText()
+            right_brace = ctx.RIGHT_BRACE().getText()
+
         return InstantSelectorNode(
             ctx,
             metric_name=metric_name,
             labels=labels,
+            left_brace=left_brace,
+            right_brace=right_brace,
         )
 
     def visitLabelMatcherList(self, ctx: PromQLParser.LabelMatcherListContext):
@@ -427,50 +441,62 @@ class PromQLFormatter:
         self.write(")")
 
     def visitAggregationNode(self, node: AggregationNode):
-        if node.group_operator:
-            self.write(node.operator, node.group_operator, "(")
-            with self.indent_block():
-                self._write_comma_seperated_list(
-                    node.label_list,
-                    format_func=lambda label: f"{label.name}",
-                )
-            self.write(")")
-        else:
-            self.write(node.operator)
+        self.write(node.operator)
+        if node.is_prefix:
+            if node.group_operator:
+                self.write(node.group_operator, "(")
+                with self.indent_block():
+                    self._write_comma_seperated_list(
+                        node.label_list,
+                        format_func=lambda label: f"{label.name}",
+                    )
+                self.write(")")
+
         if node.parameter_list:
             self.write("(")
             self._write_parameter_list(node.parameter_list)
             self.write(")")
+        if not node.is_prefix:
+            if node.group_operator:
+                self.write(node.group_operator, "(")
+                with self.indent_block():
+                    self._write_comma_seperated_list(
+                        node.label_list,
+                        format_func=lambda label: f"{label.name}",
+                    )
+                self.write(")")
 
     def visitSubqueryNode(self, node: SubqueryNode):
         with self.indent_block():
-            self.write("(")
             self.visit(node.left)
-            self.write(")")
             self.write(node.subquery_range.subquery_range)
 
     def visitMatrixSelectorNode(self, node: MatrixSelectorNode):
         self.write(node.selector.metric_name)
+        if node.selector.left_brace:
+            self.write(node.selector.left_brace)
         if node.selector.labels:
-            self.write("{")
             with self.indent_block():
                 self._write_comma_seperated_list(
                     node.selector.labels,
                     format_func=lambda label: f"{label.name}{label.operator}{label.value}",
                 )
-            self.write("}")
+        if node.selector.right_brace:
+            self.write(node.selector.right_brace)
         self.write(node.time_range, end="")
 
     def visitInstantSelectorNode(self, node: InstantSelectorNode):
         self.write(node.metric_name)
+        if node.left_brace:
+            self.write(node.left_brace)
         if node.labels:
-            self.write("{")
             with self.indent_block():
                 self._write_comma_seperated_list(
                     node.labels,
                     format_func=lambda label: f"{label.name}{label.operator}{label.value}",
                 )
-            self.write("}")
+        if node.right_brace:
+            self.write(node.right_brace)
 
     def visitMetricNameNode(self, node: MetricNameNode):
         self.write(node.metric_name)

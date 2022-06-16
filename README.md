@@ -2,7 +2,7 @@
 
 Promformat is a PromQL formatter written in Python. It works by building an AST from the CST provided by ANTLR4, and then using that to produce formatted code.
 
-It isn't complete or correct yet so use at your own risk.
+The result should be semantically identical to the unformatted version as promval compares the parse tree of the original and formatted expression and fails if they are not identical.
 
 ### Example
 

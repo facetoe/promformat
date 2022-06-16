@@ -62,10 +62,7 @@ class BuildAstVisitor(PromQLParserVisitor):
 
     def visitVectorOperation(self, ctx: PromQLParser.VectorOperationContext):
         if ctx.powOp():
-            assert len(ctx.vectorOperation()) == 2
-            right_op, left_op = ctx.vectorOperation()
-            left = self.visit(left_op)
-            right = self.visit(right_op)
+            left, right = self._extract_left_right_vector_operations(ctx)
             op = ctx.powOp().POW().getText()
             grouping = self._extract_grouping(grouping=ctx.powOp().grouping())
             return PowOpNode(
@@ -76,10 +73,7 @@ class BuildAstVisitor(PromQLParserVisitor):
                 grouping=grouping,
             )
         elif ctx.addOp():
-            assert len(ctx.vectorOperation()) == 2
-            right_op, left_op = ctx.vectorOperation()
-            left = self.visit(left_op)
-            right = self.visit(right_op)
+            left, right = self._extract_left_right_vector_operations(ctx)
             op_codes = ("ADD", "SUB")
             context = ctx.addOp()
             op = self._extract_op(context, op_codes)
@@ -104,10 +98,7 @@ class BuildAstVisitor(PromQLParserVisitor):
                 operand=operand,
             )
         elif ctx.multOp():
-            assert len(ctx.vectorOperation()) == 2
-            right_op, left_op = ctx.vectorOperation()
-            left = self.visit(left_op)
-            right = self.visit(right_op)
+            left, right = self._extract_left_right_vector_operations(ctx)
             context = ctx.multOp()
             op_codes = ("MOD", "DIV", "MULT")
             op = self._extract_op(context, op_codes)
@@ -126,10 +117,7 @@ class BuildAstVisitor(PromQLParserVisitor):
             left = self.visit(vector_op)
             return SubqueryNode(ctx, left=left, subquery_range=subquery)
         elif ctx.compareOp():
-            assert len(ctx.vectorOperation()) == 2
-            right_op, left_op = ctx.vectorOperation()
-            left = self.visit(left_op)
-            right = self.visit(right_op)
+            left, right = self._extract_left_right_vector_operations(ctx)
             context = ctx.compareOp()
             op_codes = ("DEQ", "GT", "LT", "GE", "LE", "NE", "BOOL")
             op = self._extract_op(context, op_codes)
@@ -142,10 +130,7 @@ class BuildAstVisitor(PromQLParserVisitor):
                 grouping=grouping,
             )
         elif ctx.andUnlessOp():
-            assert len(ctx.vectorOperation()) == 2
-            right_op, left_op = ctx.vectorOperation()
-            left = self.visit(left_op)
-            right = self.visit(right_op)
+            left, right = self._extract_left_right_vector_operations(ctx)
             context = ctx.andUnlessOp()
             op_codes = ("AND", "UNLESS")
             op = self._extract_op(context, op_codes)
@@ -158,10 +143,7 @@ class BuildAstVisitor(PromQLParserVisitor):
                 grouping=grouping,
             )
         elif ctx.orOp():
-            assert len(ctx.vectorOperation()) == 2
-            right_op, left_op = ctx.vectorOperation()
-            left = self.visit(left_op)
-            right = self.visit(right_op)
+            left, right = self._extract_left_right_vector_operations(ctx)
             grouping = self._extract_grouping(grouping=ctx.orOp().grouping())
             return OrOperationNode(
                 ctx,
@@ -171,6 +153,13 @@ class BuildAstVisitor(PromQLParserVisitor):
             )
         else:
             return self.visit(ctx.vector())
+
+    def _extract_left_right_vector_operations(self, ctx):
+        assert len(ctx.vectorOperation()) == 2
+        left_op, right_op = ctx.vectorOperation()
+        left = self.visit(left_op)
+        right = self.visit(right_op)
+        return left, right
 
     def _extract_grouping(self, grouping):
         if grouping is None:
@@ -381,7 +370,7 @@ class PromQLFormatter:
         self._write_op_with_grouping(node)
 
     def _write_op_with_grouping(self, node):
-        self.visit(node.right)
+        self.visit(node.left)
         self.write(node.operator)
         if node.grouping:
             self.write(node.grouping.on_ignoring.operator, "(")
@@ -399,7 +388,7 @@ class PromQLFormatter:
                         format_func=lambda label: label.name,
                     )
                 self.write(")")
-        self.visit(node.left)
+        self.visit(node.right)
 
     def visitAddOpNode(self, node: AddOpNode):
         self._write_op_with_grouping(node)

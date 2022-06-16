@@ -501,7 +501,6 @@ class PromQLFormatter:
         self.write(node.metric_name)
 
     def visitSubqueryRangeNode(self, node: SubqueryRangeNode):
-        print(node.subquery_range, node.offset)
         self.write(node.subquery_range, node.offset or "")
 
     def _write_op_with_grouping(self, node, bool_keyword=None):

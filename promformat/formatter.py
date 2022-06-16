@@ -139,12 +139,16 @@ class BuildAstVisitor(PromQLParserVisitor):
             op_codes = ("DEQ", "GT", "LT", "GE", "LE", "NE", "BOOL")
             op = self._extract_op(context, op_codes)
             grouping = self._extract_grouping(grouping=ctx.compareOp().grouping())
+            bool_keyword = None
+            if ctx.compareOp().BOOL():
+                bool_keyword = ctx.compareOp().BOOL().getText()
             return CompareOperationNode(
                 ctx,
                 left=left,
                 right=right,
                 operator=op.getText(),
                 grouping=grouping,
+                bool_keyword=bool_keyword,
             )
         elif ctx.andUnlessOp():
             left, right = self._extract_left_right_vector_operations(ctx)
@@ -166,6 +170,7 @@ class BuildAstVisitor(PromQLParserVisitor):
                 ctx,
                 left=left,
                 right=right,
+                operator=ctx.orOp().OR().getText(),
                 grouping=grouping,
             )
         else:
@@ -184,12 +189,12 @@ class BuildAstVisitor(PromQLParserVisitor):
         assert grouping.on_() or grouping.ignoring()
         if grouping.on_():
             on_ignoring = OnIgnoring(
-                operator="on",
+                operator=grouping.on_().ON().getText(),
                 labels=self.visitLabelNameList(grouping.on_().labelNameList()),
             )
         else:
             on_ignoring = OnIgnoring(
-                operator="ignoring",
+                operator=grouping.ignoring().IGNORING().getText(),
                 labels=self.visitLabelNameList(grouping.ignoring().labelNameList()),
             )
 
@@ -220,7 +225,14 @@ class BuildAstVisitor(PromQLParserVisitor):
         return op
 
     def visitSubqueryOp(self, ctx: PromQLParser.SubqueryOpContext):
-        return SubqueryRangeNode(ctx, ctx.SUBQUERY_RANGE().getText())
+        offset = None
+        if ctx.offsetOp():
+            offset = f"{ctx.offsetOp().OFFSET().getText()} {ctx.offsetOp().DURATION().getText()}"
+        return SubqueryRangeNode(
+            ctx,
+            ctx.SUBQUERY_RANGE().getText(),
+            offset=offset,
+        )
 
     def visitVector(self, ctx: PromQLParser.VectorContext):
         if ctx.function_():
@@ -244,6 +256,7 @@ class BuildAstVisitor(PromQLParserVisitor):
         return OffsetNode(
             ctx,
             instant_selector=selector,
+            offset=ctx.OFFSET().getText(),
             duration=ctx.DURATION().getText(),
         )
 
@@ -400,7 +413,7 @@ class PromQLFormatter:
         self._write_op_with_grouping(node)
 
     def visitCompareOperationNode(self, node: CompareOperationNode):
-        self._write_op_with_grouping(node)
+        self._write_op_with_grouping(node, bool_keyword=node.bool_keyword)
 
     def visitAndUnlessOperationNode(self, node: AndUnlessOperationNode):
         self._write_op_with_grouping(node)
@@ -418,7 +431,7 @@ class PromQLFormatter:
 
     def visitOffsetNode(self, node: OffsetNode):
         self.visit(node.instant_selector)
-        self.write("offset", node.duration)
+        self.write(node.offset, node.duration)
 
     def visitFunctionNode(self, node: FunctionNode):
         self.write(node.name, "(")
@@ -454,7 +467,8 @@ class PromQLFormatter:
     def visitSubqueryNode(self, node: SubqueryNode):
         with self.indent_block():
             self.visit(node.left)
-            self.write(node.subquery_range.subquery_range)
+            self.visit(node.subquery_range)
+            # self.write(node.subquery_range.subquery_range, )
 
     def visitMatrixSelectorNode(self, node: MatrixSelectorNode):
         self.write(node.selector.metric_name)
@@ -486,9 +500,15 @@ class PromQLFormatter:
     def visitMetricNameNode(self, node: MetricNameNode):
         self.write(node.metric_name)
 
-    def _write_op_with_grouping(self, node):
+    def visitSubqueryRangeNode(self, node: SubqueryRangeNode):
+        print(node.subquery_range, node.offset)
+        self.write(node.subquery_range, node.offset or "")
+
+    def _write_op_with_grouping(self, node, bool_keyword=None):
         self.visit(node.left)
         self.write(node.operator, end="", suffix=" ")
+        if bool_keyword is not None:
+            self.write(bool_keyword, end="")
         if node.grouping:
             self.write(node.grouping.on_ignoring.operator, "(")
             with self.indent_block():

@@ -63,12 +63,21 @@ class MultOpNode(Expr):
 
 
 class CompareOperationNode(Expr):
-    def __init__(self, ctx, left, right, operator, grouping):
+    def __init__(
+        self,
+        ctx,
+        left,
+        right,
+        operator,
+        grouping,
+        bool_keyword,
+    ):
         super(CompareOperationNode, self).__init__(ctx)
         self.left = left
         self.right = right
         self.operator = operator
         self.grouping = grouping
+        self.bool_keyword = bool_keyword
 
 
 class OnIgnoring:
@@ -99,11 +108,11 @@ class AndUnlessOperationNode(Expr):
 
 
 class OrOperationNode(Expr):
-    def __init__(self, ctx, left, right, grouping):
+    def __init__(self, ctx, left, right, operator, grouping):
         super(OrOperationNode, self).__init__(ctx)
         self.left = left
         self.right = right
-        self.operator = "or"
+        self.operator = operator
         self.grouping = grouping
 
 
@@ -116,9 +125,10 @@ class LabelNode(Expr):
 
 
 class OffsetNode(Expr):
-    def __init__(self, ctx, instant_selector, duration):
+    def __init__(self, ctx, instant_selector, offset, duration):
         super(OffsetNode, self).__init__(ctx)
         self.instant_selector = instant_selector
+        self.offset = offset
         self.duration = duration
 
 
@@ -149,9 +159,10 @@ class InstantSelectorNode(Expr):
 
 
 class SubqueryRangeNode(Expr):
-    def __init__(self, ctx, subquery_range: str):
+    def __init__(self, ctx, subquery_range: str, offset):
         super(SubqueryRangeNode, self).__init__(ctx=ctx)
         self.subquery_range = subquery_range
+        self.offset = offset
 
 
 class SubqueryNode(Expr):

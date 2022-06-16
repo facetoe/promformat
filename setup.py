@@ -5,7 +5,7 @@ setup(
     version="0.0.1",
     packages=find_packages(),
     install_requires=[
-        "antlr4-python3-runtime>=4.9.3"
+        "antlr4-python3-runtime>=4.10"
     ],
     tests_require=["pytest"],
     setup_requires=["flake8", "black"],

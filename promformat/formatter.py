@@ -32,12 +32,18 @@ from promformat.error import UnEqualParseTreeError
 from promformat.parser.PromQLParser import PromQLParser
 from promformat.parser.PromQLParserVisitor import PromQLParserVisitor
 
+SENTINEL = object()
+
 
 class ParseTreeValidator:
     def validate(self, left, right):
         if type(left) != type(right):
             raise UnEqualParseTreeError(
                 f"Expected: {type(left).__name__}, found: {type(right).__name__}"
+            )
+        elif left.getText() != right.getText():
+            raise UnEqualParseTreeError(
+                f"Expected:\n{left.getText()}\nFound:\n{right.getText()}\n"
             )
         if isinstance(left, (ErrorNode, TerminalNode)):
             return
@@ -48,8 +54,19 @@ class ParseTreeValidator:
                     f"Expected: {type(left).__name__}, found: {type(right).__name__} on child"
                 )
             self.validate(left, right)
-        sentinel = object
-        assert next(left_children, sentinel) == next(right_children, sentinel)
+
+        left_empty, right_empty = (
+            next(left_children, SENTINEL) == SENTINEL,
+            next(right_children, SENTINEL) == SENTINEL,
+        )
+        if not left_empty:
+            raise UnEqualParseTreeError(
+                f"Node: {type(left).__name__} has extra children"
+            )
+        if not right_empty:
+            raise UnEqualParseTreeError(
+                f"Node: {type(right).__name__} has extra children"
+            )
 
 
 class BuildAstVisitor(PromQLParserVisitor):

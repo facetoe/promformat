@@ -369,27 +369,6 @@ class PromQLFormatter:
     def visitPowOpNode(self, node: PowOpNode):
         self._write_op_with_grouping(node)
 
-    def _write_op_with_grouping(self, node):
-        self.visit(node.left)
-        self.write(node.operator)
-        if node.grouping:
-            self.write(node.grouping.on_ignoring.operator, "(")
-            with self.indent_block():
-                self._write_comma_seperated_list(
-                    items=node.grouping.on_ignoring.labels,
-                    format_func=lambda label: label.name,
-                )
-            self.write(")")
-            if node.grouping.group_left_right:
-                self.write(node.grouping.group_left_right.operator, "(")
-                with self.indent_block():
-                    self._write_comma_seperated_list(
-                        items=node.grouping.group_left_right.labels,
-                        format_func=lambda label: label.name,
-                    )
-                self.write(")")
-        self.visit(node.right)
-
     def visitAddOpNode(self, node: AddOpNode):
         self._write_op_with_grouping(node)
 
@@ -489,6 +468,27 @@ class PromQLFormatter:
 
     def visitMetricNameNode(self, node: MetricNameNode):
         self.write(node.metric_name)
+
+    def _write_op_with_grouping(self, node):
+        self.visit(node.left)
+        self.write(node.operator, end="", suffix=" ")
+        if node.grouping:
+            self.write(node.grouping.on_ignoring.operator, "(")
+            with self.indent_block():
+                self._write_comma_seperated_list(
+                    items=node.grouping.on_ignoring.labels,
+                    format_func=lambda label: label.name,
+                )
+            self.write(")")
+            if node.grouping.group_left_right:
+                self.write(node.grouping.group_left_right.operator, "(")
+                with self.indent_block():
+                    self._write_comma_seperated_list(
+                        items=node.grouping.group_left_right.labels,
+                        format_func=lambda label: label.name,
+                    )
+                self.write(")")
+        self.visit(node.right)
 
     def _write_parameter_list(self, parameter_list):
         param_len = len(parameter_list)

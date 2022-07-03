@@ -4,7 +4,24 @@ Promformat is a PromQL formatter written in Python. It works by building an AST 
 
 The result should be semantically identical to the unformatted version as promval compares the parse tree of the original and formatted expression and fails if they are not identical.
 
-### Example
+# Usage
+
+From command line:
+```text
+# Format a file containing PromQL
+promformat <path to file>
+
+# No arguments enters interpreter
+promformat
+```
+
+As library:
+```text
+from promformat import format_query
+print(format_query("1+1")
+```
+
+# Example
 
 Given the PromQL:
 

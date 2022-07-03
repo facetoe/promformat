@@ -3,7 +3,7 @@ import sys
 
 from promformat import format_query
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "input_file",
@@ -26,3 +26,7 @@ if __name__ == "__main__":
             if query:
                 result = format_query(query)
                 print(result)
+
+
+if __name__ == "__main__":
+    main()

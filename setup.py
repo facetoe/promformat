@@ -9,4 +9,9 @@ setup(
     ],
     tests_require=["pytest"],
     setup_requires=["flake8", "black"],
+    entry_points = {
+        'console_scripts': [
+            'promformat = promformat.__main__:main',
+        ],
+    },
 )

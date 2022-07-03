@@ -469,7 +469,6 @@ class PromQLFormatter:
         with self.indent_block():
             self.visit(node.left)
             self.visit(node.subquery_range)
-            # self.write(node.subquery_range.subquery_range, )
 
     def visitMatrixSelectorNode(self, node: MatrixSelectorNode):
         self.write(node.selector.metric_name)
@@ -483,7 +482,7 @@ class PromQLFormatter:
                 )
         if node.selector.right_brace:
             self.write(node.selector.right_brace)
-        self.write(node.time_range, end="")
+        self.write(node.time_range)
 
     def visitInstantSelectorNode(self, node: InstantSelectorNode):
         self.write(node.metric_name)
@@ -506,7 +505,7 @@ class PromQLFormatter:
 
     def _write_op_with_grouping(self, node, bool_keyword=None):
         self.visit(node.left)
-        self.write(node.operator, end="", suffix=" ")
+        self.write(node.operator, suffix=" ")
         if bool_keyword is not None:
             self.write(bool_keyword, end="")
         if node.grouping:

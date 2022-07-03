@@ -426,7 +426,8 @@ class PromQLFormatter:
 
     def visitParensNode(self, node: ParensNode):
         self.write("(")
-        self.visit(node.vector_operation)
+        with self.indent_block():
+            self.visit(node.vector_operation)
         self.write(")")
 
     def visitOffsetNode(self, node: OffsetNode):

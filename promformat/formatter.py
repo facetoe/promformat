@@ -388,6 +388,8 @@ class PromQLFormatter:
 
     def write(self, *output, suffix="", end=None):
         indent = "  " * self.indent
+        if end is not None:
+            indent = ""
         print(indent + " ".join(output) + suffix, end=end, file=self.buffer)
 
     @contextmanager
@@ -395,6 +397,13 @@ class PromQLFormatter:
         self.indent += 1
         yield
         self.indent -= 1
+
+    @contextmanager
+    def no_indent(self):
+        old_indent = self.indent
+        self.indent = 0
+        yield
+        self.indent = old_indent
 
     def visitPowOpNode(self, node: PowOpNode):
         self._write_op_with_grouping(node)
@@ -482,7 +491,9 @@ class PromQLFormatter:
                 )
         if node.selector.right_brace:
             self.write(node.selector.right_brace)
-        self.write(node.time_range)
+        self._chomp_last_newline()
+        with self.no_indent():
+            self.write(node.time_range)
 
     def visitInstantSelectorNode(self, node: InstantSelectorNode):
         self.write(node.metric_name)
@@ -501,13 +512,17 @@ class PromQLFormatter:
         self.write(node.metric_name)
 
     def visitSubqueryRangeNode(self, node: SubqueryRangeNode):
-        self.write(node.subquery_range, node.offset or "")
+        self._chomp_last_newline()
+        with self.no_indent():
+            self.write(node.subquery_range, node.offset or "")
 
     def _write_op_with_grouping(self, node, bool_keyword=None):
         self.visit(node.left)
-        self.write(node.operator, suffix=" ")
+        self._chomp_last_newline()
+        self.write(node.operator, suffix=" ", end=f"")
         if bool_keyword is not None:
-            self.write(bool_keyword, end="")
+            with self.no_indent():
+                self.write(bool_keyword, end=' ')
         if node.grouping:
             self.write(node.grouping.on_ignoring.operator, "(")
             with self.indent_block():
@@ -524,7 +539,8 @@ class PromQLFormatter:
                         format_func=lambda label: label.name,
                     )
                 self.write(")")
-        self.visit(node.right)
+        with self.no_indent():
+            self.visit(node.right)
 
     def _write_parameter_list(self, parameter_list):
         param_len = len(parameter_list)
@@ -540,3 +556,13 @@ class PromQLFormatter:
             suffix = "," if index != items_len else ""
             output = format_func(item)
             self.write(output, suffix=suffix)
+
+    def _chomp_last_newline(self):
+        buff_value = self.buffer.getvalue()
+        buff_len = len(buff_value)
+        for idx, char in enumerate(reversed(buff_value), start=1):
+            if char == "\n":
+                self.buffer.truncate(buff_len - idx)
+                self.buffer.seek(buff_len - idx)
+                self.buffer.write(" ")
+                return

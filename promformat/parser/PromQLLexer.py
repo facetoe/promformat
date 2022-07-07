@@ -7007,7 +7007,7 @@ class PromQLLexer(Lexer):
     LABEL_NAME = 42
     WS = 43
 
-    channelNames = [u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN"]
+    channelNames = ["DEFAULT_TOKEN_CHANNEL", "HIDDEN"]
 
     modeNames = ["DEFAULT_MODE"]
 

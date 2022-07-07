@@ -514,7 +514,10 @@ class PromQLFormatter:
     def visitSubqueryRangeNode(self, node: SubqueryRangeNode):
         self._chomp_last_newline()
         with self.no_indent():
-            self.write(node.subquery_range, node.offset or "")
+            offset = node.offset or ""
+            self.write(node.subquery_range, end=None if offset else "")
+            if offset:
+                self.write(node.offset)
 
     def _write_op_with_grouping(self, node, bool_keyword=None):
         self.visit(node.left)

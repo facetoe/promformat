@@ -428,6 +428,9 @@ class PromQLFormatter:
             indent = ""
         print(indent + " ".join(output) + suffix, end=end, file=self.buffer)
 
+    def write_no_indent(self, *output):
+        print(" ".join(output), file=self.buffer)
+
     @contextmanager
     def indent_block(self):
         self.indent += 1
@@ -587,7 +590,8 @@ class PromQLFormatter:
             with self.indent_block():
                 self.visit(param)
                 if index + 1 != param_len:
-                    self.write(",", end="")
+                    self.buffer.strip()
+                    self.write_no_indent(",")
 
     def _write_comma_seperated_list(self, items, format_func):
         items_len = len(items)

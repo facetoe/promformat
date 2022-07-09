@@ -491,7 +491,8 @@ class PromQLFormatter:
         self.write(node.operator)
         if node.is_prefix:
             if node.group_operator:
-                self.write(node.group_operator, "(")
+                self.buffer.chomp_newline()
+                self.write_no_indent(node.group_operator, "(")
                 with self.indent_block():
                     self._write_comma_seperated_list(
                         node.label_list,

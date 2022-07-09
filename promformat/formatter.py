@@ -1,5 +1,7 @@
+import io
 from contextlib import contextmanager
 from io import StringIO
+from typing import Optional
 
 from antlr4 import ErrorNode, TerminalNode
 
@@ -369,13 +371,47 @@ class BuildAstVisitor(PromQLParserVisitor):
             return String(ctx=ctx, value=ctx.getText())
 
 
+class SmartBuffer(StringIO):
+    def peek(self, n: int):
+        curr_pos = self.tell()
+        data = self.read(n)
+        self.seek(curr_pos)
+        return data
+
+    def chomp_newline(self):
+        end = self.seek(0, io.SEEK_END)
+        if end > 0:
+            last_char_pos = end - 1
+            self.seek(last_char_pos)
+            if self.peek(1) == "\n":
+                self.truncate(last_char_pos)
+                self.seek(last_char_pos)
+                self.write(" ")
+
+    def strip(self):
+        end_pos = self.seek(0, io.SEEK_END)
+        while end_pos > 0:
+            self.seek(end_pos)
+            if self.peek(1) not in (" ", "", "\n"):
+                self.truncate(end_pos + 1)
+                self.seek(end_pos + 1)
+                return
+            end_pos -= 1
+
+    def __str__(self):
+        return self.getvalue()
+
+    def __repr__(self):
+        return repr(str(self))
+
+
 class PromQLFormatter:
     def __init__(self):
         self.indent = 0
-        self.buffer = None
+        self.buffer: Optional[SmartBuffer] = None
 
     def format(self, tree):
-        with StringIO() as buff:
+        with SmartBuffer() as buff:
             self.buffer = buff
             self.visit(tree)
             return buff.getvalue()
@@ -491,7 +527,7 @@ class PromQLFormatter:
                 )
         if node.selector.right_brace:
             self.write(node.selector.right_brace)
-        self._chomp_last_newline()
+        self.buffer.chomp_newline()
         with self.no_indent():
             self.write(node.time_range)
 
@@ -512,7 +548,7 @@ class PromQLFormatter:
         self.write(node.metric_name)
 
     def visitSubqueryRangeNode(self, node: SubqueryRangeNode):
-        self._chomp_last_newline()
+        self.buffer.chomp_newline()
         with self.no_indent():
             offset = node.offset or ""
             self.write(node.subquery_range, end=None if offset else "")
@@ -521,11 +557,11 @@ class PromQLFormatter:
 
     def _write_op_with_grouping(self, node, bool_keyword=None):
         self.visit(node.left)
-        self._chomp_last_newline()
+        self.buffer.chomp_newline()
         self.write(node.operator, suffix=" ", end=f"")
         if bool_keyword is not None:
             with self.no_indent():
-                self.write(bool_keyword, end=' ')
+                self.write(bool_keyword, end=" ")
         if node.grouping:
             self.write(node.grouping.on_ignoring.operator, "(")
             with self.indent_block():
@@ -559,13 +595,3 @@ class PromQLFormatter:
             suffix = "," if index != items_len else ""
             output = format_func(item)
             self.write(output, suffix=suffix)
-
-    def _chomp_last_newline(self):
-        buff_value = self.buffer.getvalue()
-        buff_len = len(buff_value)
-        for idx, char in enumerate(reversed(buff_value), start=1):
-            if char == "\n":
-                self.buffer.truncate(buff_len - idx)
-                self.buffer.seek(buff_len - idx)
-                self.buffer.write(" ")
-                return

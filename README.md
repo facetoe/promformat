@@ -34,43 +34,33 @@ it will be formatted:
 ```
 job:request_latency_seconds:mean5m
 {
-  job="myjob",
-}
-> 0.5
+  job="myjob"
+} > 0.5
 ```
 
 A more complex example:
 ```text
-count by (namespace)(sum by (namespace,pod,container)(kube_pod_container_info{container!=""}) unless sum by (namespace,pod,container)(kube_pod_container_resource_limits{resource="cpu"}))
+(node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
 ```
 
 ```text
-count by (
-  namespace,
-)
 (
-  sum by (
-    namespace,
-    pod,
-    container,
-  )
-  (
-    kube_pod_container_info
-    {
-      container!="",
-    }
-  )
-  unless
-  sum by (
-    namespace,
-    pod,
-    container,
-  )
-  (
-    kube_pod_container_resource_limits
-    {
-      resource="cpu",
-    }
-  )
+  node_filesystem_avail_bytes * 100
+) / node_filesystem_size_bytes < 10 and ON (
+  instance,
+  device,
+  mountpoint
 )
+predict_linear (
+  node_filesystem_avail_bytes
+  {
+    fstype!~"tmpfs"
+  } [1h],
+  24 * 3600
+) < 0 and ON (
+  instance,
+  device,
+  mountpoint
+)
+node_filesystem_readonly == 0
 ```

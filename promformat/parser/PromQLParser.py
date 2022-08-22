@@ -15,7 +15,7 @@ def serializedATN():
         4,
         1,
         43,
-        307,
+        309,
         2,
         0,
         7,
@@ -606,13 +606,19 @@ def serializedATN():
         30,
         1,
         30,
-        1,
+        3,
+        30,
+        281,
+        8,
         30,
         1,
         31,
         1,
         31,
-        1,
+        3,
+        31,
+        285,
+        8,
         31,
         1,
         32,
@@ -622,7 +628,7 @@ def serializedATN():
         32,
         3,
         32,
-        288,
+        290,
         8,
         32,
         1,
@@ -635,19 +641,19 @@ def serializedATN():
         33,
         5,
         33,
-        294,
+        296,
         8,
         33,
         10,
         33,
         12,
         33,
-        297,
+        299,
         9,
         33,
         3,
         33,
-        299,
+        301,
         8,
         33,
         1,
@@ -748,7 +754,7 @@ def serializedATN():
         0,
         1,
         2,
-        314,
+        318,
         0,
         72,
         1,
@@ -936,31 +942,31 @@ def serializedATN():
         0,
         0,
         62,
-        281,
+        282,
         1,
         0,
         0,
         0,
         64,
-        287,
-        1,
-        0,
-        0,
-        0,
-        66,
         289,
         1,
         0,
         0,
         0,
+        66,
+        291,
+        1,
+        0,
+        0,
+        0,
         68,
-        302,
+        304,
         1,
         0,
         0,
         0,
         70,
-        304,
+        306,
         1,
         0,
         0,
@@ -2442,127 +2448,133 @@ def serializedATN():
         0,
         0,
         278,
-        279,
+        280,
         5,
         25,
         0,
         0,
         279,
-        280,
+        281,
         3,
         66,
         33,
         0,
         280,
-        61,
+        279,
+        1,
+        0,
+        0,
+        0,
+        280,
+        281,
         1,
         0,
         0,
         0,
         281,
+        61,
+        1,
+        0,
+        0,
+        0,
         282,
+        284,
         5,
         26,
         0,
         0,
-        282,
         283,
+        285,
         3,
         66,
         33,
         0,
+        284,
         283,
+        1,
+        0,
+        0,
+        0,
+        284,
+        285,
+        1,
+        0,
+        0,
+        0,
+        285,
         63,
         1,
         0,
         0,
         0,
-        284,
-        288,
+        286,
+        290,
         3,
         68,
         34,
         0,
-        285,
-        288,
+        287,
+        290,
         5,
         41,
         0,
         0,
-        286,
         288,
+        290,
         5,
         42,
         0,
         0,
-        287,
-        284,
-        1,
-        0,
-        0,
-        0,
-        287,
-        285,
-        1,
-        0,
-        0,
-        0,
-        287,
+        289,
         286,
-        1,
-        0,
-        0,
-        0,
-        288,
-        65,
         1,
         0,
         0,
         0,
         289,
-        298,
+        287,
+        1,
+        0,
+        0,
+        0,
+        289,
+        288,
+        1,
+        0,
+        0,
+        0,
+        290,
+        65,
+        1,
+        0,
+        0,
+        0,
+        291,
+        300,
         5,
         33,
         0,
         0,
-        290,
-        295,
+        292,
+        297,
         3,
         64,
         32,
         0,
-        291,
-        292,
+        293,
+        294,
         5,
         37,
         0,
         0,
-        292,
         294,
+        296,
         3,
         64,
         32,
         0,
-        293,
-        291,
-        1,
-        0,
-        0,
-        0,
-        294,
-        297,
-        1,
-        0,
-        0,
-        0,
         295,
         293,
-        1,
-        0,
-        0,
-        0,
-        295,
-        296,
         1,
         0,
         0,
@@ -2579,44 +2591,50 @@ def serializedATN():
         0,
         0,
         0,
+        297,
         298,
-        290,
         1,
         0,
         0,
         0,
         298,
-        299,
+        301,
         1,
         0,
         0,
         0,
         299,
+        297,
+        1,
+        0,
+        0,
+        0,
         300,
+        292,
         1,
         0,
         0,
         0,
         300,
         301,
-        5,
-        34,
+        1,
+        0,
         0,
         0,
         301,
-        67,
+        302,
         1,
         0,
         0,
         0,
         302,
         303,
-        7,
-        6,
+        5,
+        34,
         0,
         0,
         303,
-        69,
+        67,
         1,
         0,
         0,
@@ -2624,16 +2642,28 @@ def serializedATN():
         304,
         305,
         7,
-        7,
+        6,
         0,
         0,
         305,
+        69,
+        1,
+        0,
+        0,
+        0,
+        306,
+        307,
+        7,
+        7,
+        0,
+        0,
+        307,
         71,
         1,
         0,
         0,
         0,
-        30,
+        32,
         80,
         112,
         114,
@@ -2661,9 +2691,11 @@ def serializedATN():
         262,
         266,
         270,
-        287,
-        295,
-        298,
+        280,
+        284,
+        289,
+        297,
+        300,
     ]
 
 
@@ -5178,8 +5210,13 @@ class PromQLParser(Parser):
             self.enterOuterAlt(localctx, 1)
             self.state = 278
             self.match(PromQLParser.GROUP_LEFT)
-            self.state = 279
-            self.labelNameList()
+            self.state = 280
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input, 27, self._ctx)
+            if la_ == 1:
+                self.state = 279
+                self.labelNameList()
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -5226,10 +5263,15 @@ class PromQLParser(Parser):
         self.enterRule(localctx, 62, self.RULE_groupRight)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 281
-            self.match(PromQLParser.GROUP_RIGHT)
             self.state = 282
-            self.labelNameList()
+            self.match(PromQLParser.GROUP_RIGHT)
+            self.state = 284
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input, 28, self._ctx)
+            if la_ == 1:
+                self.state = 283
+                self.labelNameList()
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -5278,7 +5320,7 @@ class PromQLParser(Parser):
         localctx = PromQLParser.LabelNameContext(self, self._ctx, self.state)
         self.enterRule(localctx, 64, self.RULE_labelName)
         try:
-            self.state = 287
+            self.state = 289
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [
@@ -5297,17 +5339,17 @@ class PromQLParser(Parser):
                 PromQLParser.FUNCTION,
             ]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 284
+                self.state = 286
                 self.keyword()
                 pass
             elif token in [PromQLParser.METRIC_NAME]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 285
+                self.state = 287
                 self.match(PromQLParser.METRIC_NAME)
                 pass
             elif token in [PromQLParser.LABEL_NAME]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 286
+                self.state = 288
                 self.match(PromQLParser.LABEL_NAME)
                 pass
             else:
@@ -5372,9 +5414,9 @@ class PromQLParser(Parser):
         self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 289
+            self.state = 291
             self.match(PromQLParser.LEFT_PAREN)
-            self.state = 298
+            self.state = 300
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if ((_la) & ~0x3F) == 0 and (
@@ -5397,21 +5439,21 @@ class PromQLParser(Parser):
                     | (1 << PromQLParser.LABEL_NAME)
                 )
             ) != 0:
-                self.state = 290
+                self.state = 292
                 self.labelName()
-                self.state = 295
+                self.state = 297
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la == PromQLParser.COMMA:
-                    self.state = 291
+                    self.state = 293
                     self.match(PromQLParser.COMMA)
-                    self.state = 292
+                    self.state = 294
                     self.labelName()
-                    self.state = 297
+                    self.state = 299
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-            self.state = 300
+            self.state = 302
             self.match(PromQLParser.RIGHT_PAREN)
         except RecognitionException as re:
             localctx.exception = re
@@ -5493,7 +5535,7 @@ class PromQLParser(Parser):
         self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 302
+            self.state = 304
             _la = self._input.LA(1)
             if not (
                 (
@@ -5570,7 +5612,7 @@ class PromQLParser(Parser):
         self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 304
+            self.state = 306
             _la = self._input.LA(1)
             if not (_la == PromQLParser.NUMBER or _la == PromQLParser.STRING):
                 self._errHandler.recoverInline(self)

@@ -18,7 +18,7 @@ promformat
 As library:
 ```text
 from promformat import format_query
-print(format_query("1+1")
+print(format_query("1+1"))
 ```
 
 # Example

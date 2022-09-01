@@ -3,11 +3,9 @@ ANTLR_VERSION=4.10
 ANTLR_JAR=antlr-$(ANTLR_VERSION)-complete.jar
 
 
-# When https://github.com/antlr/grammars-v4/pull/2484 is merged can use grammar from official project
-#GITHUB_URL=git@github.com:antlr/$(PROJECT).git
 PROJECT=grammars-v4
 GITHUB_URL=git@github.com:facetoe/$(PROJECT).git
-GRAMMAR_COMMIT=42775341e4138ce572e48aaec8671d12c98171e2
+GRAMMAR_COMMIT=f84718cfde57d48f15bf41b7ed1d1d24042e2dda
 
 $(WORKDIR)/$(ANTLR_JAR):
 	mkdir -p $(WORKDIR)

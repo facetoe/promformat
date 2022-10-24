@@ -255,7 +255,7 @@ class BuildAstVisitor(PromQLParserVisitor):
         print("visitVector")
 
     def visitOffset(self, ctx: PromQLParser.OffsetContext):
-        selector = self.visit(ctx.instantSelector())
+        selector = self.visit(ctx.instantSelector() or ctx.matrixSelector())
         return OffsetNode(
             ctx,
             instant_selector=selector,

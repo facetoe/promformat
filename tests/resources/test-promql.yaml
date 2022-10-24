@@ -643,6 +643,11 @@ groups:
                 query: 'pg_bloat_table_bloat_pct > 80 and on (relname) (pg_bloat_table_real_size > 200000000)'
                 severity: warning
                 for: 1h
+              - name: Postgresql basebackup not started
+                description: The service has not started backing up
+                query: 'last_over_time ( basebackup { } [12h] offset 5m) > 0 unless on (fire) last_over_time ( progress{} [12h]) > 0'
+                severity: warning
+                for: 1h
 
       - name: SQL Server
         exporters:

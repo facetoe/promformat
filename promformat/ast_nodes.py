@@ -116,6 +116,12 @@ class OrOperationNode(Expr):
         self.grouping = grouping
 
 
+class LabelNameNode(Expr):
+    def __init__(self, ctx, name: str):
+        super(LabelNameNode, self).__init__(ctx)
+        self.name = name
+
+
 class LabelNode(Expr):
     def __init__(self, ctx: PromQLParser.LabelMatcherContext):
         super(LabelNode, self).__init__(ctx)
@@ -124,18 +130,20 @@ class LabelNode(Expr):
         self.value = ctx.STRING().getText()
 
 
+class LabelList:
+    def __init__(
+        self, labels: list[LabelNode | LabelNameNode], has_trailing_comma: bool = False
+    ):
+        self.labels = labels
+        self.has_trailing_comma = has_trailing_comma
+
+
 class OffsetNode(Expr):
     def __init__(self, ctx, instant_selector, offset, duration):
         super(OffsetNode, self).__init__(ctx)
         self.instant_selector = instant_selector
         self.offset = offset
         self.duration = duration
-
-
-class LabelNameNode(Expr):
-    def __init__(self, ctx, name: str):
-        super(LabelNameNode, self).__init__(ctx)
-        self.name = name
 
 
 class LabelMatcherNode(Expr):

@@ -29,6 +29,7 @@ from promformat.ast_nodes import (
     OnIgnoring,
     GroupLeftRight,
     OffsetNode,
+    LabelList,
 )
 from promformat.buffer import SmartBuffer
 from promformat.error import UnEqualParseTreeError
@@ -74,7 +75,6 @@ class ParseTreeValidator:
 
 class BuildAstVisitor(PromQLParserVisitor):
     def visit(self, tree):
-        # print("visit -> ", type(tree).__name__)
         return super().visit(tree)
 
     def visitExpression(self, ctx: PromQLParser.ExpressionContext):
@@ -193,24 +193,32 @@ class BuildAstVisitor(PromQLParserVisitor):
         if grouping.on_():
             on_ignoring = OnIgnoring(
                 operator=grouping.on_().ON().getText(),
-                labels=self.visitLabelNameList(grouping.on_().labelNameList()),
+                labels=LabelList(
+                    self.visitLabelNameList(grouping.on_().labelNameList())
+                ),
             )
         else:
             on_ignoring = OnIgnoring(
                 operator=grouping.ignoring().IGNORING().getText(),
-                labels=self.visitLabelNameList(grouping.ignoring().labelNameList()),
+                labels=LabelList(
+                    self.visitLabelNameList(grouping.ignoring().labelNameList())
+                ),
             )
 
         group_left_right = None
         if grouping.groupLeft():
             group_left_right = GroupLeftRight(
                 operator="group_left",
-                labels=self.visitLabelNameList(grouping.groupLeft().labelNameList()),
+                labels=LabelList(
+                    self.visitLabelNameList(grouping.groupLeft().labelNameList())
+                ),
             )
         elif grouping.groupRight():
             group_left_right = GroupLeftRight(
                 operator="group_right",
-                labels=self.visitLabelNameList(grouping.groupRight().labelNameList()),
+                labels=LabelList(
+                    self.visitLabelNameList(grouping.groupRight().labelNameList())
+                ),
             )
 
         return Grouping(
@@ -252,7 +260,6 @@ class BuildAstVisitor(PromQLParserVisitor):
             return self.visit(ctx.literal())
         elif ctx.parens():
             return self.visit(ctx.parens())
-        print("visitVector")
 
     def visitOffset(self, ctx: PromQLParser.OffsetContext):
         selector = self.visit(ctx.instantSelector() or ctx.matrixSelector())
@@ -288,7 +295,7 @@ class BuildAstVisitor(PromQLParserVisitor):
             ctx=ctx,
             operator=operator,
             group_operator=group_operator,
-            label_list=group_label_list,
+            label_list=LabelList(group_label_list),
             parameter_list=parameter_list,
             is_prefix=ctx.prefix is not None,
         )
@@ -333,7 +340,8 @@ class BuildAstVisitor(PromQLParserVisitor):
         labels = []
         for matcher in ctx.labelMatcher():
             labels.append(self.visit(matcher))
-        return labels
+        has_trailing_comma = len(labels) == len(ctx.COMMA())
+        return LabelList(labels=labels, has_trailing_comma=has_trailing_comma)
 
     def visitLabelNameList(self, ctx: PromQLParser.LabelNameListContext):
         labels = []
@@ -537,7 +545,7 @@ class PromQLFormatter:
             self.write(node.grouping.on_ignoring.operator, "(")
             with self.indent_block():
                 self._write_comma_seperated_list(
-                    items=node.grouping.on_ignoring.labels,
+                    label_list=node.grouping.on_ignoring.labels,
                     format_func=lambda label: label.name,
                 )
             self.write(")")
@@ -545,7 +553,7 @@ class PromQLFormatter:
                 self.write(node.grouping.group_left_right.operator, "(")
                 with self.indent_block():
                     self._write_comma_seperated_list(
-                        items=node.grouping.group_left_right.labels,
+                        label_list=node.grouping.group_left_right.labels,
                         format_func=lambda label: label.name,
                     )
                 self.write(")")
@@ -561,9 +569,11 @@ class PromQLFormatter:
                     self.buffer.strip()
                     self.write_no_indent(",")
 
-    def _write_comma_seperated_list(self, items, format_func):
-        items_len = len(items)
-        for index, item in enumerate(items, start=1):
-            suffix = "," if index != items_len else ""
+    def _write_comma_seperated_list(self, label_list: LabelList, format_func):
+        items_len = len(label_list.labels)
+        for index, item in enumerate(label_list.labels, start=1):
+            suffix = ","
+            if index == items_len and not label_list.has_trailing_comma:
+                suffix = ""
             output = format_func(item)
             self.write(output, suffix=suffix)

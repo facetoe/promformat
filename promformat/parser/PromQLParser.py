@@ -15,7 +15,7 @@ def serializedATN():
         4,
         1,
         43,
-        309,
+        312,
         2,
         0,
         7,
@@ -431,6 +431,13 @@ def serializedATN():
         9,
         17,
         1,
+        17,
+        3,
+        17,
+        200,
+        8,
+        17,
+        1,
         18,
         1,
         18,
@@ -454,7 +461,7 @@ def serializedATN():
         19,
         3,
         19,
-        210,
+        213,
         8,
         19,
         1,
@@ -468,20 +475,20 @@ def serializedATN():
         1,
         20,
         5,
-        20,
-        217,
-        8,
-        20,
-        10,
-        20,
-        12,
         20,
         220,
+        8,
+        20,
+        10,
+        20,
+        12,
+        20,
+        223,
         9,
         20,
         3,
         20,
-        222,
+        225,
         8,
         20,
         1,
@@ -494,7 +501,7 @@ def serializedATN():
         21,
         3,
         21,
-        228,
+        231,
         8,
         21,
         1,
@@ -506,20 +513,20 @@ def serializedATN():
         1,
         22,
         5,
-        22,
-        234,
-        8,
-        22,
-        10,
-        22,
-        12,
         22,
         237,
+        8,
+        22,
+        10,
+        22,
+        12,
+        22,
+        240,
         9,
         22,
         3,
         22,
-        239,
+        242,
         8,
         22,
         1,
@@ -548,7 +555,7 @@ def serializedATN():
         23,
         3,
         23,
-        253,
+        256,
         8,
         23,
         1,
@@ -569,7 +576,7 @@ def serializedATN():
         26,
         3,
         26,
-        263,
+        266,
         8,
         26,
         1,
@@ -578,7 +585,7 @@ def serializedATN():
         27,
         3,
         27,
-        267,
+        270,
         8,
         27,
         1,
@@ -587,7 +594,7 @@ def serializedATN():
         27,
         3,
         27,
-        271,
+        274,
         8,
         27,
         1,
@@ -608,7 +615,7 @@ def serializedATN():
         30,
         3,
         30,
-        281,
+        284,
         8,
         30,
         1,
@@ -617,7 +624,7 @@ def serializedATN():
         31,
         3,
         31,
-        285,
+        288,
         8,
         31,
         1,
@@ -628,7 +635,7 @@ def serializedATN():
         32,
         3,
         32,
-        290,
+        293,
         8,
         32,
         1,
@@ -641,19 +648,19 @@ def serializedATN():
         33,
         5,
         33,
-        296,
+        299,
         8,
         33,
         10,
         33,
         12,
         33,
-        299,
+        302,
         9,
         33,
         3,
         33,
-        301,
+        304,
         8,
         33,
         1,
@@ -754,7 +761,7 @@ def serializedATN():
         0,
         1,
         2,
-        318,
+        322,
         0,
         72,
         1,
@@ -864,109 +871,109 @@ def serializedATN():
         0,
         0,
         36,
-        198,
+        201,
         1,
         0,
         0,
         0,
         38,
-        209,
+        212,
         1,
         0,
         0,
         0,
         40,
-        211,
+        214,
         1,
         0,
         0,
         0,
         42,
-        227,
+        230,
         1,
         0,
         0,
         0,
         44,
-        229,
+        232,
         1,
         0,
         0,
         0,
         46,
-        252,
+        255,
         1,
         0,
         0,
         0,
         48,
-        254,
-        1,
-        0,
-        0,
-        0,
-        50,
         257,
         1,
         0,
         0,
         0,
+        50,
+        260,
+        1,
+        0,
+        0,
+        0,
         52,
-        262,
+        265,
         1,
         0,
         0,
         0,
         54,
-        266,
+        269,
         1,
         0,
         0,
         0,
         56,
-        272,
-        1,
-        0,
-        0,
-        0,
-        58,
         275,
         1,
         0,
         0,
         0,
-        60,
+        58,
         278,
         1,
         0,
         0,
         0,
+        60,
+        281,
+        1,
+        0,
+        0,
+        0,
         62,
-        282,
+        285,
         1,
         0,
         0,
         0,
         64,
-        289,
+        292,
         1,
         0,
         0,
         0,
         66,
-        291,
+        294,
         1,
         0,
         0,
         0,
         68,
-        304,
+        307,
         1,
         0,
         0,
         0,
         70,
-        306,
+        309,
         1,
         0,
         0,
@@ -1884,7 +1891,7 @@ def serializedATN():
         0,
         0,
         196,
-        35,
+        199,
         1,
         0,
         0,
@@ -1896,19 +1903,25 @@ def serializedATN():
         0,
         0,
         198,
-        199,
-        3,
-        28,
-        14,
-        0,
-        199,
         200,
         5,
-        39,
+        37,
+        0,
+        0,
+        199,
+        198,
+        1,
+        0,
+        0,
+        0,
+        199,
+        200,
+        1,
+        0,
         0,
         0,
         200,
-        37,
+        35,
         1,
         0,
         0,
@@ -1922,320 +1935,320 @@ def serializedATN():
         202,
         203,
         5,
-        27,
+        39,
         0,
         0,
         203,
-        204,
-        5,
-        40,
-        0,
-        0,
-        204,
-        210,
+        37,
         1,
         0,
         0,
         0,
+        204,
+        205,
+        3,
+        28,
+        14,
+        0,
         205,
         206,
+        5,
+        27,
+        0,
+        0,
+        206,
+        207,
+        5,
+        40,
+        0,
+        0,
+        207,
+        213,
+        1,
+        0,
+        0,
+        0,
+        208,
+        209,
         3,
         36,
         18,
         0,
-        206,
-        207,
+        209,
+        210,
         5,
         27,
         0,
         0,
-        207,
-        208,
+        210,
+        211,
         5,
         40,
         0,
         0,
+        211,
+        213,
+        1,
+        0,
+        0,
+        0,
+        212,
+        204,
+        1,
+        0,
+        0,
+        0,
+        212,
         208,
-        210,
         1,
         0,
         0,
         0,
-        209,
-        201,
-        1,
-        0,
-        0,
-        0,
-        209,
-        205,
-        1,
-        0,
-        0,
-        0,
-        210,
+        213,
         39,
         1,
         0,
         0,
         0,
-        211,
-        212,
+        214,
+        215,
         5,
         30,
         0,
         0,
-        212,
-        221,
+        215,
+        224,
         5,
         33,
         0,
         0,
-        213,
-        218,
+        216,
+        221,
         3,
         42,
         21,
         0,
-        214,
-        215,
+        217,
+        218,
         5,
         37,
         0,
         0,
-        215,
-        217,
+        218,
+        220,
         3,
         42,
         21,
         0,
-        216,
-        214,
-        1,
-        0,
-        0,
-        0,
+        219,
         217,
-        220,
         1,
         0,
         0,
         0,
-        218,
+        220,
+        223,
+        1,
+        0,
+        0,
+        0,
+        221,
+        219,
+        1,
+        0,
+        0,
+        0,
+        221,
+        222,
+        1,
+        0,
+        0,
+        0,
+        222,
+        225,
+        1,
+        0,
+        0,
+        0,
+        223,
+        221,
+        1,
+        0,
+        0,
+        0,
+        224,
         216,
         1,
         0,
         0,
         0,
-        218,
-        219,
-        1,
-        0,
-        0,
-        0,
-        219,
-        222,
-        1,
-        0,
-        0,
-        0,
-        220,
-        218,
-        1,
-        0,
-        0,
-        0,
-        221,
-        213,
-        1,
-        0,
-        0,
-        0,
-        221,
-        222,
-        1,
-        0,
-        0,
-        0,
-        222,
-        223,
-        1,
-        0,
-        0,
-        0,
-        223,
         224,
+        225,
+        1,
+        0,
+        0,
+        0,
+        225,
+        226,
+        1,
+        0,
+        0,
+        0,
+        226,
+        227,
         5,
         34,
         0,
         0,
-        224,
+        227,
         41,
         1,
         0,
         0,
         0,
-        225,
         228,
+        231,
         3,
         70,
         35,
         0,
-        226,
-        228,
+        229,
+        231,
         3,
         2,
         1,
         0,
-        227,
-        225,
-        1,
-        0,
-        0,
-        0,
-        227,
-        226,
-        1,
-        0,
-        0,
-        0,
+        230,
         228,
+        1,
+        0,
+        0,
+        0,
+        230,
+        229,
+        1,
+        0,
+        0,
+        0,
+        231,
         43,
         1,
         0,
         0,
         0,
-        229,
-        238,
+        232,
+        241,
         5,
         33,
         0,
         0,
-        230,
-        235,
+        233,
+        238,
         3,
         42,
         21,
         0,
-        231,
-        232,
+        234,
+        235,
         5,
         37,
         0,
         0,
-        232,
-        234,
+        235,
+        237,
         3,
         42,
         21,
         0,
-        233,
-        231,
-        1,
-        0,
-        0,
-        0,
+        236,
         234,
-        237,
         1,
         0,
         0,
         0,
-        235,
+        237,
+        240,
+        1,
+        0,
+        0,
+        0,
+        238,
+        236,
+        1,
+        0,
+        0,
+        0,
+        238,
+        239,
+        1,
+        0,
+        0,
+        0,
+        239,
+        242,
+        1,
+        0,
+        0,
+        0,
+        240,
+        238,
+        1,
+        0,
+        0,
+        0,
+        241,
         233,
         1,
         0,
         0,
         0,
-        235,
-        236,
-        1,
-        0,
-        0,
-        0,
-        236,
-        239,
-        1,
-        0,
-        0,
-        0,
-        237,
-        235,
-        1,
-        0,
-        0,
-        0,
-        238,
-        230,
-        1,
-        0,
-        0,
-        0,
-        238,
-        239,
-        1,
-        0,
-        0,
-        0,
-        239,
-        240,
-        1,
-        0,
-        0,
-        0,
-        240,
         241,
+        242,
+        1,
+        0,
+        0,
+        0,
+        242,
+        243,
+        1,
+        0,
+        0,
+        0,
+        243,
+        244,
         5,
         34,
         0,
         0,
-        241,
+        244,
         45,
         1,
         0,
         0,
         0,
-        242,
-        243,
+        245,
+        246,
         5,
         29,
         0,
         0,
-        243,
-        253,
-        3,
-        44,
-        22,
-        0,
-        244,
-        245,
-        5,
-        29,
-        0,
-        0,
-        245,
         246,
-        3,
-        52,
-        26,
-        0,
-        246,
-        247,
+        256,
         3,
         44,
         22,
         0,
         247,
-        253,
-        1,
-        0,
+        248,
+        5,
+        29,
         0,
         0,
         248,
         249,
-        5,
-        29,
-        0,
+        3,
+        52,
+        26,
         0,
         249,
         250,
@@ -2244,55 +2257,55 @@ def serializedATN():
         22,
         0,
         250,
+        256,
+        1,
+        0,
+        0,
+        0,
         251,
+        252,
+        5,
+        29,
+        0,
+        0,
+        252,
+        253,
+        3,
+        44,
+        22,
+        0,
+        253,
+        254,
         3,
         52,
         26,
-        0,
-        251,
-        253,
-        1,
-        0,
-        0,
-        0,
-        252,
-        242,
-        1,
-        0,
-        0,
-        0,
-        252,
-        244,
-        1,
-        0,
-        0,
-        0,
-        252,
-        248,
-        1,
-        0,
-        0,
-        0,
-        253,
-        47,
-        1,
-        0,
-        0,
         0,
         254,
-        255,
-        5,
-        21,
-        0,
-        0,
-        255,
         256,
-        3,
-        66,
-        33,
+        1,
+        0,
+        0,
+        0,
+        255,
+        245,
+        1,
+        0,
+        0,
+        0,
+        255,
+        247,
+        1,
+        0,
+        0,
+        0,
+        255,
+        251,
+        1,
+        0,
+        0,
         0,
         256,
-        49,
+        47,
         1,
         0,
         0,
@@ -2300,7 +2313,7 @@ def serializedATN():
         257,
         258,
         5,
-        22,
+        21,
         0,
         0,
         258,
@@ -2310,121 +2323,121 @@ def serializedATN():
         33,
         0,
         259,
+        49,
+        1,
+        0,
+        0,
+        0,
+        260,
+        261,
+        5,
+        22,
+        0,
+        0,
+        261,
+        262,
+        3,
+        66,
+        33,
+        0,
+        262,
         51,
         1,
         0,
         0,
         0,
-        260,
         263,
+        266,
         3,
         48,
         24,
         0,
-        261,
-        263,
+        264,
+        266,
         3,
         50,
         25,
         0,
-        262,
-        260,
-        1,
-        0,
-        0,
-        0,
-        262,
-        261,
-        1,
-        0,
-        0,
-        0,
+        265,
         263,
+        1,
+        0,
+        0,
+        0,
+        265,
+        264,
+        1,
+        0,
+        0,
+        0,
+        266,
         53,
         1,
         0,
         0,
         0,
-        264,
         267,
+        270,
         3,
         56,
         28,
         0,
-        265,
-        267,
+        268,
+        270,
         3,
         58,
         29,
         0,
-        266,
-        264,
-        1,
-        0,
-        0,
-        0,
-        266,
-        265,
-        1,
-        0,
-        0,
-        0,
+        269,
         267,
-        270,
         1,
         0,
         0,
         0,
+        269,
         268,
+        1,
+        0,
+        0,
+        0,
+        270,
+        273,
+        1,
+        0,
+        0,
+        0,
         271,
+        274,
         3,
         60,
         30,
         0,
-        269,
-        271,
+        272,
+        274,
         3,
         62,
         31,
         0,
-        270,
-        268,
-        1,
-        0,
-        0,
-        0,
-        270,
-        269,
-        1,
-        0,
-        0,
-        0,
-        270,
+        273,
         271,
         1,
         0,
         0,
         0,
-        271,
-        55,
-        1,
-        0,
-        0,
-        0,
+        273,
         272,
-        273,
-        5,
-        23,
+        1,
+        0,
         0,
         0,
         273,
         274,
-        3,
-        66,
-        33,
+        1,
+        0,
+        0,
         0,
         274,
-        57,
+        55,
         1,
         0,
         0,
@@ -2432,7 +2445,7 @@ def serializedATN():
         275,
         276,
         5,
-        24,
+        23,
         0,
         0,
         276,
@@ -2442,228 +2455,246 @@ def serializedATN():
         33,
         0,
         277,
-        59,
+        57,
         1,
         0,
         0,
         0,
         278,
-        280,
+        279,
         5,
-        25,
+        24,
         0,
         0,
         279,
-        281,
+        280,
         3,
         66,
         33,
         0,
         280,
-        279,
-        1,
-        0,
-        0,
-        0,
-        280,
-        281,
+        59,
         1,
         0,
         0,
         0,
         281,
+        283,
+        5,
+        25,
+        0,
+        0,
+        282,
+        284,
+        3,
+        66,
+        33,
+        0,
+        283,
+        282,
+        1,
+        0,
+        0,
+        0,
+        283,
+        284,
+        1,
+        0,
+        0,
+        0,
+        284,
         61,
         1,
         0,
         0,
         0,
-        282,
-        284,
+        285,
+        287,
         5,
         26,
         0,
         0,
-        283,
-        285,
+        286,
+        288,
         3,
         66,
         33,
         0,
-        284,
-        283,
+        287,
+        286,
         1,
         0,
         0,
         0,
-        284,
-        285,
+        287,
+        288,
         1,
         0,
         0,
         0,
-        285,
+        288,
         63,
         1,
         0,
         0,
         0,
-        286,
-        290,
+        289,
+        293,
         3,
         68,
         34,
         0,
-        287,
         290,
+        293,
         5,
         41,
         0,
         0,
-        288,
-        290,
+        291,
+        293,
         5,
         42,
         0,
         0,
+        292,
         289,
-        286,
         1,
         0,
         0,
         0,
-        289,
-        287,
-        1,
-        0,
-        0,
-        0,
-        289,
-        288,
-        1,
-        0,
-        0,
-        0,
+        292,
         290,
+        1,
+        0,
+        0,
+        0,
+        292,
+        291,
+        1,
+        0,
+        0,
+        0,
+        293,
         65,
         1,
         0,
         0,
         0,
-        291,
-        300,
+        294,
+        303,
         5,
         33,
         0,
         0,
-        292,
-        297,
+        295,
+        300,
         3,
         64,
         32,
         0,
-        293,
-        294,
+        296,
+        297,
         5,
         37,
         0,
         0,
-        294,
-        296,
+        297,
+        299,
         3,
         64,
         32,
         0,
-        295,
-        293,
-        1,
-        0,
-        0,
-        0,
+        298,
         296,
-        299,
         1,
         0,
         0,
         0,
-        297,
+        299,
+        302,
+        1,
+        0,
+        0,
+        0,
+        300,
+        298,
+        1,
+        0,
+        0,
+        0,
+        300,
+        301,
+        1,
+        0,
+        0,
+        0,
+        301,
+        304,
+        1,
+        0,
+        0,
+        0,
+        302,
+        300,
+        1,
+        0,
+        0,
+        0,
+        303,
         295,
         1,
         0,
         0,
         0,
-        297,
-        298,
-        1,
-        0,
-        0,
-        0,
-        298,
-        301,
-        1,
-        0,
-        0,
-        0,
-        299,
-        297,
-        1,
-        0,
-        0,
-        0,
-        300,
-        292,
-        1,
-        0,
-        0,
-        0,
-        300,
-        301,
-        1,
-        0,
-        0,
-        0,
-        301,
-        302,
-        1,
-        0,
-        0,
-        0,
-        302,
         303,
-        5,
-        34,
-        0,
-        0,
-        303,
-        67,
+        304,
         1,
         0,
         0,
         0,
         304,
         305,
+        1,
+        0,
+        0,
+        0,
+        305,
+        306,
+        5,
+        34,
+        0,
+        0,
+        306,
+        67,
+        1,
+        0,
+        0,
+        0,
+        307,
+        308,
         7,
         6,
         0,
         0,
-        305,
+        308,
         69,
         1,
         0,
         0,
         0,
-        306,
-        307,
+        309,
+        310,
         7,
         7,
         0,
         0,
-        307,
+        310,
         71,
         1,
         0,
         0,
         0,
-        32,
+        33,
         80,
         112,
         114,
@@ -2681,21 +2712,22 @@ def serializedATN():
         176,
         182,
         195,
-        209,
-        218,
+        199,
+        212,
         221,
-        227,
-        235,
+        224,
+        230,
         238,
-        252,
-        262,
-        266,
-        270,
-        280,
-        284,
-        289,
-        297,
+        241,
+        255,
+        265,
+        269,
+        273,
+        283,
+        287,
+        292,
         300,
+        303,
     ]
 
 
@@ -4343,15 +4375,23 @@ class PromQLParser(Parser):
             self.labelMatcher()
             self.state = 195
             self._errHandler.sync(self)
-            _la = self._input.LA(1)
-            while _la == PromQLParser.COMMA:
-                self.state = 191
-                self.match(PromQLParser.COMMA)
-                self.state = 192
-                self.labelMatcher()
+            _alt = self._interp.adaptivePredict(self._input, 16, self._ctx)
+            while _alt != 2 and _alt != ATN.INVALID_ALT_NUMBER:
+                if _alt == 1:
+                    self.state = 191
+                    self.match(PromQLParser.COMMA)
+                    self.state = 192
+                    self.labelMatcher()
                 self.state = 197
                 self._errHandler.sync(self)
-                _la = self._input.LA(1)
+                _alt = self._interp.adaptivePredict(self._input, 16, self._ctx)
+
+            self.state = 199
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            if _la == PromQLParser.COMMA:
+                self.state = 198
+                self.match(PromQLParser.COMMA)
 
         except RecognitionException as re:
             localctx.exception = re
@@ -4399,9 +4439,9 @@ class PromQLParser(Parser):
         self.enterRule(localctx, 36, self.RULE_matrixSelector)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 198
+            self.state = 201
             self.instantSelector()
-            self.state = 199
+            self.state = 202
             self.match(PromQLParser.TIME_RANGE)
         except RecognitionException as re:
             localctx.exception = re
@@ -4454,26 +4494,26 @@ class PromQLParser(Parser):
         localctx = PromQLParser.OffsetContext(self, self._ctx, self.state)
         self.enterRule(localctx, 38, self.RULE_offset)
         try:
-            self.state = 209
+            self.state = 212
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input, 17, self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 18, self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 201
+                self.state = 204
                 self.instantSelector()
-                self.state = 202
+                self.state = 205
                 self.match(PromQLParser.OFFSET)
-                self.state = 203
+                self.state = 206
                 self.match(PromQLParser.DURATION)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 205
+                self.state = 208
                 self.matrixSelector()
-                self.state = 206
+                self.state = 209
                 self.match(PromQLParser.OFFSET)
-                self.state = 207
+                self.state = 210
                 self.match(PromQLParser.DURATION)
                 pass
 
@@ -4539,11 +4579,11 @@ class PromQLParser(Parser):
         self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 211
+            self.state = 214
             self.match(PromQLParser.FUNCTION)
-            self.state = 212
+            self.state = 215
             self.match(PromQLParser.LEFT_PAREN)
-            self.state = 221
+            self.state = 224
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if ((_la) & ~0x3F) == 0 and (
@@ -4560,21 +4600,21 @@ class PromQLParser(Parser):
                     | (1 << PromQLParser.METRIC_NAME)
                 )
             ) != 0:
-                self.state = 213
+                self.state = 216
                 self.parameter()
-                self.state = 218
+                self.state = 221
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la == PromQLParser.COMMA:
-                    self.state = 214
+                    self.state = 217
                     self.match(PromQLParser.COMMA)
-                    self.state = 215
+                    self.state = 218
                     self.parameter()
-                    self.state = 220
+                    self.state = 223
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-            self.state = 223
+            self.state = 226
             self.match(PromQLParser.RIGHT_PAREN)
         except RecognitionException as re:
             localctx.exception = re
@@ -4621,18 +4661,18 @@ class PromQLParser(Parser):
         localctx = PromQLParser.ParameterContext(self, self._ctx, self.state)
         self.enterRule(localctx, 42, self.RULE_parameter)
         try:
-            self.state = 227
+            self.state = 230
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input, 20, self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 21, self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 225
+                self.state = 228
                 self.literal()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 226
+                self.state = 229
                 self.vectorOperation(0)
                 pass
 
@@ -4695,9 +4735,9 @@ class PromQLParser(Parser):
         self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 229
+            self.state = 232
             self.match(PromQLParser.LEFT_PAREN)
-            self.state = 238
+            self.state = 241
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if ((_la) & ~0x3F) == 0 and (
@@ -4714,21 +4754,21 @@ class PromQLParser(Parser):
                     | (1 << PromQLParser.METRIC_NAME)
                 )
             ) != 0:
-                self.state = 230
+                self.state = 233
                 self.parameter()
-                self.state = 235
+                self.state = 238
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la == PromQLParser.COMMA:
-                    self.state = 231
+                    self.state = 234
                     self.match(PromQLParser.COMMA)
-                    self.state = 232
+                    self.state = 235
                     self.parameter()
-                    self.state = 237
+                    self.state = 240
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-            self.state = 240
+            self.state = 243
             self.match(PromQLParser.RIGHT_PAREN)
         except RecognitionException as re:
             localctx.exception = re
@@ -4780,34 +4820,34 @@ class PromQLParser(Parser):
         localctx = PromQLParser.AggregationContext(self, self._ctx, self.state)
         self.enterRule(localctx, 46, self.RULE_aggregation)
         try:
-            self.state = 252
+            self.state = 255
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input, 23, self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 24, self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 242
+                self.state = 245
                 self.match(PromQLParser.AGGREGATION_OPERATOR)
-                self.state = 243
+                self.state = 246
                 self.parameterList()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 244
+                self.state = 247
                 self.match(PromQLParser.AGGREGATION_OPERATOR)
-                self.state = 245
+                self.state = 248
                 localctx.prefix = self.byWithout()
-                self.state = 246
+                self.state = 249
                 self.parameterList()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 248
+                self.state = 251
                 self.match(PromQLParser.AGGREGATION_OPERATOR)
-                self.state = 249
+                self.state = 252
                 self.parameterList()
-                self.state = 250
+                self.state = 253
                 localctx.suffix = self.byWithout()
                 pass
 
@@ -4857,9 +4897,9 @@ class PromQLParser(Parser):
         self.enterRule(localctx, 48, self.RULE_by)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 254
+            self.state = 257
             self.match(PromQLParser.BY)
-            self.state = 255
+            self.state = 258
             self.labelNameList()
         except RecognitionException as re:
             localctx.exception = re
@@ -4907,9 +4947,9 @@ class PromQLParser(Parser):
         self.enterRule(localctx, 50, self.RULE_without)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 257
+            self.state = 260
             self.match(PromQLParser.WITHOUT)
-            self.state = 258
+            self.state = 261
             self.labelNameList()
         except RecognitionException as re:
             localctx.exception = re
@@ -4957,15 +4997,15 @@ class PromQLParser(Parser):
         self.enterRule(localctx, 52, self.RULE_byWithout)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 262
+            self.state = 265
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [PromQLParser.BY]:
-                self.state = 260
+                self.state = 263
                 self.by()
                 pass
             elif token in [PromQLParser.WITHOUT]:
-                self.state = 261
+                self.state = 264
                 self.without()
                 pass
             else:
@@ -5023,29 +5063,29 @@ class PromQLParser(Parser):
         self.enterRule(localctx, 54, self.RULE_grouping)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 266
+            self.state = 269
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [PromQLParser.ON]:
-                self.state = 264
+                self.state = 267
                 self.on_()
                 pass
             elif token in [PromQLParser.IGNORING]:
-                self.state = 265
+                self.state = 268
                 self.ignoring()
                 pass
             else:
                 raise NoViableAltException(self)
 
-            self.state = 270
+            self.state = 273
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [PromQLParser.GROUP_LEFT]:
-                self.state = 268
+                self.state = 271
                 self.groupLeft()
                 pass
             elif token in [PromQLParser.GROUP_RIGHT]:
-                self.state = 269
+                self.state = 272
                 self.groupRight()
                 pass
             elif token in [
@@ -5108,9 +5148,9 @@ class PromQLParser(Parser):
         self.enterRule(localctx, 56, self.RULE_on_)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 272
+            self.state = 275
             self.match(PromQLParser.ON)
-            self.state = 273
+            self.state = 276
             self.labelNameList()
         except RecognitionException as re:
             localctx.exception = re
@@ -5158,9 +5198,9 @@ class PromQLParser(Parser):
         self.enterRule(localctx, 58, self.RULE_ignoring)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 275
+            self.state = 278
             self.match(PromQLParser.IGNORING)
-            self.state = 276
+            self.state = 279
             self.labelNameList()
         except RecognitionException as re:
             localctx.exception = re
@@ -5208,13 +5248,13 @@ class PromQLParser(Parser):
         self.enterRule(localctx, 60, self.RULE_groupLeft)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 278
+            self.state = 281
             self.match(PromQLParser.GROUP_LEFT)
-            self.state = 280
+            self.state = 283
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input, 27, self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 28, self._ctx)
             if la_ == 1:
-                self.state = 279
+                self.state = 282
                 self.labelNameList()
 
         except RecognitionException as re:
@@ -5263,13 +5303,13 @@ class PromQLParser(Parser):
         self.enterRule(localctx, 62, self.RULE_groupRight)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 282
+            self.state = 285
             self.match(PromQLParser.GROUP_RIGHT)
-            self.state = 284
+            self.state = 287
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input, 28, self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 29, self._ctx)
             if la_ == 1:
-                self.state = 283
+                self.state = 286
                 self.labelNameList()
 
         except RecognitionException as re:
@@ -5320,7 +5360,7 @@ class PromQLParser(Parser):
         localctx = PromQLParser.LabelNameContext(self, self._ctx, self.state)
         self.enterRule(localctx, 64, self.RULE_labelName)
         try:
-            self.state = 289
+            self.state = 292
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [
@@ -5339,17 +5379,17 @@ class PromQLParser(Parser):
                 PromQLParser.FUNCTION,
             ]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 286
+                self.state = 289
                 self.keyword()
                 pass
             elif token in [PromQLParser.METRIC_NAME]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 287
+                self.state = 290
                 self.match(PromQLParser.METRIC_NAME)
                 pass
             elif token in [PromQLParser.LABEL_NAME]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 288
+                self.state = 291
                 self.match(PromQLParser.LABEL_NAME)
                 pass
             else:
@@ -5414,9 +5454,9 @@ class PromQLParser(Parser):
         self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 291
+            self.state = 294
             self.match(PromQLParser.LEFT_PAREN)
-            self.state = 300
+            self.state = 303
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if ((_la) & ~0x3F) == 0 and (
@@ -5439,21 +5479,21 @@ class PromQLParser(Parser):
                     | (1 << PromQLParser.LABEL_NAME)
                 )
             ) != 0:
-                self.state = 292
+                self.state = 295
                 self.labelName()
-                self.state = 297
+                self.state = 300
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la == PromQLParser.COMMA:
-                    self.state = 293
+                    self.state = 296
                     self.match(PromQLParser.COMMA)
-                    self.state = 294
+                    self.state = 297
                     self.labelName()
-                    self.state = 299
+                    self.state = 302
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-            self.state = 302
+            self.state = 305
             self.match(PromQLParser.RIGHT_PAREN)
         except RecognitionException as re:
             localctx.exception = re
@@ -5535,7 +5575,7 @@ class PromQLParser(Parser):
         self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 304
+            self.state = 307
             _la = self._input.LA(1)
             if not (
                 (
@@ -5612,7 +5652,7 @@ class PromQLParser(Parser):
         self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 306
+            self.state = 309
             _la = self._input.LA(1)
             if not (_la == PromQLParser.NUMBER or _la == PromQLParser.STRING):
                 self._errHandler.recoverInline(self)

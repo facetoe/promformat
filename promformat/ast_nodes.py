@@ -1,11 +1,12 @@
-from typing import List, Union
+from typing import List, Optional, Union
 
 from promformat.parser.PromQLParser import PromQLParser
 
 
 class Expr:
-    def __init__(self, ctx):
+    def __init__(self, ctx, comments=None):
         self.ctx = ctx
+        self.comments = comments
 
 
 class Literal(Expr):
@@ -45,8 +46,8 @@ class PowOpNode(Expr):
 
 
 class AddOpNode(Expr):
-    def __init__(self, ctx, left, right, operator, grouping):
-        super(AddOpNode, self).__init__(ctx)
+    def __init__(self, ctx, left, right, operator, grouping, comments):
+        super(AddOpNode, self).__init__(ctx, comments)
         self.left = left
         self.right = right
         self.operator = operator
@@ -54,8 +55,8 @@ class AddOpNode(Expr):
 
 
 class MultOpNode(Expr):
-    def __init__(self, ctx, left, right, operator, grouping):
-        super(MultOpNode, self).__init__(ctx)
+    def __init__(self, ctx, left, right, operator, grouping, comments):
+        super(MultOpNode, self).__init__(ctx, comments)
         self.left = left
         self.right = right
         self.operator = operator
@@ -71,8 +72,9 @@ class CompareOperationNode(Expr):
         operator,
         grouping,
         bool_keyword,
+        comments=None,
     ):
-        super(CompareOperationNode, self).__init__(ctx)
+        super(CompareOperationNode, self).__init__(ctx, comments=comments)
         self.left = left
         self.right = right
         self.operator = operator
@@ -80,14 +82,16 @@ class CompareOperationNode(Expr):
         self.bool_keyword = bool_keyword
 
 
-class OnIgnoring:
-    def __init__(self, operator, labels):
+class OnIgnoring(Expr):
+    def __init__(self, ctx, operator, labels, comments):
+        super().__init__(ctx, comments)
         self.operator = operator
         self.labels = labels
 
 
-class GroupLeftRight:
-    def __init__(self, operator, labels):
+class GroupLeftRight(Expr):
+    def __init__(self, ctx, operator, labels, comments):
+        super().__init__(ctx, comments)
         self.operator = operator
         self.labels = labels
 
@@ -99,8 +103,8 @@ class Grouping:
 
 
 class AndUnlessOperationNode(Expr):
-    def __init__(self, ctx, left, right, operator, grouping):
-        super(AndUnlessOperationNode, self).__init__(ctx)
+    def __init__(self, ctx, left, right, operator, grouping, comments):
+        super(AndUnlessOperationNode, self).__init__(ctx, comments)
         self.left = left
         self.right = right
         self.operator = operator
@@ -108,8 +112,8 @@ class AndUnlessOperationNode(Expr):
 
 
 class OrOperationNode(Expr):
-    def __init__(self, ctx, left, right, operator, grouping):
-        super(OrOperationNode, self).__init__(ctx)
+    def __init__(self, ctx, left, right, operator, grouping, comments):
+        super(OrOperationNode, self).__init__(ctx, comments)
         self.left = left
         self.right = right
         self.operator = operator
@@ -117,25 +121,31 @@ class OrOperationNode(Expr):
 
 
 class LabelNameNode(Expr):
-    def __init__(self, ctx, name: str):
-        super(LabelNameNode, self).__init__(ctx)
+    def __init__(self, ctx, name: str, comments=None):
+        super(LabelNameNode, self).__init__(ctx, comments)
         self.name = name
 
 
 class LabelNode(Expr):
-    def __init__(self, ctx: PromQLParser.LabelMatcherContext):
-        super(LabelNode, self).__init__(ctx)
+    def __init__(
+        self,
+        ctx: PromQLParser.LabelMatcherContext,
+        comments,
+    ):
+        super(LabelNode, self).__init__(ctx, comments)
         self.name = ctx.labelName().getText()
         self.operator = ctx.labelMatcherOperator().getText()
         self.value = ctx.STRING().getText()
 
 
-class LabelList:
+class LabelList(Expr):
     def __init__(
         self,
+        ctx,
         labels: List[Union[LabelNode, LabelNameNode]],
         has_trailing_comma: bool = False,
     ):
+        super(LabelList, self).__init__(ctx)
         self.labels = labels
         self.has_trailing_comma = has_trailing_comma
 
@@ -194,17 +204,27 @@ class AggregationNode(Expr):
         self,
         ctx,
         operator: str,
-        group_operator: str,
-        label_list,
+        by_without: Optional["ByWithoutNode"],
         parameter_list,
         is_prefix,
     ):
         super(AggregationNode, self).__init__(ctx)
         self.operator = operator
-        self.group_operator = group_operator
-        self.label_list = label_list
+        self.by_without = by_without
         self.parameter_list = parameter_list
         self.is_prefix = is_prefix
+
+
+class ByWithoutNode:
+    def __init__(
+        self,
+        group_operator: Optional[str],
+        group_label_list: LabelList,
+        comments=None,
+    ):
+        self.group_operator = group_operator
+        self.group_label_list = group_label_list
+        self.comments = comments
 
 
 class MetricNameNode(Expr):
@@ -213,8 +233,20 @@ class MetricNameNode(Expr):
         self.metric_name = metric_name
 
 
-class FunctionNode:
+class FunctionNode(Expr):
     def __init__(self, ctx: PromQLParser.Function_Context, parameters):
+        super(FunctionNode, self).__init__(ctx)
         self.ctx = ctx
         self.parameters = parameters
         self.name = self.ctx.FUNCTION().getText()
+
+
+class Parameter:
+    def __init__(self, value):
+        self.value = value
+
+
+class ParameterListNode(Expr):
+    def __init__(self, ctx, parameters: List[Parameter]):
+        super().__init__(ctx)
+        self.parameters = parameters

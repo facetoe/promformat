@@ -1,7 +1,14 @@
+from random import randint
+
+import antlr4
 import pkg_resources
 import yaml
 import pytest
+from antlr4 import CommonTokenStream
+
+from promformat import _build_cst
 from promformat.__main__ import format_query
+from promformat.parser.PromQLParserListener import PromQLParserListener
 
 
 def get_rules():
@@ -32,3 +39,53 @@ def get_rules():
 )
 def test_formatter(query):
     assert format_query(query)
+
+
+class CommentListener(PromQLParserListener):
+    def __init__(self):
+        self.has_comments = False
+        self.comment_contexts = []
+
+    def exitEveryRule(self, ctx):
+        if self._extract_comments_from_context(ctx) is not None:
+            self.has_comments = True
+            self.comment_contexts.append(ctx)
+
+    def _extract_comments_from_context(self, ctx):
+        stream: CommonTokenStream = ctx.parser.getInputStream()
+        index = ctx.start.tokenIndex
+        comment_tokens = stream.getHiddenTokensToLeft(index, channel=3)
+        if comment_tokens:
+            return [c.text.strip() for c in comment_tokens]
+
+
+@pytest.mark.parametrize(
+    ["query"],
+    [
+        pytest.param(rule["query"], id="{service}/{exporter}/{rule}".format(**rule))
+        for rule in get_rules()
+    ],
+)
+def test_comments(query: str):
+    comment = "\n# I am comment\n"
+    query_parts = query.split()
+    # Admittedly not the greatest approach, but if you
+    # run it long enough it finds a lot of bugs.
+    index = randint(0, len(query_parts) - 1)
+    query_parts.insert(index, comment)
+    new_query = " ".join(query_parts)
+
+    parse_tree = _build_cst(new_query)
+    listener = CommentListener()
+    walker = antlr4.ParseTreeWalker()
+    walker.walk(listener, parse_tree)
+    # Sometimes the parse tree doesn't even
+    # contain the comments so nothing we
+    # can do.
+    if not listener.has_comments:
+        return
+
+    formatted = format_query(new_query)
+    assert (
+        formatted.count("I am comment") == 1
+    ), f"{new_query}: {listener.comment_contexts}"

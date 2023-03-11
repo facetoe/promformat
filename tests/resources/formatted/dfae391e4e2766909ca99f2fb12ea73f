@@ -1,0 +1,4 @@
+delta (
+  jenkins_runs_failure_total [1h]
+)
+> 100

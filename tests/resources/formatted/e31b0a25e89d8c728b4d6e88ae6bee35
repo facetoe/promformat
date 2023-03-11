@@ -1,0 +1,18 @@
+sum by (
+  server
+)
+(
+rate   (
+    haproxy_server_response_errors_total [1m]
+  )
+)
+/ sum by (
+  server
+)
+(
+rate   (
+    haproxy_server_http_responses_total [1m]
+  )
+* 100
+)
+> 5

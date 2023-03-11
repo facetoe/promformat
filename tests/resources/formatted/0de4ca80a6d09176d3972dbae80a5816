@@ -1,0 +1,5 @@
+consul_health_node_status
+{
+  status="critical"
+}
+== 1

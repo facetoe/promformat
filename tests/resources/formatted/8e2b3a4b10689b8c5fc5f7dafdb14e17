@@ -1,0 +1,6 @@
+cortex_ring_members
+{
+  state="Unhealthy",
+  name="ingester"
+}
+> 0

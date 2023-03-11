@@ -1,0 +1,10 @@
+sum
+(
+  cassandra_endpoint_active
+)
+by (
+  cassandra_cluster,
+  instance,
+  exported_endpoint
+)
+< 1

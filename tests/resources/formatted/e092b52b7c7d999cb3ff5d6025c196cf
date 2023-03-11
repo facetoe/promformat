@@ -1,0 +1,9 @@
+sum by (
+  server
+)
+(
+rate   (
+    haproxy_server_connection_errors_total [1m]
+  )
+)
+> 100

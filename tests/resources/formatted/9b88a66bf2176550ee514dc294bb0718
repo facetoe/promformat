@@ -1,0 +1,22 @@
+(
+  sum by (
+    instance
+  )
+  (
+    jvm_memory_used_bytes
+    {
+      area="heap"
+    }
+  )
+/ sum by (
+  instance
+)
+(
+  jvm_memory_max_bytes
+  {
+    area="heap"
+  }
+)
+)
+* 100
+> 80

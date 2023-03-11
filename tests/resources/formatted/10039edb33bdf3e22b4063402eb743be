@@ -1,0 +1,12 @@
+sum
+(
+rate   (
+    pulsar_sink_sink_exceptions_total
+    {
+    } [1m]
+  )
+> 10
+)
+by (
+  name
+)

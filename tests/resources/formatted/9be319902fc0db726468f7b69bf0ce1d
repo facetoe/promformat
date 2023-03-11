@@ -1,0 +1,11 @@
+max without (
+  revision
+)
+(
+  kube_statefulset_status_current_revision
+unless kube_statefulset_status_update_revision
+)
+* (
+  kube_statefulset_replicas
+!= kube_statefulset_status_replicas_updated
+)

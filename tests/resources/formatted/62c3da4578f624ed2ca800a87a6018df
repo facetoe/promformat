@@ -1,0 +1,4 @@
+rabbitmq_process_resident_memory_bytes
+/ rabbitmq_resident_memory_limit_bytes
+* 100
+> 90

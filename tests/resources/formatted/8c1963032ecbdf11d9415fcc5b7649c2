@@ -1,0 +1,4 @@
+increase (
+  prometheus_tsdb_wal_truncations_failed_total [1m]
+)
+> 0

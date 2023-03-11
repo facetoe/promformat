@@ -1,0 +1,17 @@
+(
+  sum
+  (
+rate     (
+      container_cpu_usage_seconds_total
+      {
+        name!=""
+      } [3m]
+    )
+  )
+  BY (
+    instance,
+    name
+  )
+* 100
+)
+> 80

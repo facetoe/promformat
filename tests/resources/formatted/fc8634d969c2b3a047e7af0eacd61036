@@ -1,0 +1,24 @@
+(
+  sum
+  (
+    container_memory_working_set_bytes
+    {
+      name!=""
+    }
+  )
+  BY (
+    instance,
+    name
+  )
+/ sum
+(
+  container_spec_memory_limit_bytes
+> 0
+)
+BY (
+  instance,
+  name
+)
+* 100
+)
+> 80

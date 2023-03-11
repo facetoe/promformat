@@ -1,0 +1,8 @@
+count
+(
+  redis_instance_info
+  {
+    role="master"
+  }
+)
+> 1

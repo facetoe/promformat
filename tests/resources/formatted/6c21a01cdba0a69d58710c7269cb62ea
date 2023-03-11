@@ -1,0 +1,4 @@
+redis_memory_used_bytes
+/ redis_total_system_memory_bytes
+* 100
+> 90

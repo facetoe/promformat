@@ -522,7 +522,7 @@ class PromQLFormatter:
         self.write(node.offset, node.duration)
 
     def visitFunctionNode(self, node: FunctionNode):
-        self.write(node.name)
+        self.write(node.name, end=" ")
         self.visitParameterListNode(node.parameters)
 
     def visitAggregationNode(self, node: AggregationNode):

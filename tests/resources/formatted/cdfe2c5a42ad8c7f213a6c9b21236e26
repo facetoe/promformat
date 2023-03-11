@@ -1,0 +1,11 @@
+sum
+(
+  pulsar_storage_size
+> 20
+* 1024
+* 1024
+* 1024
+)
+by (
+  topic
+)

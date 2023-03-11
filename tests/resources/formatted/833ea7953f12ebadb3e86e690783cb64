@@ -1,0 +1,16 @@
+100
+- (
+  avg by (
+    instance
+  )
+  (
+rate     (
+      node_cpu_seconds_total
+      {
+        mode="idle"
+      } [2m]
+    )
+  )
+* 100
+)
+> 80

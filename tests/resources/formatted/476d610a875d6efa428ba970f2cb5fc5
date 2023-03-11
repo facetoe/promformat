@@ -1,0 +1,17 @@
+sum
+(
+rate   (
+    nginx_http_requests_total
+    {
+      status=~"^4.."
+    } [1m]
+  )
+)
+/ sum
+(
+rate   (
+    nginx_http_requests_total [1m]
+  )
+)
+* 100
+> 5

@@ -1,0 +1,9 @@
+sum by (
+  frontend
+)
+(
+rate   (
+    haproxy_frontend_requests_denied_total [2m]
+  )
+)
+> 10

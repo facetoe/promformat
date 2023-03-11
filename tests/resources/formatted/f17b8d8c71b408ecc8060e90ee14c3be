@@ -1,0 +1,9 @@
+count
+(
+  count_values
+  (
+    "config_hash",
+    alertmanager_config_hash
+  )
+)
+> 1

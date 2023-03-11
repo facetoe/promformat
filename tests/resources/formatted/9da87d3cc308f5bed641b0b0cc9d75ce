@@ -1,0 +1,24 @@
+sum
+(
+rate   (
+    request_errors_total [1m]
+  )
+)
+by (
+  deployment,
+  statefulset,
+  daemonset
+)
+/ sum
+(
+rate   (
+    request_total [1m]
+  )
+)
+by (
+  deployment,
+  statefulset,
+  daemonset
+)
+* 100
+> 10

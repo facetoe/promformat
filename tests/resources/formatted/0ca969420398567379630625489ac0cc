@@ -1,0 +1,6 @@
+absent (
+  up
+  {
+    job="alertmanager"
+  }
+)

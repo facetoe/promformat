@@ -1,0 +1,4 @@
+disk_storage_available
+/ disk_storage_total
+* 100
+< 10

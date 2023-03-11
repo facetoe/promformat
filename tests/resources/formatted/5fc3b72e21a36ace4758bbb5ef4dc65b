@@ -1,0 +1,4 @@
+increase (
+  node_edac_correctable_errors_total [1m]
+)
+> 0

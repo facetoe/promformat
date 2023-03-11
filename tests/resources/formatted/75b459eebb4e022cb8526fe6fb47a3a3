@@ -1,0 +1,10 @@
+sum
+(
+rate   (
+    mixer_runtime_dispatches_total
+    {
+      adapter=~"prometheus"
+    } [1m]
+  )
+)
+< 180

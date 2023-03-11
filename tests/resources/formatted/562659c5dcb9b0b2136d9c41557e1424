@@ -1,0 +1,27 @@
+(
+  sum
+  (
+rate     (
+      rest_client_requests_total
+      {
+        code=~"(4|5).."
+      } [1m]
+    )
+  )
+  by (
+    instance,
+    job
+  )
+/ sum
+(
+rate   (
+    rest_client_requests_total [1m]
+  )
+)
+by (
+  instance,
+  job
+)
+)
+* 100
+> 1

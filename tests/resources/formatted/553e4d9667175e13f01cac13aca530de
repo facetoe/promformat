@@ -1,0 +1,24 @@
+sum
+(
+rate   (
+    grpc_server_handled_total
+    {
+      grpc_code!="OK"
+    } [1m]
+  )
+)
+BY (
+  grpc_service,
+  grpc_method
+)
+/ sum
+(
+rate   (
+    grpc_server_handled_total [1m]
+  )
+)
+BY (
+  grpc_service,
+  grpc_method
+)
+> 0.01

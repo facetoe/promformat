@@ -1,0 +1,25 @@
+avg by (
+  instance
+)
+(
+rate   (
+    mongodb_connections
+    {
+      state="current"
+    } [1m]
+  )
+)
+/ avg by (
+  instance
+)
+(
+  sum
+  (
+    mongodb_connections
+  )
+  by (
+    instance
+  )
+)
+* 100
+> 80

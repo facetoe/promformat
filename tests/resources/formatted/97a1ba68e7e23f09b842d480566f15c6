@@ -1,0 +1,4 @@
+rate (
+  container_cpu_cfs_throttled_seconds_total [3m]
+)
+> 1

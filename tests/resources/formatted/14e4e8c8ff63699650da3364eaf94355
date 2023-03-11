@@ -1,0 +1,13 @@
+avg
+(
+  cassandra_table_tombstones_scanned
+  {
+    quantile="0.99"
+  }
+)
+by (
+  instance,
+  cassandra_cluster,
+  keyspace
+)
+> 100

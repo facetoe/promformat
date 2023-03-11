@@ -1,0 +1,4 @@
+increase (
+  netdata_smartd_log_offline_uncorrectable_sector_count_sectors_average [2m]
+)
+> 0

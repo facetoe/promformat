@@ -1,0 +1,11 @@
+sum by (
+  instance
+)
+(
+rate   (
+    node_network_transmit_bytes_total [2m]
+  )
+)
+/ 1024
+/ 1024
+> 100

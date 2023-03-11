@@ -1,0 +1,4 @@
+increase (
+  coredns_panics_total [1m]
+)
+> 0

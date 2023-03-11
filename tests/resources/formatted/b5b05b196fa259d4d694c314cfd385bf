@@ -1,0 +1,5 @@
+elasticsearch_cluster_health_status
+{
+  color="red"
+}
+== 1

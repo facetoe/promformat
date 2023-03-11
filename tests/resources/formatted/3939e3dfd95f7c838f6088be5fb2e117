@@ -1,0 +1,2 @@
+elasticsearch_cluster_health_number_of_data_nodes
+< 3

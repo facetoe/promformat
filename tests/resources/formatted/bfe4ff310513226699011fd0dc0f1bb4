@@ -1,0 +1,5 @@
+mongodb_metrics_cursor_open
+{
+  state="total_open"
+}
+> 10000

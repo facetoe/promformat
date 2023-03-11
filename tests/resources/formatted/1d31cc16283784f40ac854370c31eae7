@@ -1,0 +1,8 @@
+count
+(
+  traefik_service_server_up
+)
+by (
+  service
+)
+== 0

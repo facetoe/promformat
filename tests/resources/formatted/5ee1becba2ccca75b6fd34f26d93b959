@@ -1,0 +1,13 @@
+histogram_quantile (
+  0.99,
+  sum
+  (
+rate     (
+      promtail_request_duration_seconds_bucket [5m]
+    )
+  )
+  by (
+    le
+  )
+)
+> 1

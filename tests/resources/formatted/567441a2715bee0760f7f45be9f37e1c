@@ -1,0 +1,4 @@
+time (
+)
+- pg_postmaster_start_time_seconds
+< 60

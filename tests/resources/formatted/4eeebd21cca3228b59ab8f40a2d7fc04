@@ -1,0 +1,13 @@
+avg by (
+  instance
+)
+(
+rate   (
+    node_cpu_seconds_total
+    {
+      mode="iowait"
+    } [5m]
+  )
+)
+* 100
+> 5

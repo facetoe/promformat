@@ -1,0 +1,7 @@
+increase (
+  cassandra_stats
+  {
+    name="org:apache:cassandra:metrics:clientrequest:write:failures:oneminuterate"
+  } [1m]
+)
+> 0

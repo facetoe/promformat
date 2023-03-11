@@ -1,0 +1,4 @@
+increase (
+  redis_rejected_connections_total [1m]
+)
+> 0

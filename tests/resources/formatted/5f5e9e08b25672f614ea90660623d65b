@@ -1,0 +1,19 @@
+sum
+(
+  (
+rate     (
+      pulsar_function_user_exceptions_total
+      {
+      } [1m]
+    )
++ rate (
+  pulsar_function_system_exceptions_total
+  {
+  } [1m]
+)
+  )
+> 10
+)
+by (
+  name
+)

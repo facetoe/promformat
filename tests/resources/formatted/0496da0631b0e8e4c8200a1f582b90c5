@@ -1,0 +1,3 @@
+haproxy_backend_active_servers
++ haproxy_backend_backup_servers
+== 0

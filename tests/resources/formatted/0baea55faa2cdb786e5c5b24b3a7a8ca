@@ -1,0 +1,10 @@
+count
+(
+  bookie_SERVER_STATUS
+  {
+  }
+== 0
+)
+by (
+  pod
+)

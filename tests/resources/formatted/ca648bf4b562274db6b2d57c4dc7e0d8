@@ -1,0 +1,24 @@
+(
+  1
+- (
+  sum
+  (
+    container_fs_inodes_free
+    {
+      name!=""
+    }
+  )
+  BY (
+    instance
+  )
+/ sum
+(
+  container_fs_inodes_total
+)
+BY (
+  instance
+)
+)
+)
+* 100
+> 80

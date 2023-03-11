@@ -1,0 +1,5 @@
+windows_service_status
+{
+  status="ok"
+}
+!= 1

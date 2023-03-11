@@ -1,0 +1,4 @@
+increase (
+  node_vmstat_oom_kill [1m]
+)
+> 0

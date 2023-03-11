@@ -1,0 +1,8 @@
+(
+time   (
+  )
+- thanos_objstore_bucket_last_successful_upload_time
+)
+> 24
+* 60
+* 60

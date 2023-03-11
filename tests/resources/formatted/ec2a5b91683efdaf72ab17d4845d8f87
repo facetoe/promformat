@@ -1,0 +1,25 @@
+(
+  (
+    sum by (
+      proxy
+    )
+    (
+rate       (
+        haproxy_server_http_responses_total
+        {
+          code="4xx"
+        } [1m]
+      )
+    )
+/ sum by (
+  proxy
+)
+(
+rate   (
+    haproxy_server_http_responses_total [1m]
+  )
+)
+  )
+* 100
+)
+> 5

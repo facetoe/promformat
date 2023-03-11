@@ -1,0 +1,23 @@
+(
+  sum
+  (
+    mongodb_memory
+    {
+      type="virtual"
+    }
+  )
+  BY (
+    instance
+  )
+/ sum
+(
+  mongodb_memory
+  {
+    type="mapped"
+  }
+)
+BY (
+  instance
+)
+)
+> 3

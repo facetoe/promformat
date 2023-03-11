@@ -1,0 +1,15 @@
+100.0
+- 100
+* (
+  (
+    windows_logical_disk_free_bytes
+/ 1024
+/ 1024
+  )
+/ (
+  windows_logical_disk_size_bytes
+/ 1024
+/ 1024
+)
+)
+> 80

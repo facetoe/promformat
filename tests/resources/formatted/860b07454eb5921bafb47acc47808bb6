@@ -1,0 +1,8 @@
+sum
+(
+  phpfpm_max_children_reached_total
+)
+by (
+  instance
+)
+> 0

@@ -1,0 +1,9 @@
+sum by (
+  backend
+)
+(
+rate   (
+    haproxy_backend_connection_errors_total [1m]
+  )
+)
+> 100

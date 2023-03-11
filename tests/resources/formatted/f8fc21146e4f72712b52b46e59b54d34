@@ -1,0 +1,7 @@
+avg by (
+  proxy
+)
+(
+  haproxy_backend_max_total_time_seconds
+)
+> 1

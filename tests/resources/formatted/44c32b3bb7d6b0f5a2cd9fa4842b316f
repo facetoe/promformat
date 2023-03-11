@@ -1,0 +1,7 @@
+changes (
+  cassandra_stats
+  {
+    name="org:apache:cassandra:metrics:clientrequest:read:unavailables:count"
+  } [1m]
+)
+> 0

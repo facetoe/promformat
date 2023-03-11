@@ -1,0 +1,11 @@
+sum by (
+  instance
+)
+(
+rate   (
+    node_disk_written_bytes_total [2m]
+  )
+)
+/ 1024
+/ 1024
+> 50

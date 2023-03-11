@@ -1,0 +1,5 @@
+sum
+(
+  rabbitmq_build_info
+)
+< 3

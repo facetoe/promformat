@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from promformat.parser.PromQLParser import PromQLParser
 
@@ -132,7 +132,9 @@ class LabelNode(Expr):
 
 class LabelList:
     def __init__(
-        self, labels: list[LabelNode | LabelNameNode], has_trailing_comma: bool = False
+        self,
+        labels: List[Union[LabelNode, LabelNameNode]],
+        has_trailing_comma: bool = False,
     ):
         self.labels = labels
         self.has_trailing_comma = has_trailing_comma

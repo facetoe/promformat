@@ -2,7 +2,6 @@ WORKDIR=build
 ANTLR_VERSION=4.10
 ANTLR_JAR=antlr-$(ANTLR_VERSION)-complete.jar
 
-
 PROJECT=grammars-v4
 GITHUB_URL=git@github.com:facetoe/$(PROJECT).git
 GRAMMAR_COMMIT=3da4bcfe2a1fb0b40846b399e40dcd044009fa36
@@ -27,3 +26,12 @@ test:
 
 reformat:
 	black promformat tests
+
+validate-style:
+	$(eval CHANGES_BEFORE := $(shell mktemp))
+	git diff > $(CHANGES_BEFORE)
+	$(MAKE) reformat
+	$(eval CHANGES_AFTER := $(shell mktemp))
+	git diff > $(CHANGES_AFTER)
+	diff $(CHANGES_BEFORE) $(CHANGES_AFTER)
+	-rm $(CHANGES_BEFORE) $(CHANGES_AFTER)

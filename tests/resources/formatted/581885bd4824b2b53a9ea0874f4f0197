@@ -1,0 +1,4 @@
+avg_over_time (
+  speedtest_upload [10m]
+)
+< 20

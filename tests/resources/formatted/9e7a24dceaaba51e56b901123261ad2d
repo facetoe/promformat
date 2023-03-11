@@ -1,0 +1,7 @@
+changes (
+  process_start_time_seconds
+  {
+    job=~"prometheus|pushgateway|alertmanager"
+  } [15m]
+)
+> 2

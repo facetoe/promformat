@@ -1,0 +1,12 @@
+(
+  elasticsearch_jvm_memory_used_bytes
+  {
+    area="heap"
+  }
+/ elasticsearch_jvm_memory_max_bytes
+{
+  area="heap"
+}
+)
+* 100
+> 90

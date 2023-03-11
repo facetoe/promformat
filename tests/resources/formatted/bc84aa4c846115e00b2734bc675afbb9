@@ -1,0 +1,5 @@
+vault_token_count_by_ttl
+{
+  creation_ttl="+Inf"
+}
+> 3

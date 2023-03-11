@@ -1,0 +1,15 @@
+(
+  sum
+  (
+    container_fs_io_current
+    {
+      name!=""
+    }
+  )
+  BY (
+    instance,
+    name
+  )
+* 100
+)
+> 80

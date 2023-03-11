@@ -1,0 +1,4 @@
+rate (
+  alertmanager_notifications_failed_total [1m]
+)
+> 0

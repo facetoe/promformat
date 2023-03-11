@@ -1,0 +1,4 @@
+rate (
+  pg_stat_database_xact_commit [1m]
+)
+< 10

@@ -1,0 +1,8 @@
+sum
+(
+  jenkins_plugins_withUpdate
+)
+by (
+  instance
+)
+> 3

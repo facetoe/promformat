@@ -1,0 +1,4 @@
+increase (
+  haproxy_server_check_failures_total [1m]
+)
+> 0

@@ -1,0 +1,4 @@
+avg_over_time (
+  speedtest_download [10m]
+)
+< 100

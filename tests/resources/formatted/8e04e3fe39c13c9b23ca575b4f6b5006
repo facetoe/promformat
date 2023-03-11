@@ -1,0 +1,32 @@
+kafka_burrow_topic_partition_offset
+- on (
+  partition,
+  cluster,
+  topic
+)
+group_right (
+)
+kafka_burrow_partition_current_offset
+>= (
+  kafka_burrow_topic_partition_offset
+  offset 15m
+-   on (
+    partition,
+    cluster,
+    topic
+  )
+  group_right (
+  )
+kafka_burrow_partition_current_offset
+offset 15m
+)
+AND kafka_burrow_topic_partition_offset
+- on (
+  partition,
+  cluster,
+  topic
+)
+group_right (
+)
+kafka_burrow_partition_current_offset
+> 0

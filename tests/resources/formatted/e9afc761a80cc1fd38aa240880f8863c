@@ -1,0 +1,9 @@
+sum by (
+  proxy
+)
+(
+rate   (
+    haproxy_backend_retry_warnings_total [1m]
+  )
+)
+> 10

@@ -7,6 +7,14 @@ import pytest
 from antlr4 import CommonTokenStream
 
 from promformat import _build_cst
+
+import hashlib
+import os
+
+import pkg_resources
+import yaml
+import pytest
+
 from promformat.__main__ import format_query
 from promformat.parser.PromQLParserListener import PromQLParserListener
 
@@ -21,11 +29,17 @@ def get_rules():
                     rules = exporter.get("rules")
                     if rules:
                         for rule in rules:
+                            hasher = hashlib.md5()
+                            hasher.update(rule["query"].encode("utf-8"))
+                            hasher.update(group["name"].encode("utf-8"))
+                            hasher.update(service["name"].encode("utf-8"))
+                            hasher.update(rule["name"].encode("utf-8"))
                             yield dict(
                                 group=group.get("name", "unnamed group"),
                                 service=service.get("name", "unnamed service"),
                                 exporter=exporter.get("name", "unnamed exporter"),
                                 rule=rule.get("name", "unnamed rule"),
+                                filename=hasher.hexdigest(),
                                 query=rule["query"],
                             )
 
@@ -89,3 +103,22 @@ def test_comments(query: str):
     assert (
         formatted.count("I am comment") == 1
     ), f"{new_query}: {listener.comment_contexts}"
+
+
+@pytest.mark.parametrize(
+    ["query", "file_name"],
+    [
+        pytest.param(
+            rule["query"],
+            rule["filename"],
+            id="{service}/{exporter}/{rule}".format(**rule),
+        )
+        for rule in get_rules()
+    ],
+)
+def test_formatter(query, file_name):
+    rule_path = pkg_resources.resource_filename("tests.resources", "formatted")
+    path = os.path.join(rule_path, file_name)
+    with open(path) as f:
+        expected_formatting = f.read()
+    assert format_query(query) == expected_formatting

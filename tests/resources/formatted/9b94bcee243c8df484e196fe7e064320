@@ -1,0 +1,21 @@
+sum
+(
+rate   (
+    apiserver_request_total
+    {
+      job="apiserver",
+      code=~"^(?:5..)$"
+    } [1m]
+  )
+)
+/ sum
+(
+rate   (
+    apiserver_request_total
+    {
+      job="apiserver"
+    } [1m]
+  )
+)
+* 100
+> 3

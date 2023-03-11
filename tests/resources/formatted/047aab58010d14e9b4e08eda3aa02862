@@ -1,0 +1,7 @@
+increase (
+  elasticsearch_indices_docs
+  {
+    es_data_node="true"
+  } [10m]
+)
+< 1

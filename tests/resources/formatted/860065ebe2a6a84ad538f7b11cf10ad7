@@ -1,0 +1,8 @@
+sum
+(
+  kafka_consumergroup_lag
+)
+by (
+  consumergroup
+)
+> 50

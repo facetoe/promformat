@@ -1,0 +1,19 @@
+sum
+(
+rate   (
+    etcd_http_failed_total [1m]
+  )
+)
+BY (
+  method
+)
+/ sum
+(
+rate   (
+    etcd_http_received_total [1m]
+  )
+)
+BY (
+  method
+)
+> 0.01

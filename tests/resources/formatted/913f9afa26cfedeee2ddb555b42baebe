@@ -1,0 +1,4 @@
+probe_http_status_code
+<= 199
+OR probe_http_status_code
+>= 400

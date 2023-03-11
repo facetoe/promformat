@@ -1,0 +1,7 @@
+increase (
+  pgbouncer_errors_count
+  {
+    errmsg="no more connections allowed (max_client_conn)"
+  } [30s]
+)
+> 0

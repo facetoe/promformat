@@ -1,0 +1,8 @@
+sum
+(
+  pulsar_entry_size_overflow
+> 0
+)
+by (
+  topic
+)

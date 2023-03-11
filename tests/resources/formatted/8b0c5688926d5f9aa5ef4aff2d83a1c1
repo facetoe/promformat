@@ -1,0 +1,9 @@
+pg_bloat_btree_bloat_pct
+> 80
+and on (
+  idxname
+)
+(
+  pg_bloat_btree_real_size
+> 100000000
+)

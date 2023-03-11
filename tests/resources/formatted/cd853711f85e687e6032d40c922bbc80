@@ -1,0 +1,14 @@
+sum
+(
+  cassandra_stats
+  {
+    name="org:apache:cassandra:net:failuredetector:downendpointcount"
+  }
+)
+by (
+  service,
+  group,
+  cluster,
+  env
+)
+> 0

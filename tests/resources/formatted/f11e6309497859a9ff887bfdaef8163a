@@ -1,0 +1,16 @@
+count without (
+  instance,
+  job
+)
+(
+  redis_connected_slaves
+)
+- sum without (
+  instance,
+  job
+)
+(
+  redis_connected_slaves
+)
+- 1
+> 1

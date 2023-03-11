@@ -1,0 +1,5 @@
+node_systemd_unit_state
+{
+  state="failed"
+}
+== 1

@@ -1,0 +1,7 @@
+avg_over_time (
+  cassandra_stats
+  {
+    name="org:apache:cassandra:metrics:compaction:pendingtasks:value"
+  } [1m]
+)
+> 100

@@ -1,0 +1,18 @@
+(
+  (
+    pg_stat_user_tables_n_dead_tup
+> 10000
+  )
+/ (
+  pg_stat_user_tables_n_live_tup
++ pg_stat_user_tables_n_dead_tup
+)
+)
+>= 0.1
+unless ON (
+  instance
+)
+(
+  pg_replication_is_replica
+== 1
+)

@@ -1,0 +1,4 @@
+changes (
+  redis_connected_slaves [1m]
+)
+> 1

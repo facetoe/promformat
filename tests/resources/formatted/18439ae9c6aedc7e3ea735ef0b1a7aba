@@ -1,0 +1,4 @@
+rate (
+  mysql_global_status_innodb_log_waits [15m]
+)
+> 10

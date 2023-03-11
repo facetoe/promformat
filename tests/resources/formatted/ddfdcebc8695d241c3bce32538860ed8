@@ -1,0 +1,10 @@
+mysql_slave_status_master_server_id
+> 0
+and ON (
+  instance
+)
+(
+  mysql_slave_status_seconds_behind_master
+- mysql_slave_status_sql_delay
+)
+> 30

@@ -1,0 +1,3 @@
+node_nf_conntrack_entries
+/ node_nf_conntrack_entries_limit
+> 0.8

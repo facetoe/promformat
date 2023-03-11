@@ -1,0 +1,4 @@
+rabbitmq_node_mem_used
+/ rabbitmq_node_mem_limit
+* 100
+> 90

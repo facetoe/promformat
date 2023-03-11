@@ -1,0 +1,8 @@
+sum
+(
+  pulsar_storage_write_latency_overflow
+> 0
+)
+by (
+  topic
+)

@@ -1,0 +1,4 @@
+rabbitmq_process_open_fds
+/ rabbitmq_process_max_fds
+* 100
+> 90

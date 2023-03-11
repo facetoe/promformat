@@ -1,0 +1,7 @@
+rate (
+  netdata_cpu_cpu_percentage_average
+  {
+    dimension="steal"
+  } [1m]
+)
+> 10

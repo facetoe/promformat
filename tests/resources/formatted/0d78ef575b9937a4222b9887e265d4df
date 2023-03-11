@@ -1,0 +1,7 @@
+increase (
+  cassandra_client_request_failures_total
+  {
+    operation="read"
+  } [1m]
+)
+> 0

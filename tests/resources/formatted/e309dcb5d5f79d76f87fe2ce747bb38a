@@ -1,0 +1,11 @@
+sum by (
+  datname
+)
+(
+  pg_stat_activity_count
+  {
+    datname!~"template.*|postgres"
+  }
+)
+> pg_settings_max_connections
+* 0.8

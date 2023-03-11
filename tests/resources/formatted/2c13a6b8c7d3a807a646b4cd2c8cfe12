@@ -1,0 +1,22 @@
+(
+  (
+    sum by (
+      backend
+    )
+    (
+avg_over_time       (
+        haproxy_backend_max_sessions [2m]
+      )
+    )
+/ sum by (
+  backend
+)
+(
+avg_over_time   (
+    haproxy_backend_limit_sessions [2m]
+  )
+)
+  )
+* 100
+)
+> 80

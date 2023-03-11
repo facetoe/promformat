@@ -1,0 +1,11 @@
+sum
+(
+increase   (
+    loki_panic_total [10m]
+  )
+)
+by (
+  namespace,
+  job
+)
+> 0

@@ -1,0 +1,15 @@
+avg
+(
+  mongodb_replset_member_optime_date
+  {
+    state="PRIMARY"
+  }
+)
+- avg
+(
+  mongodb_replset_member_optime_date
+  {
+    state="SECONDARY"
+  }
+)
+> 10

@@ -1,0 +1,2 @@
+kube_deployment_status_observed_generation
+!= kube_deployment_metadata_generation

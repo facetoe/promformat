@@ -1,0 +1,8 @@
+sum
+(
+  bookie_ledger_dir__pulsar_data_bookkeeper_ledgers_usage
+)
+by (
+  kubernetes_pod_name
+)
+> 75

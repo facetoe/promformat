@@ -1,0 +1,7 @@
+100
+/ netdata_system_ram_MB_average
+* netdata_system_ram_MB_average
+{
+  dimension=~"free|cached"
+}
+< 20

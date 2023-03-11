@@ -1,0 +1,4 @@
+rate (
+  thanos_objstore_bucket_operation_failures_total [1m]
+)
+> 0

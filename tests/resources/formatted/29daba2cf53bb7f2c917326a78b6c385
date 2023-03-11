@@ -1,0 +1,11 @@
+rate (
+  node_disk_read_time_seconds_total [1m]
+)
+/ rate (
+  node_disk_reads_completed_total [1m]
+)
+> 0.1
+and rate (
+  node_disk_reads_completed_total [1m]
+)
+> 0

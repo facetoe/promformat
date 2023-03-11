@@ -1,0 +1,5 @@
+sum
+(
+  rabbitmq_running
+)
+< 3

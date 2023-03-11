@@ -1,0 +1,11 @@
+count
+(
+  count
+  (
+    rabbitmq_build_info
+  )
+  by (
+    rabbitmq_version
+  )
+)
+> 1

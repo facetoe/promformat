@@ -1,0 +1,7 @@
+time (
+)
+- rabbitmq_queue_head_message_timestamp
+{
+  queue="my-queue"
+}
+> 60

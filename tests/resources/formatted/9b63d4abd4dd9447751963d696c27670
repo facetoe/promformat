@@ -1,0 +1,4 @@
+increase (
+  etcd_server_leader_changes_seen_total [10m]
+)
+> 2

@@ -1,0 +1,19 @@
+histogram_quantile (
+  0.99,
+  sum
+  (
+rate     (
+      apiserver_request_latencies_bucket
+      {
+        subresource!="log",
+        verb!~"^(?:CONNECT|WATCHLIST|WATCH|PROXY)$"
+      } [10m]
+    )
+  )
+  WITHOUT (
+    instance,
+    resource
+  )
+)
+/ 1e+06
+> 1

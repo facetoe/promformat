@@ -1,0 +1,4 @@
+rate (
+  cortex_prometheus_notifications_dropped_total [5m]
+)
+> 0

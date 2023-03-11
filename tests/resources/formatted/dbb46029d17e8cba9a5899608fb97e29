@@ -1,0 +1,23 @@
+sum
+(
+rate   (
+    traefik_service_requests_total
+    {
+      code=~"4.*"
+    } [3m]
+  )
+)
+by (
+  service
+)
+/ sum
+(
+rate   (
+    traefik_service_requests_total [3m]
+  )
+)
+by (
+  service
+)
+* 100
+> 5

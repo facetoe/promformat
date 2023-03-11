@@ -1,0 +1,6 @@
+vmware_vm_mem_usage_average
+/ 100
+>= 80
+and vmware_vm_mem_usage_average
+/ 100
+< 90

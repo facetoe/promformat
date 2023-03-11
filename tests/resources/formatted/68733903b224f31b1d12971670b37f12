@@ -1,0 +1,27 @@
+100
+* sum
+(
+rate   (
+    loki_request_duration_seconds_count
+    {
+      status_code=~"5.."
+    } [1m]
+  )
+)
+by (
+  namespace,
+  job,
+  route
+)
+/ sum
+(
+rate   (
+    loki_request_duration_seconds_count [1m]
+  )
+)
+by (
+  namespace,
+  job,
+  route
+)
+> 10

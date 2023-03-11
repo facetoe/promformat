@@ -1,0 +1,2 @@
+prometheus_rule_group_last_duration_seconds
+> prometheus_rule_group_interval_seconds

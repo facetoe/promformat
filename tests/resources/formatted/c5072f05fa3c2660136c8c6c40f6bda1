@@ -1,0 +1,5 @@
+kube_persistentvolumeclaim_status_phase
+{
+  phase="Pending"
+}
+== 1

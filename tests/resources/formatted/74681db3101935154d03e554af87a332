@@ -1,0 +1,4 @@
+increase (
+  mssql_deadlocks [1m]
+)
+> 5

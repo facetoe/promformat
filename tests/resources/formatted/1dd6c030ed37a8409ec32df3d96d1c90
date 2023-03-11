@@ -1,0 +1,5 @@
+probe_ssl_earliest_cert_expiry
+- time (
+)
+< 86400
+* 30

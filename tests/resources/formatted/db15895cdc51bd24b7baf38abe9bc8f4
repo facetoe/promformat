@@ -1,0 +1,8 @@
+sum
+(
+  rabbitmq_queue_messages_unacked
+)
+BY (
+  queue
+)
+> 1000

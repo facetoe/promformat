@@ -1,0 +1,7 @@
+increase (
+  pg_stat_database_deadlocks
+  {
+    datname!~"template.*|postgres"
+  } [1m]
+)
+> 5

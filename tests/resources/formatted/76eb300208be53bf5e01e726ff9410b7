@@ -1,0 +1,13 @@
+min
+(
+  kube_deployment_status_replicas_available
+  {
+    deployment="istio-ingressgateway",
+    namespace="istio-system"
+  }
+)
+without (
+  instance,
+  pod
+)
+< 2

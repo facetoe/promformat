@@ -1,0 +1,4 @@
+increase (
+  prometheus_target_scrapes_sample_duplicate_timestamp_total [5m]
+)
+> 0

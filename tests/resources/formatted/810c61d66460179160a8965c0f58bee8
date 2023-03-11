@@ -1,0 +1,7 @@
+increase (
+  solr_metrics_core_errors_total
+  {
+    category="QUERY"
+  } [1m]
+)
+> 1

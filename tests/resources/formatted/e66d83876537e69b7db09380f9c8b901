@@ -1,0 +1,3 @@
+kube_job_spec_completions
+- kube_job_status_succeeded
+> 0

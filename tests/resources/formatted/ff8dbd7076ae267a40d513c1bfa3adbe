@@ -1,0 +1,5 @@
+rabbitmq_queue_messages_ready
+{
+  queue="my-queue"
+}
+> 1000

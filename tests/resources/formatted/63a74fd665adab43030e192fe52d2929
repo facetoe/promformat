@@ -1,0 +1,7 @@
+increase (
+  postgresql_errors_total
+  {
+    type="deadlock_detected"
+  } [1m]
+)
+> 1

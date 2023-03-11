@@ -1,0 +1,5 @@
+(
+  node_bonding_active
+- node_bonding_slaves
+)
+!= 0

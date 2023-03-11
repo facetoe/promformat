@@ -1,0 +1,7 @@
+changes (
+  cassandra_client_request_unavailable_exceptions_total
+  {
+    operation="read"
+  } [1m]
+)
+> 0

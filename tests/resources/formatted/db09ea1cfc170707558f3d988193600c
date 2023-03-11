@@ -1,0 +1,7 @@
+rate (
+  rabbitmq_exchange_messages_published_in_total
+  {
+    exchange="my-exchange"
+  } [1m]
+)
+< 5

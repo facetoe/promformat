@@ -1,4 +1,5 @@
-from antlr4 import InputStream, CommonTokenStream
+from antlr4 import InputStream, CommonTokenStream, BailErrorStrategy
+from antlr4.error.ErrorListener import ErrorListener
 
 from promformat.formatter import (
     BuildAstVisitor,
@@ -7,6 +8,13 @@ from promformat.formatter import (
 )
 from promformat.parser.PromQLLexer import PromQLLexer
 from promformat.parser.PromQLParser import PromQLParser
+
+
+class FailOnAnyErrorListener(ErrorListener):
+    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
+        raise Exception(
+            "ERROR: when parsing line %d column %d: %s\n" % (line, column, msg)
+        )
 
 
 def format_query(promql):
@@ -31,5 +39,6 @@ def _build_cst(promql):
     lexer = PromQLLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
     promql_parser = PromQLParser(token_stream)
+    promql_parser.addErrorListener(FailOnAnyErrorListener())
     cst = promql_parser.expression()
     return cst

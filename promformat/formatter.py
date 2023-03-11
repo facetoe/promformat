@@ -1,9 +1,9 @@
-import io
+import functools
 from contextlib import contextmanager
-from io import StringIO
 from typing import Optional
 
-from antlr4 import ErrorNode, TerminalNode
+from antlr4 import ErrorNode, TerminalNode, CommonTokenStream, ParserRuleContext
+from antlr4.Token import CommonToken
 
 from promformat.ast_nodes import (
     Number,
@@ -30,6 +30,9 @@ from promformat.ast_nodes import (
     GroupLeftRight,
     OffsetNode,
     LabelList,
+    Parameter,
+    ParameterListNode,
+    ByWithoutNode,
 )
 from promformat.buffer import SmartBuffer
 from promformat.error import UnEqualParseTreeError
@@ -74,8 +77,17 @@ class ParseTreeValidator:
 
 
 class BuildAstVisitor(PromQLParserVisitor):
-    def visit(self, tree):
-        return super().visit(tree)
+    def __init__(self):
+        self.prev_index = 0
+
+    def visit(self, ctx):
+        result = super().visit(ctx)
+        if ctx.start.tokenIndex != self.prev_index:
+            comment_tokens = self._extract_comments_from_context(ctx)
+            if comment_tokens:
+                result.comments = comment_tokens
+                self.prev_index = ctx.start.tokenIndex
+        return result
 
     def visitExpression(self, ctx: PromQLParser.ExpressionContext):
         return self.visit(ctx.vectorOperation())
@@ -97,13 +109,14 @@ class BuildAstVisitor(PromQLParserVisitor):
             op_codes = ("ADD", "SUB")
             context = ctx.addOp()
             op = self._extract_op(context, op_codes)
-            grouping = self._extract_grouping(grouping=ctx.addOp().grouping())
+            grouping = self._extract_grouping(grouping=context.grouping())
             return AddOpNode(
                 ctx,
                 left=left,
                 right=right,
                 operator=op.getText(),
                 grouping=grouping,
+                comments=self._extract_comments_from_context(context),
             )
         elif ctx.unaryOp():
             vector = ctx.vectorOperation()
@@ -122,13 +135,14 @@ class BuildAstVisitor(PromQLParserVisitor):
             context = ctx.multOp()
             op_codes = ("MOD", "DIV", "MULT")
             op = self._extract_op(context, op_codes)
-            grouping = self._extract_grouping(grouping=ctx.multOp().grouping())
+            grouping = self._extract_grouping(grouping=context.grouping())
             return MultOpNode(
                 ctx,
                 left=left,
                 right=right,
                 operator=op.getText(),
                 grouping=grouping,
+                comments=self._extract_comments_from_context(context),
             )
         elif ctx.subqueryOp():
             subquery = self.visit(ctx.subqueryOp())
@@ -137,44 +151,48 @@ class BuildAstVisitor(PromQLParserVisitor):
             left = self.visit(vector_op)
             return SubqueryNode(ctx, left=left, subquery_range=subquery)
         elif ctx.compareOp():
-            left, right = self._extract_left_right_vector_operations(ctx)
             context = ctx.compareOp()
+            left, right = self._extract_left_right_vector_operations(ctx)
             op_codes = ("DEQ", "GT", "LT", "GE", "LE", "NE", "BOOL")
             op = self._extract_op(context, op_codes)
-            grouping = self._extract_grouping(grouping=ctx.compareOp().grouping())
+            grouping = self._extract_grouping(grouping=context.grouping())
             bool_keyword = None
-            if ctx.compareOp().BOOL():
-                bool_keyword = ctx.compareOp().BOOL().getText()
+            if context.BOOL():
+                bool_keyword = context.BOOL().getText()
             return CompareOperationNode(
-                ctx,
+                context,
                 left=left,
                 right=right,
                 operator=op.getText(),
                 grouping=grouping,
                 bool_keyword=bool_keyword,
+                comments=self._extract_comments_from_context(context),
             )
         elif ctx.andUnlessOp():
             left, right = self._extract_left_right_vector_operations(ctx)
             context = ctx.andUnlessOp()
             op_codes = ("AND", "UNLESS")
             op = self._extract_op(context, op_codes)
-            grouping = self._extract_grouping(grouping=ctx.andUnlessOp().grouping())
+            grouping = self._extract_grouping(grouping=context.grouping())
             return AndUnlessOperationNode(
                 ctx,
                 left=left,
                 right=right,
                 operator=op.getText(),
                 grouping=grouping,
+                comments=self._extract_comments_from_context(context),
             )
         elif ctx.orOp():
             left, right = self._extract_left_right_vector_operations(ctx)
-            grouping = self._extract_grouping(grouping=ctx.orOp().grouping())
+            context = ctx.orOp()
+            grouping = self._extract_grouping(grouping=context.grouping())
             return OrOperationNode(
                 ctx,
                 left=left,
                 right=right,
-                operator=ctx.orOp().OR().getText(),
+                operator=context.OR().getText(),
                 grouping=grouping,
+                comments=self._extract_comments_from_context(context),
             )
         else:
             return self.visit(ctx.vector())
@@ -190,41 +208,50 @@ class BuildAstVisitor(PromQLParserVisitor):
         if grouping is None:
             return None
         assert grouping.on_() or grouping.ignoring()
-        if grouping.on_():
-            on_ignoring = OnIgnoring(
-                operator=grouping.on_().ON().getText(),
-                labels=LabelList(
-                    self.visitLabelNameList(grouping.on_().labelNameList())
-                ),
-            )
-        else:
-            on_ignoring = OnIgnoring(
-                operator=grouping.ignoring().IGNORING().getText(),
-                labels=LabelList(
-                    self.visitLabelNameList(grouping.ignoring().labelNameList())
-                ),
-            )
+        on_ignoring = self.visitOnIgnoring(grouping)
 
         group_left_right = None
         if grouping.groupLeft():
+            context = grouping.groupLeft()
             group_left_right = GroupLeftRight(
+                ctx=context,
                 operator="group_left",
-                labels=LabelList(
-                    self.visitLabelNameList(grouping.groupLeft().labelNameList())
-                ),
+                labels=self.visit(context.labelNameList()),
+                comments=self._extract_comments_from_context(context),
             )
         elif grouping.groupRight():
+            context = grouping.groupRight()
             group_left_right = GroupLeftRight(
+                ctx=context,
                 operator="group_right",
-                labels=LabelList(
-                    self.visitLabelNameList(grouping.groupRight().labelNameList())
-                ),
+                labels=self.visit(context.labelNameList()),
+                comments=self._extract_comments_from_context(context),
             )
 
         return Grouping(
             on_ignoring=on_ignoring,
             group_left_right=group_left_right,
         )
+
+    def visitOnIgnoring(self, grouping):
+        comments = self._extract_comments_from_context(grouping)
+        if grouping.on_():
+            context = grouping.on_()
+            on_ignoring = OnIgnoring(
+                ctx=context,
+                operator=context.ON().getText(),
+                labels=self.visit(context.labelNameList()),
+                comments=comments,
+            )
+        else:
+            context = grouping.ignoring()
+            on_ignoring = OnIgnoring(
+                ctx=context,
+                operator=context.IGNORING().getText(),
+                labels=self.visit(context.labelNameList()),
+                comments=comments,
+            )
+        return on_ignoring
 
     def _extract_op(self, context, op_codes):
         for op_code in op_codes:
@@ -276,35 +303,41 @@ class BuildAstVisitor(PromQLParserVisitor):
 
     def visitAggregation(self, ctx: PromQLParser.AggregationContext):
         operator = ctx.AGGREGATION_OPERATOR().getText()
-        if ctx.byWithout() is None:
-            group_operator = None
-            group_label_list = []
-        elif ctx.byWithout().by():
-            group_operator = ctx.byWithout().by().BY().getText()
-            group_label_list = self.visitLabelNameList(
-                ctx.byWithout().by().labelNameList()
-            )
-        elif ctx.byWithout().without():
-            group_operator = ctx.byWithout().without().WITHOUT().getText()
-            group_label_list = self.visitLabelNameList(
-                ctx.byWithout().without().labelNameList()
-            )
-
+        by_without = None
+        if ctx.byWithout():
+            by_without = self.visit(ctx.byWithout())
         parameter_list = self.visit(ctx.parameterList())
         return AggregationNode(
             ctx=ctx,
             operator=operator,
-            group_operator=group_operator,
-            label_list=LabelList(group_label_list),
+            by_without=by_without,
             parameter_list=parameter_list,
             is_prefix=ctx.prefix is not None,
+        )
+
+    def visitByWithout(self, ctx: PromQLParser.ByWithoutContext):
+        group_operator = None
+        group_label_list = []
+        if ctx.by():
+            group_operator = ctx.by().BY().getText()
+            group_label_list = self.visit(ctx.by().labelNameList())
+        elif ctx.without():
+            group_operator = ctx.without().WITHOUT().getText()
+            group_label_list = self.visit(ctx.without().labelNameList())
+        assert group_operator
+
+        return ByWithoutNode(
+            group_operator=group_operator,
+            group_label_list=group_label_list,
+            comments=self._extract_comments_from_context(ctx),
         )
 
     def visitParameterList(self, ctx: PromQLParser.ParameterListContext):
         parameters = []
         for param in ctx.parameter():
-            parameters.append(self.visit(param))
-        return parameters
+            value = self.visit(param)
+            parameters.append(Parameter(value=value))
+        return ParameterListNode(ctx=ctx, parameters=parameters)
 
     def visitMatrixSelector(self, ctx: PromQLParser.MatrixSelectorContext):
         if ctx.instantSelector():
@@ -327,7 +360,6 @@ class BuildAstVisitor(PromQLParserVisitor):
         if ctx.LEFT_BRACE() and ctx.RIGHT_BRACE():
             left_brace = ctx.LEFT_BRACE().getText()
             right_brace = ctx.RIGHT_BRACE().getText()
-
         return InstantSelectorNode(
             ctx,
             metric_name=metric_name,
@@ -341,7 +373,7 @@ class BuildAstVisitor(PromQLParserVisitor):
         for matcher in ctx.labelMatcher():
             labels.append(self.visit(matcher))
         has_trailing_comma = len(labels) == len(ctx.COMMA())
-        return LabelList(labels=labels, has_trailing_comma=has_trailing_comma)
+        return LabelList(ctx, labels=labels, has_trailing_comma=has_trailing_comma)
 
     def visitLabelNameList(self, ctx: PromQLParser.LabelNameListContext):
         labels = []
@@ -353,19 +385,31 @@ class BuildAstVisitor(PromQLParserVisitor):
             else:
                 name = label.keyword().getText()
             assert name is not None
-            labels.append(LabelNameNode(ctx, name=name))
-        return labels
+            comments = self._extract_comments_from_context(label)
+            labels.append(LabelNameNode(ctx, name=name, comments=comments))
+        return LabelList(ctx, labels)
 
     def visitLabelMatcher(self, ctx: PromQLParser.LabelMatcherContext):
-        return LabelNode(ctx)
+        comment_tokens = self._extract_comments_from_context(ctx)
+        return LabelNode(ctx, comments=comment_tokens)
+
+    def _extract_comments_from_context(self, ctx):
+        stream: CommonTokenStream = ctx.parser.getInputStream()
+        index = ctx.start.tokenIndex
+        comment_tokens = stream.getHiddenTokensToLeft(index, channel=3)
+        if comment_tokens:
+            return [c.text.strip() for c in comment_tokens]
 
     def visitFunction_(self, ctx: PromQLParser.Function_Context):
         parameters = []
         for parameter in ctx.parameter():
             param = self.visit(parameter)
             if param is not None:
-                parameters.append(param)
-        return FunctionNode(ctx=ctx, parameters=parameters)
+                parameters.append(Parameter(value=param))
+        return FunctionNode(
+            ctx=ctx,
+            parameters=ParameterListNode(ctx, parameters=parameters),
+        )
 
     def visitParameter(self, ctx: PromQLParser.ParameterContext):
         if ctx.literal():
@@ -378,6 +422,19 @@ class BuildAstVisitor(PromQLParserVisitor):
             return Number(ctx=ctx, value=ctx.getText())
         if ctx.STRING():
             return String(ctx=ctx, value=ctx.getText())
+
+
+def skip_comment():
+    def outer(func):
+        func.skip_comment = True
+
+        @functools.wraps(func)
+        def inner(*args, **kwargs) -> None:
+            return func(*args, **kwargs)
+
+        return inner
+
+    return outer
 
 
 class PromQLFormatter:
@@ -394,6 +451,8 @@ class PromQLFormatter:
     def visit(self, node):
         method_name = f"visit{type(node).__name__}"
         method = self.__getattribute__(method_name)
+        if not hasattr(method, "skip_comment"):
+            self._write_comments(node)
         result = method(node)
         return result
 
@@ -422,6 +481,7 @@ class PromQLFormatter:
     def visitPowOpNode(self, node: PowOpNode):
         self._write_op_with_grouping(node)
 
+    @skip_comment()
     def visitAddOpNode(self, node: AddOpNode):
         self._write_op_with_grouping(node)
 
@@ -429,15 +489,19 @@ class PromQLFormatter:
         self.write(node.operator, end="")
         self.visit(node.operand)
 
+    @skip_comment()
     def visitMultOpNode(self, node: MultOpNode):
         self._write_op_with_grouping(node)
 
+    @skip_comment()
     def visitOrOperationNode(self, node: OrOperationNode):
         self._write_op_with_grouping(node)
 
+    @skip_comment()
     def visitCompareOperationNode(self, node: CompareOperationNode):
         self._write_op_with_grouping(node, bool_keyword=node.bool_keyword)
 
+    @skip_comment()
     def visitAndUnlessOperationNode(self, node: AndUnlessOperationNode):
         self._write_op_with_grouping(node)
 
@@ -458,33 +522,32 @@ class PromQLFormatter:
         self.write(node.offset, node.duration)
 
     def visitFunctionNode(self, node: FunctionNode):
-        self.write(node.name, "(")
-        self._write_parameter_list(node.parameters)
-        self.write(")")
+        self.write(node.name)
+        self.visitParameterListNode(node.parameters)
 
     def visitAggregationNode(self, node: AggregationNode):
         self.write(node.operator)
         if node.is_prefix:
-            if node.group_operator:
+            if node.by_without:
                 self.buffer.chomp_newline()
-                self.write_no_indent(node.group_operator, "(")
+                self._write_comments(node.by_without)
+                self.write_no_indent(node.by_without.group_operator, "(")
                 with self.indent_block():
                     self._write_comma_seperated_list(
-                        node.label_list,
+                        node.by_without.group_label_list,
                         format_func=lambda label: f"{label.name}",
                     )
                 self.write(")")
 
         if node.parameter_list:
-            self.write("(")
-            self._write_parameter_list(node.parameter_list)
-            self.write(")")
+            self.visitParameterListNode(node.parameter_list)
         if not node.is_prefix:
-            if node.group_operator:
-                self.write(node.group_operator, "(")
+            if node.by_without:
+                self._write_comments(node.by_without)
+                self.write(node.by_without.group_operator, "(")
                 with self.indent_block():
                     self._write_comma_seperated_list(
-                        node.label_list,
+                        node.by_without.group_label_list,
                         format_func=lambda label: f"{label.name}",
                     )
                 self.write(")")
@@ -495,17 +558,7 @@ class PromQLFormatter:
             self.visit(node.subquery_range)
 
     def visitMatrixSelectorNode(self, node: MatrixSelectorNode):
-        self.write(node.selector.metric_name)
-        if node.selector.left_brace:
-            self.write(node.selector.left_brace)
-        if node.selector.labels:
-            with self.indent_block():
-                self._write_comma_seperated_list(
-                    node.selector.labels,
-                    format_func=lambda label: f"{label.name}{label.operator}{label.value}",
-                )
-        if node.selector.right_brace:
-            self.write(node.selector.right_brace)
+        self.visit(node.selector)
         self.buffer.chomp_newline()
         with self.no_indent():
             self.write(node.time_range)
@@ -536,12 +589,13 @@ class PromQLFormatter:
 
     def _write_op_with_grouping(self, node, bool_keyword=None):
         self.visit(node.left)
-        self.buffer.chomp_newline()
+        self._write_comments(node)
         self.write(node.operator, suffix=" ", end=f"")
         if bool_keyword is not None:
             with self.no_indent():
                 self.write(bool_keyword, end=" ")
         if node.grouping:
+            self._write_comments(node.grouping.on_ignoring)
             self.write(node.grouping.on_ignoring.operator, "(")
             with self.indent_block():
                 self._write_comma_seperated_list(
@@ -550,6 +604,7 @@ class PromQLFormatter:
                 )
             self.write(")")
             if node.grouping.group_left_right:
+                self._write_comments(node.grouping.group_left_right)
                 self.write(node.grouping.group_left_right.operator, "(")
                 with self.indent_block():
                     self._write_comma_seperated_list(
@@ -560,20 +615,30 @@ class PromQLFormatter:
         with self.no_indent():
             self.visit(node.right)
 
-    def _write_parameter_list(self, parameter_list):
-        param_len = len(parameter_list)
-        for index, param in enumerate(parameter_list):
+    def visitParameterListNode(self, parameter_list: ParameterListNode):
+        param_len = len(parameter_list.parameters)
+        self._write_comments(parameter_list)
+        self.write("(")
+        for index, param in enumerate(parameter_list.parameters):
             with self.indent_block():
-                self.visit(param)
+                self.visit(param.value)
                 if index + 1 != param_len:
                     self.buffer.strip()
                     self.write_no_indent(",")
+        self.write(")")
 
     def _write_comma_seperated_list(self, label_list: LabelList, format_func):
+        self._write_comments(label_list)
         items_len = len(label_list.labels)
         for index, item in enumerate(label_list.labels, start=1):
             suffix = ","
             if index == items_len and not label_list.has_trailing_comma:
                 suffix = ""
             output = format_func(item)
+            self._write_comments(item)
             self.write(output, suffix=suffix)
+
+    def _write_comments(self, item):
+        if item.comments:
+            for comment in item.comments:
+                self.write(comment)

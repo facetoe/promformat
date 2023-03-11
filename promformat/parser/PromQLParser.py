@@ -14,7 +14,7 @@ def serializedATN():
     return [
         4,
         1,
-        43,
+        44,
         312,
         2,
         0,
@@ -2827,6 +2827,7 @@ class PromQLParser(Parser):
         "METRIC_NAME",
         "LABEL_NAME",
         "WS",
+        "SL_COMMENT",
     ]
 
     RULE_expression = 0
@@ -2949,6 +2950,7 @@ class PromQLParser(Parser):
     METRIC_NAME = 41
     LABEL_NAME = 42
     WS = 43
+    SL_COMMENT = 44
 
     def __init__(self, input: TokenStream, output: TextIO = sys.stdout):
         super().__init__(input, output)

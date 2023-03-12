@@ -39,25 +39,26 @@ job:request_latency_seconds:mean5m
 ```
 
 A more complex example:
-```text
-(node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
-```
 
 ```text
 (
   node_filesystem_avail_bytes * 100
-) / node_filesystem_size_bytes < 10 and ON (
+) / node_filesystem_size_bytes < 10 and ON
+(
   instance,
   device,
   mountpoint
 )
-predict_linear (
+predict_linear
+(
   node_filesystem_avail_bytes
   {
+    # We don't care about tmpfs
     fstype!~"tmpfs"
   } [1h],
   24 * 3600
-) < 0 and ON (
+) < 0 and ON
+(
   instance,
   device,
   mountpoint

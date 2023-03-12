@@ -1,5 +1,6 @@
 import argparse
 import sys
+from contextlib import suppress
 
 from promformat import format_query
 
@@ -25,8 +26,10 @@ def main():
             except EOFError:
                 sys.exit()
             if query:
-                result = format_query(query)
-                print(result)
+                with suppress(Exception):
+                    result = format_query(query)
+                    print(result)
+
 
 
 if __name__ == "__main__":

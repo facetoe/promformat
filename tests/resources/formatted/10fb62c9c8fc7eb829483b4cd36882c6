@@ -1,4 +1,4 @@
-delta (
+delta
+(
   kafka_burrow_partition_current_offset [1m]
-)
-< 0
+) < 0

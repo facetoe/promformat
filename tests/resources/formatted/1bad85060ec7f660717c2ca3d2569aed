@@ -1,4 +1,4 @@
-increase (
+increase
+(
   prometheus_template_text_expansion_failures_total [3m]
-)
-> 0
+) > 0

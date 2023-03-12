@@ -1,4 +1,4 @@
-increase (
+increase
+(
   coredns_panics_total [1m]
-)
-> 0
+) > 0

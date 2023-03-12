@@ -1,2 +1,1 @@
-redis_connected_clients
-< 5
+redis_connected_clients < 5

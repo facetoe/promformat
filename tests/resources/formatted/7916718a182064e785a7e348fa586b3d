@@ -1,13 +1,9 @@
 (
-  node_filesystem_avail_bytes
-* 100
-)
-/ node_filesystem_size_bytes
-< 10
-and ON (
+  node_filesystem_avail_bytes * 100
+) / node_filesystem_size_bytes < 10 and ON
+(
   instance,
   device,
   mountpoint
 )
-node_filesystem_readonly
-== 0
+node_filesystem_readonly == 0

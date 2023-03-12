@@ -4,8 +4,8 @@ count
   (
     rabbitmq_build_info
   )
-  by (
+  by
+  (
     rabbitmq_version
   )
-)
-> 1
+) > 1

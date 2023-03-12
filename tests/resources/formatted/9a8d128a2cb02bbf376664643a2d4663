@@ -2,7 +2,7 @@ sum
 (
   pulsar_subscription_back_log
 )
-by (
+by
+(
   subscription
-)
-> 5000
+) > 5000

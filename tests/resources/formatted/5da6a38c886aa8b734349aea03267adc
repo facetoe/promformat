@@ -1,4 +1,1 @@
-elasticsearch_filesystem_data_available_bytes
-/ elasticsearch_filesystem_data_size_bytes
-* 100
-< 10
+elasticsearch_filesystem_data_available_bytes / elasticsearch_filesystem_data_size_bytes * 100 < 10

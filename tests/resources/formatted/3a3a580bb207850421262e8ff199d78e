@@ -1,23 +1,24 @@
 sum
 (
-rate   (
+  rate
+  (
     traefik_backend_requests_total
     {
       code=~"4.*"
     } [3m]
   )
 )
-by (
-  backend
-)
-/ sum
+by
 (
-rate   (
+  backend
+) / sum
+(
+  rate
+  (
     traefik_backend_requests_total [3m]
   )
 )
-by (
+by
+(
   backend
-)
-* 100
-> 5
+) * 100 > 5

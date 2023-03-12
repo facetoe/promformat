@@ -4,10 +4,7 @@
     (
       pg_locks_count
     )
-  )
-/ (
-  pg_settings_max_locks_per_transaction
-* pg_settings_max_connections
+  ) / (
+  pg_settings_max_locks_per_transaction * pg_settings_max_connections
 )
-)
-> 0.20
+) > 0.20

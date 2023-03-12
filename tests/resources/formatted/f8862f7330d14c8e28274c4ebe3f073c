@@ -1,5 +1,3 @@
 (
-  kube_statefulset_status_replicas_ready
-/ kube_statefulset_status_replicas_current
-)
-!= 1
+  kube_statefulset_status_replicas_ready / kube_statefulset_status_replicas_current
+) != 1

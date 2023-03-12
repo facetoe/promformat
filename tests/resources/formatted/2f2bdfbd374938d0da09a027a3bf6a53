@@ -1,14 +1,11 @@
 node_filesystem_files_free
 {
   mountpoint="/rootfs"
-}
-/ node_filesystem_files
+} / node_filesystem_files
 {
   mountpoint="/rootfs"
-}
-* 100
-< 10
-and ON (
+} * 100 < 10 and ON
+(
   instance,
   device,
   mountpoint
@@ -16,5 +13,4 @@ and ON (
 node_filesystem_readonly
 {
   mountpoint="/rootfs"
-}
-== 0
+} == 0

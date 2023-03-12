@@ -1,15 +1,17 @@
-avg by (
+avg by
+(
   instance
 )
 (
-rate   (
+  rate
+  (
     mongodb_connections
     {
       state="current"
     } [1m]
   )
-)
-/ avg by (
+) / avg by
+(
   instance
 )
 (
@@ -17,9 +19,8 @@ rate   (
   (
     mongodb_connections
   )
-  by (
+  by
+  (
     instance
   )
-)
-* 100
-> 80
+) * 100 > 80

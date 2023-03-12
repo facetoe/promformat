@@ -1,4 +1,4 @@
-increase (
+increase
+(
   prometheus_tsdb_wal_corruptions_total [1m]
-)
-> 0
+) > 0

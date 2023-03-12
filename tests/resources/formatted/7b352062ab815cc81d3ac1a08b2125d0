@@ -1,2 +1,1 @@
-kube_replicaset_spec_replicas
-!= kube_replicaset_status_ready_replicas
+kube_replicaset_spec_replicas != kube_replicaset_status_ready_replicas

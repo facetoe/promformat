@@ -1,4 +1,4 @@
-rate (
+rate
+(
   node_vmstat_pgmajfault [1m]
-)
-> 1000
+) > 1000

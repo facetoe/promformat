@@ -1,14 +1,13 @@
 sum
 (
-rate   (
+  rate
+  (
     pilot_xds_push_errors [1m]
   )
-)
-/ sum
+) / sum
 (
-rate   (
+  rate
+  (
     pilot_xds_pushes [1m]
   )
-)
-* 100
-> 5
+) * 100 > 5

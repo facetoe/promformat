@@ -1,9 +1,9 @@
 sum
 (
-rate   (
+  rate
+  (
     pilot_duplicate_envoy_clusters
     {
     } [5m]
   )
-)
-> 0
+) > 0

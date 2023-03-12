@@ -1,7 +1,8 @@
-histogram_quantile (
+histogram_quantile
+(
   0.99,
-rate   (
+  rate
+  (
     etcd_disk_wal_fsync_duration_seconds_bucket [1m]
   )
-)
-> 0.5
+) > 0.5

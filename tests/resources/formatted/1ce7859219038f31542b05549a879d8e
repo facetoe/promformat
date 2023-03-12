@@ -1,4 +1,3 @@
-time (
-)
-- container_last_seen
-> 60
+time
+(
+) - container_last_seen > 60

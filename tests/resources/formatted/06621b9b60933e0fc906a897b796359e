@@ -1,7 +1,7 @@
-rate (
+rate
+(
   cassandra_stats
   {
     name="org:apache:cassandra:metrics:connection:totaltimeouts:count"
   } [1m]
-)
-> 5
+) > 5

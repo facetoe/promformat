@@ -1,9 +1,7 @@
-pg_bloat_table_bloat_pct
-> 80
-and on (
+pg_bloat_table_bloat_pct > 80 and on
+(
   relname
 )
 (
-  pg_bloat_table_real_size
-> 200000000
+  pg_bloat_table_real_size > 200000000
 )

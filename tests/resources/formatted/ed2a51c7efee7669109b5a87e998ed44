@@ -1,9 +1,8 @@
-predict_linear (
+predict_linear
+(
   netdata_disk_space_GB_average
   {
     dimension=~"avail|cached"
   } [3h],
-  24
-* 3600
-)
-< 0
+  24 * 3600
+) < 0

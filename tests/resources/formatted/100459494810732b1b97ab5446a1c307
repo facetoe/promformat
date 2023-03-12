@@ -2,5 +2,4 @@ kube_node_status_condition
 {
   condition="Ready",
   status="true"
-}
-== 0
+} == 0

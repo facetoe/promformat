@@ -1,7 +1,7 @@
-rate (
+rate
+(
   netdata_cpu_cpu_percentage_average
   {
     dimension="idle"
   } [1m]
-)
-> 80
+) > 80

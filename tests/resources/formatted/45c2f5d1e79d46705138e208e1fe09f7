@@ -1,11 +1,10 @@
-rate (
+rate
+(
   node_disk_write_time_seconds_total [1m]
-)
-/ rate (
+) / rate
+(
   node_disk_writes_completed_total [1m]
-)
-> 0.1
-and rate (
+) > 0.1 and rate
+(
   node_disk_writes_completed_total [1m]
-)
-> 0
+) > 0

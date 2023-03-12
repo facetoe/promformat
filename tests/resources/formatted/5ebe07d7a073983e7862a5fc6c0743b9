@@ -1,9 +1,10 @@
-sum by (
+sum by
+(
   proxy
 )
 (
-rate   (
+  rate
+  (
     haproxy_frontend_denied_connections_total [2m]
   )
-)
-> 10
+) > 10

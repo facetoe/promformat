@@ -2,5 +2,4 @@ kube_node_status_condition
 {
   condition="OutOfDisk",
   status="true"
-}
-== 1
+} == 1

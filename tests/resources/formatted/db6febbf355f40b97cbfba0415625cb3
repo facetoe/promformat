@@ -1,5 +1,4 @@
 rabbitmq_queue_messages
 {
   queue="my-dead-letter-queue"
-}
-> 10
+} > 10

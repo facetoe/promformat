@@ -1,7 +1,7 @@
-rate (
+rate
+(
   postgresql_errors_total
   {
     type="statement_timeout"
   } [1m]
-)
-> 3
+) > 3

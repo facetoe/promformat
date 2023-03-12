@@ -1,7 +1,4 @@
-100
-/ netdata_disk_space_GB_average
-* netdata_disk_space_GB_average
+100 / netdata_disk_space_GB_average * netdata_disk_space_GB_average
 {
   dimension=~"avail|cached"
-}
-< 20
+} < 20

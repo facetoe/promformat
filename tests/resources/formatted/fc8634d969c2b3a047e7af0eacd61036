@@ -6,19 +6,17 @@
       name!=""
     }
   )
-  BY (
+  BY
+  (
     instance,
     name
-  )
-/ sum
+  ) / sum
 (
-  container_spec_memory_limit_bytes
-> 0
+  container_spec_memory_limit_bytes > 0
 )
-BY (
+BY
+(
   instance,
   name
-)
-* 100
-)
-> 80
+) * 100
+) > 80

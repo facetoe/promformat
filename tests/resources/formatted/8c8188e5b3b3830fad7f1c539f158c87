@@ -1,13 +1,13 @@
-avg by (
+avg by
+(
   instance
 )
 (
-rate   (
+  rate
+  (
     node_cpu_seconds_total
     {
       mode="steal"
     } [5m]
   )
-)
-* 100
-> 10
+) * 100 > 10

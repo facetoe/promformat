@@ -460,7 +460,8 @@ class PromQLFormatter:
         indent = "  " * self.indent
         if end is not None:
             indent = ""
-        print(indent + " ".join(output) + suffix, end=end, file=self.buffer)
+        line = indent + " ".join(output) + suffix
+        print(line, end=end, file=self.buffer)
 
     def write_no_indent(self, *output):
         print(" ".join(output), file=self.buffer)
@@ -522,7 +523,7 @@ class PromQLFormatter:
         self.write(node.offset, node.duration)
 
     def visitFunctionNode(self, node: FunctionNode):
-        self.write(node.name, end=" ")
+        self.write(node.name)
         self.visitParameterListNode(node.parameters)
 
     def visitAggregationNode(self, node: AggregationNode):
@@ -531,7 +532,8 @@ class PromQLFormatter:
             if node.by_without:
                 self.buffer.chomp_newline()
                 self._write_comments(node.by_without)
-                self.write_no_indent(node.by_without.group_operator, "(")
+                self.write_no_indent(node.by_without.group_operator)
+                self.write("(")
                 with self.indent_block():
                     self._write_comma_seperated_list(
                         node.by_without.group_label_list,
@@ -544,7 +546,8 @@ class PromQLFormatter:
         if not node.is_prefix:
             if node.by_without:
                 self._write_comments(node.by_without)
-                self.write(node.by_without.group_operator, "(")
+                self.write(node.by_without.group_operator)
+                self.write("(")
                 with self.indent_block():
                     self._write_comma_seperated_list(
                         node.by_without.group_label_list,
@@ -589,14 +592,16 @@ class PromQLFormatter:
 
     def _write_op_with_grouping(self, node, bool_keyword=None):
         self.visit(node.left)
+        self.buffer.chomp_newline()
         self._write_comments(node)
-        self.write(node.operator, suffix=" ", end=f"")
+        self.write(node.operator, suffix=" ", end="")
         if bool_keyword is not None:
             with self.no_indent():
                 self.write(bool_keyword, end=" ")
         if node.grouping:
             self._write_comments(node.grouping.on_ignoring)
-            self.write(node.grouping.on_ignoring.operator, "(")
+            self.write(node.grouping.on_ignoring.operator)
+            self.write("(")
             with self.indent_block():
                 self._write_comma_seperated_list(
                     label_list=node.grouping.on_ignoring.labels,
@@ -605,7 +610,8 @@ class PromQLFormatter:
             self.write(")")
             if node.grouping.group_left_right:
                 self._write_comments(node.grouping.group_left_right)
-                self.write(node.grouping.group_left_right.operator, "(")
+                self.write(node.grouping.group_left_right.operator)
+                self.write("(")
                 with self.indent_block():
                     self._write_comma_seperated_list(
                         label_list=node.grouping.group_left_right.labels,

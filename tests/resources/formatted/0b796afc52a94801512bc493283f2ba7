@@ -1,29 +1,30 @@
-100
-* sum
+100 * sum
 (
-rate   (
+  rate
+  (
     promtail_request_duration_seconds_count
     {
       status_code=~"5..|failed"
     } [1m]
   )
 )
-by (
+by
+(
   namespace,
   job,
   route,
   instance
-)
-/ sum
+) / sum
 (
-rate   (
+  rate
+  (
     promtail_request_duration_seconds_count [1m]
   )
 )
-by (
+by
+(
   namespace,
   job,
   route,
   instance
-)
-> 10
+) > 10

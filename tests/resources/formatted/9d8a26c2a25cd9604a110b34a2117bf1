@@ -1,4 +1,4 @@
-delta (
+delta
+(
   redis_connected_slaves [1m]
-)
-< 0
+) < 0

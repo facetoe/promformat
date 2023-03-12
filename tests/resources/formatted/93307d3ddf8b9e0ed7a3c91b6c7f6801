@@ -1,23 +1,18 @@
 node_filesystem_files_free
 {
   mountpoint="/rootfs"
-}
-/ node_filesystem_files
+} / node_filesystem_files
 {
   mountpoint="/rootfs"
-}
-* 100
-< 10
-and predict_linear (
+} * 100 < 10 and predict_linear
+(
   node_filesystem_files_free
   {
     mountpoint="/rootfs"
   } [1h],
-  24
-* 3600
-)
-< 0
-and ON (
+  24 * 3600
+) < 0 and ON
+(
   instance,
   device,
   mountpoint
@@ -25,5 +20,4 @@ and ON (
 node_filesystem_readonly
 {
   mountpoint="/rootfs"
-}
-== 0
+} == 0

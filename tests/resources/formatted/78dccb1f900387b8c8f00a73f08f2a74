@@ -1,9 +1,10 @@
-sum by (
+sum by
+(
   proxy
 )
 (
-rate   (
+  rate
+  (
     haproxy_backend_current_queue [2m]
   )
-)
-> 0
+) > 0

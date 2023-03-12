@@ -2,7 +2,7 @@ sum
 (
   phpfpm_max_children_reached_total
 )
-by (
+by
+(
   instance
-)
-> 0
+) > 0

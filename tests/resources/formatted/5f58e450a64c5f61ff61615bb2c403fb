@@ -1,5 +1,4 @@
 sum
 (
   pg_stat_ssl_compression
-)
-> 0
+) > 0

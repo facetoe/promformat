@@ -1,4 +1,4 @@
-increase (
+increase
+(
   solr_metrics_core_update_handler_errors_total [1m]
-)
-> 1
+) > 1

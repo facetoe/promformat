@@ -1,8 +1,10 @@
-histogram_quantile (
+histogram_quantile
+(
   0.99,
   sum
   (
-rate     (
+    rate
+    (
       apiserver_request_latencies_bucket
       {
         subresource!="log",
@@ -10,10 +12,9 @@ rate     (
       } [10m]
     )
   )
-  WITHOUT (
+  WITHOUT
+  (
     instance,
     resource
   )
-)
-/ 1e+06
-> 1
+) / 1e+06 > 1

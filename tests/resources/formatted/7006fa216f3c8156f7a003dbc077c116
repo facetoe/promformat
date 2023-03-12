@@ -1,4 +1,4 @@
-abs (
+abs
+(
   ceph_monitor_clock_skew_seconds
-)
-> 0.2
+) > 0.2

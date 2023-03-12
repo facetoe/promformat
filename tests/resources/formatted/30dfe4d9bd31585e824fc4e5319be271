@@ -1,18 +1,20 @@
 (
-histogram_quantile   (
+  histogram_quantile
+  (
     0.99,
     sum
     (
-rate       (
+      rate
+      (
         loki_request_duration_seconds_bucket
         {
           route!~"(?i).*tail.*"
         } [5m]
       )
     )
-    by (
+    by
+    (
       le
     )
   )
-)
-> 1
+) > 1

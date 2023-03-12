@@ -1,2 +1,1 @@
-kube_horizontalpodautoscaler_status_desired_replicas
->= kube_horizontalpodautoscaler_spec_max_replicas
+kube_horizontalpodautoscaler_status_desired_replicas >= kube_horizontalpodautoscaler_spec_max_replicas

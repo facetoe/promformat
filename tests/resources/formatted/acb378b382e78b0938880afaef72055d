@@ -1,18 +1,20 @@
-histogram_quantile (
+histogram_quantile
+(
   0.99,
   sum
   (
-rate     (
+    rate
+    (
       grpc_server_handling_seconds_bucket
       {
         grpc_type="unary"
       } [1m]
     )
   )
-  by (
+  by
+  (
     grpc_service,
     grpc_method,
     le
   )
-)
-> 0.15
+) > 0.15

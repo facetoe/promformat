@@ -1,9 +1,10 @@
-sum by (
+sum by
+(
   proxy
 )
 (
-rate   (
+  rate
+  (
     haproxy_backend_retry_warnings_total [1m]
   )
-)
-> 10
+) > 10

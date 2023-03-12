@@ -1,4 +1,3 @@
-probe_ssl_earliest_cert_expiry
-- time (
-)
-<= 0
+probe_ssl_earliest_cert_expiry - time
+(
+) <= 0

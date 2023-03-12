@@ -1,5 +1,4 @@
 node_md_disks
 {
   state="failed"
-}
-> 0
+} > 0

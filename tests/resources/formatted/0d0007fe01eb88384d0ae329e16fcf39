@@ -1,2 +1,1 @@
-ceph_osd_weight
-< 1
+ceph_osd_weight < 1

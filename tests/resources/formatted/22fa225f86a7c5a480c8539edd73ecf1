@@ -1,2 +1,1 @@
-consul_raft_peers
-< 3
+consul_raft_peers < 3

@@ -4,12 +4,10 @@ avg
   {
     state="PRIMARY"
   }
-)
-- avg
+) - avg
 (
   mongodb_replset_member_optime_date
   {
     state="SECONDARY"
   }
-)
-> 10
+) > 10

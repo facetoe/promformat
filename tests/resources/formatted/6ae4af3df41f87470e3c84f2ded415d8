@@ -1,4 +1,4 @@
-increase (
+increase
+(
   prometheus_tsdb_head_truncations_failed_total [1m]
-)
-> 0
+) > 0

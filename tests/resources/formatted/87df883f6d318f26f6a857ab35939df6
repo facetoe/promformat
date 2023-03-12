@@ -1,4 +1,4 @@
-increase (
+increase
+(
   prometheus_tsdb_checkpoint_creations_failed_total [1m]
-)
-> 0
+) > 0

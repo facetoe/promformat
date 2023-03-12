@@ -1,10 +1,10 @@
 sum
 (
-rate   (
+  rate
+  (
     istio_requests_total
     {
       reporter="destination"
     } [5m]
   )
-)
-< 100
+) < 100

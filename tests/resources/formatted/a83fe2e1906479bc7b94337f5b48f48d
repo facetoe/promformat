@@ -1,11 +1,12 @@
 sum
 (
-increase   (
+  increase
+  (
     loki_panic_total [10m]
   )
 )
-by (
+by
+(
   namespace,
   job
-)
-> 0
+) > 0

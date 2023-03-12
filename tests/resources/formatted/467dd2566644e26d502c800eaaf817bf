@@ -1,5 +1,7 @@
-min_over_time (
-    sum by (
+min_over_time
+(
+    sum by
+    (
       namespace,
       pod
     )
@@ -8,5 +10,4 @@ min_over_time (
       {
         phase=~"Pending|Unknown|Failed"
       }
-    ) [15m:1m])
-> 0
+    ) [15m:1m]) > 0

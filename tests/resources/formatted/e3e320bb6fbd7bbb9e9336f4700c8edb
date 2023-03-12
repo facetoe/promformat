@@ -1,2 +1,1 @@
-elasticsearch_cluster_health_initializing_shards
-> 0
+elasticsearch_cluster_health_initializing_shards > 0

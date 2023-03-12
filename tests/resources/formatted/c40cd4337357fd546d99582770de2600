@@ -1,2 +1,1 @@
-kube_daemonset_status_number_misscheduled
-> 0
+kube_daemonset_status_number_misscheduled > 0

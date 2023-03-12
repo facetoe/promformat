@@ -1,7 +1,7 @@
-increase (
+increase
+(
   cassandra_stats
   {
     name="org:apache:cassandra:metrics:clientrequest:read:failures:oneminuterate"
   } [1m]
-)
-> 0
+) > 0

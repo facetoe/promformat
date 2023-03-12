@@ -1,5 +1,4 @@
 cassandra_stats
 {
   name="org:apache:cassandra:metrics:table:tombstonescannedhistogram:99thpercentile"
-}
-> 1000
+} > 1000

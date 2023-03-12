@@ -1,2 +1,1 @@
-sidekiq_queue_size
-> 100
+sidekiq_queue_size > 100

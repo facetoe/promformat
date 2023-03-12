@@ -1,12 +1,7 @@
 (
   (
-    haproxy_server_max_sessions
-> 0
-  )
-* 100
-)
-/ (
-  haproxy_server_limit_sessions
-> 0
-)
-> 80
+    haproxy_server_max_sessions > 0
+  ) * 100
+) / (
+  haproxy_server_limit_sessions > 0
+) > 80

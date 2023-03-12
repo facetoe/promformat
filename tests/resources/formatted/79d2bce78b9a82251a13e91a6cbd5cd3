@@ -2,7 +2,7 @@ sum
 (
   kafka_topic_partition_in_sync_replica
 )
-by (
+by
+(
   topic
-)
-< 3
+) < 3

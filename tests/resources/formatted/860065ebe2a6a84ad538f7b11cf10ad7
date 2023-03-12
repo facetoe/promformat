@@ -2,7 +2,7 @@ sum
 (
   kafka_consumergroup_lag
 )
-by (
+by
+(
   consumergroup
-)
-> 50
+) > 50

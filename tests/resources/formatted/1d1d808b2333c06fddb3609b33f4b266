@@ -1,6 +1,3 @@
 (
-  freeswitch_session_active
-* 100
-/ freeswitch_session_limit
-)
-> 90
+  freeswitch_session_active * 100 / freeswitch_session_limit
+) > 90

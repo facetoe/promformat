@@ -1,4 +1,4 @@
-increase (
+increase
+(
   netdata_smartd_log_reallocated_sectors_count_sectors_average [1m]
-)
-> 0
+) > 0

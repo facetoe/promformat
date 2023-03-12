@@ -1,8 +1,8 @@
 
 {
   __name__=~"pg_settings_.*"
-}
-!= ON (
+} != ON
+(
   __name__
 )
 

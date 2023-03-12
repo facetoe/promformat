@@ -1,21 +1,20 @@
 sum
 (
-rate   (
+  rate
+  (
     istio_requests_total
     {
       reporter="destination",
       response_code=~"4.*"
     } [5m]
   )
-)
-/ sum
+) / sum
 (
-rate   (
+  rate
+  (
     istio_requests_total
     {
       reporter="destination"
     } [5m]
   )
-)
-* 100
-> 5
+) * 100 > 5

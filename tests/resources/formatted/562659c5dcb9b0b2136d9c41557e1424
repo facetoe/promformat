@@ -1,27 +1,28 @@
 (
   sum
   (
-rate     (
+    rate
+    (
       rest_client_requests_total
       {
         code=~"(4|5).."
       } [1m]
     )
   )
-  by (
+  by
+  (
     instance,
     job
-  )
-/ sum
+  ) / sum
 (
-rate   (
+  rate
+  (
     rest_client_requests_total [1m]
   )
 )
-by (
+by
+(
   instance,
   job
 )
-)
-* 100
-> 1
+) * 100 > 1

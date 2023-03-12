@@ -2,8 +2,8 @@ avg
 (
   cassandra_client_request_timeouts_total
 )
-by (
+by
+(
   cassandra_cluster,
   instance
-)
-> 5
+) > 5

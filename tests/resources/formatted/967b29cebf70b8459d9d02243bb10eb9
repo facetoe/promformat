@@ -1,5 +1,4 @@
 cassandra_stats
 {
   name="org:apache:cassandra:metrics:commitlog:pendingtasks:value"
-}
-> 15
+} > 15

@@ -1,4 +1,3 @@
-time (
-)
-- kube_cronjob_next_schedule_time
-> 3600
+time
+(
+) - kube_cronjob_next_schedule_time > 3600

@@ -1,5 +1,4 @@
 cassandra_stats
 {
   name="org:apache:cassandra:metrics:cache:keycache:hitrate:value"
-}
-< 85
+} < 85

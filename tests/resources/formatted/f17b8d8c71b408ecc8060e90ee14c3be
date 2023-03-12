@@ -5,5 +5,4 @@ count
     "config_hash",
     alertmanager_config_hash
   )
-)
-> 1
+) > 1

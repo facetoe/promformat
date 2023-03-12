@@ -1,7 +1,7 @@
-sum by (
+sum by
+(
   job
 )
 (
   up
-)
-== 0
+) == 0

@@ -1,2 +1,1 @@
-redis_connected_clients
-> 100
+redis_connected_clients > 100

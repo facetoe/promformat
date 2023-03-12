@@ -1,5 +1,4 @@
 cassandra_thread_pool_blocked_tasks
 {
   pool="MemtableFlushWriter"
-}
-> 15
+} > 15

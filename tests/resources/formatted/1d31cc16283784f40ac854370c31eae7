@@ -2,7 +2,7 @@ count
 (
   traefik_service_server_up
 )
-by (
+by
+(
   service
-)
-== 0
+) == 0

@@ -1,6 +1,4 @@
 count
 (
   etcd_server_id
-)
-% 2
-== 0
+) % 2 == 0

@@ -1,6 +1,4 @@
 avg
 (
-  vault_token_create_count
-- vault_token_store_count
-)
-> 0
+  vault_token_create_count - vault_token_store_count
+) > 0

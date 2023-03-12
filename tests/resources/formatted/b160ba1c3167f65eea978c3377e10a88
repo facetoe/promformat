@@ -5,9 +5,8 @@
     {
       role="master"
     }
-  )
-or vector (
+  ) or vector
+(
   0
 )
-)
-< 1
+) < 1

@@ -1,8 +1,8 @@
 sum
 (
-  pulsar_entry_size_overflow
-> 0
+  pulsar_entry_size_overflow > 0
 )
-by (
+by
+(
   topic
 )

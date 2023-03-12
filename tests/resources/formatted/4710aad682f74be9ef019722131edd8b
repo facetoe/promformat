@@ -1,6 +1,4 @@
-rate (
+rate
+(
   junos_interface_transmit_bytes [1m]
-)
-* 8
-> 1e+9
-* 0.90
+) * 8 > 1e+9 * 0.90

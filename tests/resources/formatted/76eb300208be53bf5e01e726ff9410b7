@@ -6,8 +6,8 @@ min
     namespace="istio-system"
   }
 )
-without (
+without
+(
   instance,
   pod
-)
-< 2
+) < 2

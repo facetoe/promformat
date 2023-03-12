@@ -1,7 +1,7 @@
-rate (
+rate
+(
   node_network_transmit_errs_total [2m]
-)
-/ rate (
+) / rate
+(
   node_network_transmit_packets_total [2m]
-)
-> 0.01
+) > 0.01

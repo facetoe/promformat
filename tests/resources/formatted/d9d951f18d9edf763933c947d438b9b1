@@ -1,3 +1,1 @@
-vmware_vm_mem_usage_average
-/ 100
->= 90
+vmware_vm_mem_usage_average / 100 >= 90

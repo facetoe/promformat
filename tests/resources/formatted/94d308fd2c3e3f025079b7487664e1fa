@@ -2,9 +2,9 @@ sum
 (
   cassandra_endpoint_active
 )
-by (
+by
+(
   cassandra_cluster,
   instance,
   exported_endpoint
-)
-< 1
+) < 1

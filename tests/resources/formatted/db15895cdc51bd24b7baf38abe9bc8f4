@@ -2,7 +2,7 @@ sum
 (
   rabbitmq_queue_messages_unacked
 )
-BY (
+BY
+(
   queue
-)
-> 1000
+) > 1000

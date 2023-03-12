@@ -1,17 +1,17 @@
 (
   sum
   (
-rate     (
+    rate
+    (
       container_cpu_usage_seconds_total
       {
         name!=""
       } [3m]
     )
   )
-  BY (
+  BY
+  (
     instance,
     name
-  )
-* 100
-)
-> 80
+  ) * 100
+) > 80

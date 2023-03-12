@@ -1,10 +1,11 @@
 (
-rate   (
+  rate
+  (
     node_context_switches_total [5m]
   )
-)
-/ (
-  count without (
+) / (
+  count without
+  (
     cpu,
     mode
   )
@@ -14,5 +15,4 @@ rate   (
       mode="idle"
     }
   )
-)
-> 1000
+) > 1000

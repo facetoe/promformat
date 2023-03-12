@@ -1,7 +1,7 @@
-increase (
+increase
+(
   pgbouncer_errors_count
   {
     errmsg!="server conn crashed?"
   } [1m]
-)
-> 10
+) > 10

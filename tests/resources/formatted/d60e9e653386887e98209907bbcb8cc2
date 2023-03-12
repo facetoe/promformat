@@ -1,5 +1,4 @@
 cassandra_thread_pool_blocked_tasks
 {
   pool="CompactionExecutor"
-}
-> 15
+} > 15

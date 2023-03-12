@@ -6,18 +6,18 @@
       type="virtual"
     }
   )
-  BY (
+  BY
+  (
     instance
-  )
-/ sum
+  ) / sum
 (
   mongodb_memory
   {
     type="mapped"
   }
 )
-BY (
+BY
+(
   instance
 )
-)
-> 3
+) > 3

@@ -1,24 +1,25 @@
 sum
 (
-rate   (
+  rate
+  (
     request_errors_total [1m]
   )
 )
-by (
+by
+(
   deployment,
   statefulset,
   daemonset
-)
-/ sum
+) / sum
 (
-rate   (
+  rate
+  (
     request_total [1m]
   )
 )
-by (
+by
+(
   deployment,
   statefulset,
   daemonset
-)
-* 100
-> 10
+) * 100 > 10

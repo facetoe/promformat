@@ -1,2 +1,1 @@
-kube_job_status_failed
-> 0
+kube_job_status_failed > 0

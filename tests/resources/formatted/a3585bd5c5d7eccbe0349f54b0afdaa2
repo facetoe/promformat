@@ -1,5 +1,4 @@
-pg_replication_is_replica
-and changes (
+pg_replication_is_replica and changes
+(
   pg_replication_is_replica [1m]
-)
-> 0
+) > 0

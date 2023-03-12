@@ -1,4 +1,5 @@
-sum by (
+sum by
+(
   datname
 )
 (
@@ -6,5 +7,4 @@ sum by (
   {
     datname!~"template.*|postgres"
   }
-)
-< 5
+) < 5

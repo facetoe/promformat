@@ -1,8 +1,6 @@
 ssl_verified_cert_not_after
 {
   chain_no="0"
-}
-- time (
-)
-< 86400
-* 7
+} - time
+(
+) < 86400 * 7

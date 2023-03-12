@@ -2,7 +2,7 @@ count
 (
   traefik_backend_server_up
 )
-by (
+by
+(
   backend
-)
-== 0
+) == 0

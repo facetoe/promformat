@@ -1,9 +1,5 @@
-100
-- (
+100 - (
   (
-    windows_os_physical_memory_free_bytes
-/ windows_cs_physical_memory_bytes
-  )
-* 100
-)
-> 90
+    windows_os_physical_memory_free_bytes / windows_cs_physical_memory_bytes
+  ) * 100
+) > 90

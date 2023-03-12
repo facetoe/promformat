@@ -1,2 +1,1 @@
-kube_statefulset_status_observed_generation
-!= kube_statefulset_metadata_generation
+kube_statefulset_status_observed_generation != kube_statefulset_metadata_generation

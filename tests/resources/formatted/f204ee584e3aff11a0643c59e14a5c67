@@ -1,2 +1,1 @@
-kube_cronjob_spec_suspend
-!= 0
+kube_cronjob_spec_suspend != 0

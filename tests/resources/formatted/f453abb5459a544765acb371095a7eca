@@ -1,7 +1,7 @@
-changes (
+changes
+(
   mgob_scheduler_backup_total
   {
     status="500"
   } [1h]
-)
-> 0
+) > 0

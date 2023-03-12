@@ -2,5 +2,4 @@ cassandra_stats
 {
   name="org:apache:cassandra:metrics:clientrequest:viewwrite:viewwritelatency:99thpercentile",
   service="cas"
-}
-> 100000
+} > 100000

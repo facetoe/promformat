@@ -1,23 +1,24 @@
 sum
 (
-rate   (
+  rate
+  (
     traefik_service_requests_total
     {
       code=~"4.*"
     } [3m]
   )
 )
-by (
-  service
-)
-/ sum
+by
 (
-rate   (
+  service
+) / sum
+(
+  rate
+  (
     traefik_service_requests_total [3m]
   )
 )
-by (
+by
+(
   service
-)
-* 100
-> 5
+) * 100 > 5

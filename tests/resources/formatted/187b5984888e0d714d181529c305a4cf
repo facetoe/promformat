@@ -1,4 +1,4 @@
-increase (
+increase
+(
   mongodb_mongod_metrics_cursor_timed_out_total [1m]
-)
-> 100
+) > 100

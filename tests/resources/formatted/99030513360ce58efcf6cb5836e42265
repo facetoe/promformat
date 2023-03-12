@@ -1,7 +1,7 @@
-sum by (
+sum by
+(
   backend
 )
 (
   haproxy_backend_current_queue
-)
-> 0
+) > 0

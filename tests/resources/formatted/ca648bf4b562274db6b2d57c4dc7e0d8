@@ -1,6 +1,5 @@
 (
-  1
-- (
+  1 - (
   sum
   (
     container_fs_inodes_free
@@ -8,17 +7,16 @@
       name!=""
     }
   )
-  BY (
+  BY
+  (
     instance
-  )
-/ sum
+  ) / sum
 (
   container_fs_inodes_total
 )
-BY (
+BY
+(
   instance
 )
 )
-)
-* 100
-> 80
+) * 100 > 80

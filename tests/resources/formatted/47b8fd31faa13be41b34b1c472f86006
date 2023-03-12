@@ -1,2 +1,1 @@
-ceph_health_status
-!= 0
+ceph_health_status != 0

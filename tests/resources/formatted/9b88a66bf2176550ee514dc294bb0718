@@ -1,5 +1,6 @@
 (
-  sum by (
+  sum by
+  (
     instance
   )
   (
@@ -7,8 +8,8 @@
     {
       area="heap"
     }
-  )
-/ sum by (
+  ) / sum by
+(
   instance
 )
 (
@@ -17,6 +18,4 @@
     area="heap"
   }
 )
-)
-* 100
-> 80
+) * 100 > 80

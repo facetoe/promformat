@@ -1,2 +1,1 @@
-cassandra_table_estimated_pending_compactions
-> 100
+cassandra_table_estimated_pending_compactions > 100

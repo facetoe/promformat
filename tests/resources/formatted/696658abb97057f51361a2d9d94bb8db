@@ -1,11 +1,12 @@
 (
-  sum by (
+  sum by
+  (
     proxy
   )
   (
-rate     (
+    rate
+    (
       haproxy_backend_connection_errors_total [1m]
     )
   )
-)
-> 100
+) > 100

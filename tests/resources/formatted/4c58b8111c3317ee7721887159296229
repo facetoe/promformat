@@ -1,17 +1,16 @@
 sum
 (
-rate   (
+  rate
+  (
     nginx_http_requests_total
     {
       status=~"^5.."
     } [1m]
   )
-)
-/ sum
+) / sum
 (
-rate   (
+  rate
+  (
     nginx_http_requests_total [1m]
   )
-)
-* 100
-> 5
+) * 100 > 5

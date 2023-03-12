@@ -1,14 +1,16 @@
-histogram_quantile (
+histogram_quantile
+(
   0.99,
   sum
   (
-rate     (
+    rate
+    (
       nginx_http_request_duration_seconds_bucket [2m]
     )
   )
-  by (
+  by
+  (
     host,
     node
   )
-)
-> 3
+) > 3

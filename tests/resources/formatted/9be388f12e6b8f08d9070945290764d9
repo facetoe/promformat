@@ -1,2 +1,1 @@
-kube_statefulset_status_replicas_ready
-!= kube_statefulset_status_replicas
+kube_statefulset_status_replicas_ready != kube_statefulset_status_replicas

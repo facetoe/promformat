@@ -1,7 +1,7 @@
-sum by (
+sum by
+(
   job
 )
 (
   cortex_query_frontend_queue_length
-)
-> 0
+) > 0

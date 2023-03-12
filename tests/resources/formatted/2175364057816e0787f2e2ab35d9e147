@@ -1,7 +1,5 @@
-mysql_slave_status_master_server_id
-> 0
-and ON (
+mysql_slave_status_master_server_id > 0 and ON
+(
   instance
 )
-mysql_slave_status_slave_io_running
-== 0
+mysql_slave_status_slave_io_running == 0

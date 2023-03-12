@@ -1,6 +1,4 @@
 count
 (
-  pg_replication_is_replica
-== 0
-)
-!= 1
+  pg_replication_is_replica == 0
+) != 1

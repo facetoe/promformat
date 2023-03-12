@@ -1,4 +1,4 @@
-rate (
+rate
+(
   cortex_prometheus_notifications_errors_total [5m]
-)
-> 0
+) > 0

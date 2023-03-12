@@ -1,8 +1,7 @@
-increase (
+increase
+(
   rabbitmq_channel_messages_unroutable_returned_total [1m]
-)
-> 0
-or increase (
+) > 0 or increase
+(
   rabbitmq_channel_messages_unroutable_dropped_total [1m]
-)
-> 0
+) > 0

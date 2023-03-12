@@ -1,5 +1,4 @@
 sum
 (
   zk_server_leader
-)
-> 1
+) > 1

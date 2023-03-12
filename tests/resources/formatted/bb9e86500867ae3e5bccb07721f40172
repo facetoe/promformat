@@ -1,4 +1,4 @@
-increase (
+increase
+(
   prometheus_tsdb_reloads_failures_total [1m]
-)
-> 0
+) > 0

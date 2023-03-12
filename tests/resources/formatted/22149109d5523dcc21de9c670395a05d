@@ -1,16 +1,15 @@
-100
-- (
-  avg by (
+100 - (
+  avg by
+  (
     instance
   )
   (
-rate     (
+    rate
+    (
       windows_cpu_time_total
       {
         mode="idle"
       } [2m]
     )
-  )
-* 100
-)
-> 80
+  ) * 100
+) > 80

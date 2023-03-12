@@ -1,7 +1,7 @@
-rate (
+rate
+(
   istio_request_duration_milliseconds_sum [1m]
-)
-/ rate (
+) / rate
+(
   istio_request_duration_milliseconds_count [1m]
-)
-> 0.1
+) > 0.1

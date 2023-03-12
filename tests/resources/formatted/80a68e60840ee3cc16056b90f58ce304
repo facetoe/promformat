@@ -1,2 +1,1 @@
-rabbitmq_connections
-> 1000
+rabbitmq_connections > 1000

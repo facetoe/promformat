@@ -1,4 +1,4 @@
-rate (
+rate
+(
   pg_txid_current [1m]
-)
-< 5
+) < 5

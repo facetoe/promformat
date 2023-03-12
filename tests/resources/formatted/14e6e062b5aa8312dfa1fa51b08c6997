@@ -1,7 +1,5 @@
-pg_replication_lag
-> 30
-and ON (
+pg_replication_lag > 30 and ON
+(
   instance
 )
-pg_replication_is_replica
-== 1
+pg_replication_is_replica == 1

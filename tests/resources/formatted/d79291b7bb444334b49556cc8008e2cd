@@ -1,11 +1,7 @@
 (
-time   (
-  )
-- vmware_vm_snapshot_timestamp_seconds
-)
-/ (
-  60
-* 60
-* 24
-)
->= 3
+  time
+  (
+  ) - vmware_vm_snapshot_timestamp_seconds
+) / (
+  60 * 60 * 24
+) >= 3

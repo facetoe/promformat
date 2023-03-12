@@ -1,4 +1,4 @@
-increase (
+increase
+(
   prometheus_target_scrapes_exceeded_sample_limit_total [10m]
-)
-> 10
+) > 10

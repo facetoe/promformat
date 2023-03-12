@@ -1,7 +1,7 @@
-avg by (
+avg by
+(
   backend
 )
 (
   haproxy_backend_http_total_time_average_seconds
-)
-> 1
+) > 1

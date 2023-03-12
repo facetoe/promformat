@@ -2,7 +2,7 @@ sum
 (
   jenkins_plugins_withUpdate
 )
-by (
+by
+(
   instance
-)
-> 3
+) > 3

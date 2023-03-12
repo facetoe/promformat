@@ -5,10 +5,10 @@ sum
     name="org:apache:cassandra:net:failuredetector:downendpointcount"
   }
 )
-by (
+by
+(
   service,
   group,
   cluster,
   env
-)
-> 0
+) > 0

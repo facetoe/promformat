@@ -1,24 +1,26 @@
 sum
 (
-rate   (
+  rate
+  (
     grpc_server_handled_total
     {
       grpc_code!="OK"
     } [1m]
   )
 )
-BY (
+BY
+(
   grpc_service,
   grpc_method
-)
-/ sum
+) / sum
 (
-rate   (
+  rate
+  (
     grpc_server_handled_total [1m]
   )
 )
-BY (
+BY
+(
   grpc_service,
   grpc_method
-)
-> 0.05
+) > 0.05

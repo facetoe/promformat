@@ -1,2 +1,1 @@
-ceph_monitor_avail_percent
-< 10
+ceph_monitor_avail_percent < 10

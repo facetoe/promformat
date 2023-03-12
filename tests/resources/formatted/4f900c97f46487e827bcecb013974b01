@@ -1,4 +1,4 @@
-avg_over_time (
+avg_over_time
+(
   probe_http_duration_seconds [1m]
-)
-> 1
+) > 1

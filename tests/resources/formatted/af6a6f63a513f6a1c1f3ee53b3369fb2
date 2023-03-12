@@ -1,2 +1,1 @@
-ceph_pg_backfill_toofull
-> 0
+ceph_pg_backfill_toofull > 0

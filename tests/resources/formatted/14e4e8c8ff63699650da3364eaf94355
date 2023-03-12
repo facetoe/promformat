@@ -5,9 +5,9 @@ avg
     quantile="0.99"
   }
 )
-by (
+by
+(
   instance,
   cassandra_cluster,
   keyspace
-)
-> 100
+) > 100

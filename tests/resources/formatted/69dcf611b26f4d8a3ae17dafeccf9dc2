@@ -1,16 +1,16 @@
-last_over_time (
+last_over_time
+(
   basebackup
   {
   } [12h]
   offset 5m
-)
-> 0
-unless on (
+) > 0 unless on
+(
   fire
 )
-last_over_time (
+last_over_time
+(
   progress
   {
   } [12h]
-)
-> 0
+) > 0

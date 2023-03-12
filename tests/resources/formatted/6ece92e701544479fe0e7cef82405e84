@@ -1,5 +1,4 @@
 cassandra_stats
 {
   name="org:apache:cassandra:metrics:threadpools:internal:compactionexecutor:currentlyblockedtasks:count"
-}
-> 0
+} > 0

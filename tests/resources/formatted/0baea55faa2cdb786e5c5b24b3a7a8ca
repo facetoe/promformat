@@ -2,9 +2,9 @@ count
 (
   bookie_SERVER_STATUS
   {
-  }
-== 0
+  } == 0
 )
-by (
+by
+(
   pod
 )

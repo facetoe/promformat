@@ -1,2 +1,1 @@
-prometheus_notifications_alertmanagers_discovered
-< 1
+prometheus_notifications_alertmanagers_discovered < 1

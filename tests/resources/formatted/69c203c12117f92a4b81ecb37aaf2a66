@@ -1,6 +1,4 @@
 mongodb_mongod_metrics_cursor_open
 {
   state="total"
-}
-> 10
-* 1000
+} > 10 * 1000

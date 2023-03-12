@@ -1,20 +1,18 @@
 (
-rate   (
+  rate
+  (
     node_network_receive_bytes_total
     {
       device!~"^tap.*"
     } [1m]
-  )
-+ rate (
+  ) + rate
+(
   node_network_transmit_bytes_total
   {
     device!~"^tap.*"
   } [1m]
 )
-)
-/ node_network_speed_bytes
+) / node_network_speed_bytes
 {
   device!~"^tap.*"
-}
-> 0.8
-< 10000
+} > 0.8 < 10000

@@ -1,11 +1,10 @@
-sum by (
+sum by
+(
   instance
 )
 (
-rate   (
+  rate
+  (
     node_network_receive_bytes_total [2m]
   )
-)
-/ 1024
-/ 1024
-> 100
+) / 1024 / 1024 > 100

@@ -1,4 +1,4 @@
-increase (
+increase
+(
   etcd_server_proposals_failed_total [1h]
-)
-> 5
+) > 5

@@ -1,7 +1,5 @@
-predict_linear (
+predict_linear
+(
   kubelet_volume_stats_available_bytes [6h],
-  4
-* 24
-* 3600
-)
-< 0
+  4 * 24 * 3600
+) < 0

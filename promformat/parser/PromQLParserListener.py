@@ -6,6 +6,7 @@ if __name__ is not None and "." in __name__:
 else:
     from PromQLParser import PromQLParser
 
+
 # This class defines a complete listener for a parse tree produced by PromQLParser.
 class PromQLParserListener(ParseTreeListener):
 

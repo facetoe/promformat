@@ -1,7 +1,7 @@
+from importlib.resources import files
 from random import randint
 
 import antlr4
-import pkg_resources
 import yaml
 import pytest
 from antlr4 import CommonTokenStream
@@ -11,7 +11,6 @@ from promformat import _build_cst
 import hashlib
 import os
 
-import pkg_resources
 import yaml
 import pytest
 
@@ -20,8 +19,8 @@ from promformat.parser.PromQLParserListener import PromQLParserListener
 
 
 def get_rules():
-    rule_path = pkg_resources.resource_filename("tests.resources", "test-promql.yaml")
-    with open(rule_path) as f:
+    rule_path = files("tests.resources") / "test-promql.yaml"
+    with open(str(rule_path)) as f:
         data = yaml.safe_load(f)
         for group in data["groups"]:
             for service in group["services"]:
@@ -117,7 +116,7 @@ def test_comments(query: str):
     ],
 )
 def test_formatter(query, file_name):
-    rule_path = pkg_resources.resource_filename("tests.resources", "formatted")
+    rule_path = str(files("tests.resources") / "formatted")
     path = os.path.join(rule_path, file_name)
     with open(path) as f:
         expected_formatting = f.read()

@@ -14,12 +14,10 @@ dependencies = [
 test = [
     "pytest",
     "PyYAML",
-    "setuptools",
 ]
 dev = [
     "flake8",
     "black",
-    "setuptools",
 ]
 
 [project.scripts]

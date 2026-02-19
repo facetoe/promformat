@@ -31,7 +31,6 @@ jobs:
         pip install black==22.6.0
         pip install pytest
         pip install PyYAML
-        pip install setuptools
     - name: validate-style
       run: |
         make validate-style

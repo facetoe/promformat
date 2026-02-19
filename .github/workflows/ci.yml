@@ -37,6 +37,6 @@ jobs:
         make validate-style
 
     - name: Tests
-      run: |
+      run:  pytest tests/
 
 
